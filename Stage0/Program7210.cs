@@ -9,9 +9,7 @@ namespace Stage0
             Welcome1944();
             Console.ReadKey();
         }
-
         static partial void Welcome1944();
-
         private static void Welcome7210()
         {
             Console.WriteLine("Enter your name:");
