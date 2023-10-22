@@ -8,8 +8,6 @@ namespace Stage0
             Welcome7210();
             Welcome1944();
             Console.ReadKey();
-
-
         }
 
         static partial void Welcome1944();
