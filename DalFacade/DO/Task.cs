@@ -20,22 +20,26 @@
 
 public record Task
 {
-    int Id;
-    string? Description = null;
-    string? Alias = null;
-    bool? IsMilestone = null;
-    DateTime? CreatedAtDate => DateTime.Now;
-    DateTime StartDate;
-    DateTime SchedualDate;
-    DateTime ForecastDate;
-    DateTime DeadlineDate;
-    DateTime CompleteDate;
-    string Deliverables;
-    string Remarks;
-    int EngineerId;
-    // EngineerExperienc ComplexityLevel
+    public int Id;
+    public string? Description = null;
+    public string? Alias = null;
+    public bool? IsMilestone = null;
+    public DateTime? CreatedAtDate => DateTime.Now;
+    public DateTime? StartDate = null;
+    public DateTime? SchedualDate = null;
+    public DateTime? ForecastDate = null;
+    public DateTime? DeadlineDate = null;
+    public DateTime? CompleteDate = null;
+    public string Deliverables;
+    public string Remarks;
+    public int EngineerId;
+    //public EngineerExperienc ComplexityLevel
 
-    Task() { };
+    Task() { this.Id = 0;
+        this.Deliverables = ""; 
+        this.Remarks = ""; 
+        this.EngineerId = 0; 
+    }
     Task(int id, string description, string alias, bool mileStone, DateTime start, DateTime schedual,
         DateTime forecast, DateTime deadline, DateTime complete, string deliverables, string remarks, int engineerid)
     {
@@ -43,7 +47,7 @@ public record Task
         Description = description;
         Alias = alias;
         IsMilestone = mileStone;
-        CreatedAtDate = start;
+        StartDate = start;
         SchedualDate = schedual;
         DeadlineDate = deadline;
         CompleteDate = complete;
