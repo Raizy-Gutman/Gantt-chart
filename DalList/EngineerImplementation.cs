@@ -7,23 +7,22 @@ using System.Collections.Generic;
 
 public class EngineerImplementation : IEngineer
 {
-    public int Create(Engineer _engineer)
+    public int Create(Engineer? _engineer)
     {
-        if (DataSource.Engineers.Find(e => e.Id == _engineer.Id) != null)
+        if (DataSource.Engineers.Find(e => e?.Id == _engineer?.Id) != null)
         {
-            throw new NotImplementedException();
+            throw new Exception($"The new engineer cannot be created, an engineer with ID: {_engineer?.Id} already exists in the system.");
         }
         else
         {
             DataSource.Engineers.Add(_engineer);
-            return _engineer.Id;
+            return _engineer!.Id;
         }
     }
 
     public void Delete(int id)
     {
-        //throw new NotImplementedException();
-        Engineer? e = DataSource.Engineers.Find(e => e.Id == id);
+        Engineer? e = DataSource.Engineers.Find(e => e?.Id == id);
         if (e != null)
         {
             DataSource.Engineers.Remove(e);
@@ -31,24 +30,23 @@ public class EngineerImplementation : IEngineer
         }
         else
         {
-            /*throw new NotImplementedException();*/
+            throw new Exception($"Can't delete, engineer with ID: {id} does not exist!!");
         }
     }
 
     public Engineer? Read(int id)
     {
-        return DataSource.Engineers.Find(e => e.Id == id);
+        return DataSource.Engineers.Find(e => e?.Id == id);
     }
 
     public List<Engineer> ReadAll()
     {
-        return new List<Engineer>(DataSource.Engineers);
+        return new List<Engineer>(DataSource.Engineers!/*?*/);
     }
 
-    public void Update(Engineer _engineer)
+    public void Update(Engineer? _engineer)
     {
-        //throw new NotImplementedException();
-        Engineer? e = DataSource.Engineers.Find(e => e.Id == _engineer.Id);
+        Engineer? e = DataSource.Engineers.Find(e => e?.Id == _engineer?.Id);
         if (e != null)
         {
             DataSource.Engineers.Remove(e);
@@ -56,7 +54,7 @@ public class EngineerImplementation : IEngineer
         }
         else
         {
-            //throw new InvalidOperationException();
+            throw new Exception($"Can't update, engineer with ID: {_engineer?.Id} does not exist!!");
         }
     }
 }

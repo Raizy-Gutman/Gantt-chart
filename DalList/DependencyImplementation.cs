@@ -11,38 +11,36 @@ public class DependencyImplementation : IDependency
     {
         int newId = DataSource.Config.NextDependencyId;
         Dependency dependency = _dependency with { Id = newId };
-        //throw new NotImplementedException();
         DataSource.Dependencies.Add(dependency);
         return newId;
     }
 
     public void Delete(int id)
     {
-        Dependency? d = DataSource.Dependencies.Find(d => d.Id == id);
+        Dependency? d = DataSource.Dependencies.Find(d => d?.Id == id);
         if (d != null)
         {
             DataSource.Dependencies.Remove(d);
         }
         else
         {
-            /*throw new NotImplementedException();*/
+            throw new Exception($"Can't delete, Dependency with ID: {id} does not exist!!");
         }
     }
 
     public Dependency? Read(int id)
     {
-        return DataSource.Dependencies.Find(d => d.Id == id);
+        return DataSource.Dependencies.Find(d => d?.Id == id);
     }
 
     public List<Dependency> ReadAll()
     {
-        return new List<Dependency>(DataSource.Dependencies);
+        return new List<Dependency>(DataSource.Dependencies!/*?*/);
     }
 
-    public void Update(Dependency _dependency)
+    public void Update(Dependency? _dependency)
     {
-        //throw new NotImplementedException();
-        Dependency? d = DataSource.Dependencies.Find(d => d.Id == _dependency.Id);
+        Dependency? d = DataSource.Dependencies.Find(d => d?.Id == _dependency?.Id);
         if (d != null)
         {
             DataSource.Dependencies.Remove(d);
@@ -50,7 +48,7 @@ public class DependencyImplementation : IDependency
         }
         else
         {
-            //throw new InvalidOperationException();
+            throw new Exception($"Can't update, Dependency with ID: {_dependency?.Id} does not exist!!");
         }
     }
 }

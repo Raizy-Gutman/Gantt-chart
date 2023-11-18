@@ -11,15 +11,15 @@
 /// 
 
 public record Engineer
-{
-    public int Id;
-    public string? Name = null;
-    public string? Email = null;
+{ 
+    public int Id { get; init; }
+    public string? Name { get; init; } = null;
+    public string? Email { get; init; } = null;
     // public EngineerExperience? Level
-    public double? Cost = null;
+    public double? Cost { get; init; } = null;
 
-    Engineer() { this.Id=0; }
-    Engineer(int id, string name, string email, double cost)
+    public Engineer() { Id=0; }
+    public Engineer(int id, string name, string email, double cost)
     {
         Id = id;
         Name = name;

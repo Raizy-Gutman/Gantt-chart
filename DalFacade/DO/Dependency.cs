@@ -10,11 +10,10 @@
 
 public record Dependency
 {
-    public int Id;
-    public int DependentTask;
-    public int DependsOnTask;
+    public int Id {  get; set; }
+    public int DependentTask { get; init; }
+    public int DependsOnTask { get; init; }
     Dependency() : this(0, 0, 0) { }
-
     Dependency(int id, int dependentTask, int dependsOnTask)
     {
         Id = id;

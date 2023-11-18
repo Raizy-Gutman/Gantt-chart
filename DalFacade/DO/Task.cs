@@ -20,27 +20,27 @@
 
 public record Task
 {
-    public int Id;
-    public string? Description = null;
-    public string? Alias = null;
-    public bool? IsMilestone = null;
+    public int Id { get; set; }
+    public string? Description { get; init; } = null;
+    public string? Alias { get; init; } = null;
+    public bool? IsMilestone { get; init; } = null;
     public DateTime? CreatedAtDate => DateTime.Now;
-    public DateTime? StartDate = null;
-    public DateTime? SchedualDate = null;
-    public DateTime? ForecastDate = null;
-    public DateTime? DeadlineDate = null;
-    public DateTime? CompleteDate = null;
-    public string Deliverables;
-    public string Remarks;
-    public int EngineerId;
+    public DateTime? StartDate { get; init; } = null;
+    public DateTime? SchedualDate { get; init; } = null;
+    public DateTime? ForecastDate { get; init; } = null;
+    public DateTime? DeadlineDate { get; init; } = null;
+    public DateTime? CompleteDate { get; init; } = null;
+    public string? Deliverables { get; init; }
+    public string? Remarks { get; init; }
+    public int EngineerId { get; init; }
     //public EngineerExperienc ComplexityLevel
 
-    Task() { this.Id = 0;
+    public Task() { this.Id = 0;
         this.Deliverables = ""; 
         this.Remarks = ""; 
         this.EngineerId = 0; 
     }
-    Task(int id, string description, string alias, bool mileStone, DateTime start, DateTime schedual,
+    public Task(int id, string description, string alias, bool mileStone, DateTime start, DateTime schedual,
         DateTime forecast, DateTime deadline, DateTime complete, string deliverables, string remarks, int engineerid)
     {
         Id = id;
