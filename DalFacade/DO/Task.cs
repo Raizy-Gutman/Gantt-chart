@@ -19,40 +19,40 @@
 /// <param name="ComplexityLevel">The difficulty level of the task</param>
 
 public record Task
+(
+    int Id,
+    string? Description,
+    string? Alias,
+    bool IsMilestone,
+    DateTime? CreatedAtDate, /*=> DateTime.Now;*/
+    DateTime? StartDate,
+    DateTime? SchedualDate,
+    DateTime? ForecastDate,
+    DateTime? DeadlineDate,
+    DateTime? CompleteDate,
+    string? Deliverables,
+    string? Remarks,
+    int EngineerId
+//EngineerExperienc ComplexityLevel
+)
 {
-    public int Id { get; set; }
-    public string? Description { get; init; } = null;
-    public string? Alias { get; init; } = null;
-    public bool? IsMilestone { get; init; } = null;
-    public DateTime? CreatedAtDate => DateTime.Now;
-    public DateTime? StartDate { get; init; } = null;
-    public DateTime? SchedualDate { get; init; } = null;
-    public DateTime? ForecastDate { get; init; } = null;
-    public DateTime? DeadlineDate { get; init; } = null;
-    public DateTime? CompleteDate { get; init; } = null;
-    public string? Deliverables { get; init; }
-    public string? Remarks { get; init; }
-    public int EngineerId { get; init; }
-    //public EngineerExperienc ComplexityLevel
-
-    public Task() { this.Id = 0;
-        this.Deliverables = ""; 
-        this.Remarks = ""; 
-        this.EngineerId = 0; 
-    }
-    public Task(int id, string description, string alias, bool mileStone, DateTime start, DateTime schedual,
-        DateTime forecast, DateTime deadline, DateTime complete, string deliverables, string remarks, int engineerid)
-    {
-        Id = id;
-        Description = description;
-        Alias = alias;
-        IsMilestone = mileStone;
-        StartDate = start;
-        SchedualDate = schedual;
-        DeadlineDate = deadline;
-        CompleteDate = complete;
-        Deliverables = deliverables;
-        Remarks = remarks;
-        EngineerId = engineerid;
-    }
+    public Task() : this(0, "", "", false, null, null, null, null, null, null, "", "", 0/*, 0*/) { }  //empty ctor
+    //public Task(int id, string? description, string? alias, bool mileStone, DateTime? createdAtDate, DateTime startedDate, DateTime schedualDate,
+    //    DateTime forecast, DateTime deadline, DateTime complete, string? deliverables, string? remarks, int engineerid/*, EngineerExperienc complexityLevel*/) //ctor with parrameters
+    //{
+    //    Id = id;
+    //    Description = description;
+    //    Alias = alias;
+    //    IsMilestone = mileStone;
+    //    CreatedAtDate = createdAtDate;
+    //    StartDate = startedDate;
+    //    SchedualDate = schedualDate;
+    //    ForecastDate = forecast;
+    //    DeadlineDate = deadline;
+    //    CompleteDate = complete;
+    //    Deliverables = deliverables;
+    //    Remarks = remarks;
+    //    EngineerId = engineerid;
+    //    //ComplexityLevel = complexityLevel
+    //}
 }

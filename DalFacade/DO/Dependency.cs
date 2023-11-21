@@ -9,15 +9,18 @@
 /// 
 
 public record Dependency
+(
+    int Id,
+    int DependentTask,
+    int DependsOnTask
+)
 {
-    public int Id {  get; set; }
-    public int DependentTask { get; init; }
-    public int DependsOnTask { get; init; }
-    Dependency() : this(0, 0, 0) { }
-    Dependency(int id, int dependentTask, int dependsOnTask)
-    {
-        Id = id;
-        DependentTask = dependentTask;
-        DependsOnTask = dependsOnTask;
-    }
+    public Dependency() : this(0, 0, 0) { }  //empty ctor
+
+    //public Dependency(int id, int dependentTask, int dependsOnTask)  //ctor with parameters
+    //{
+    //    Id = id;
+    //    DependentTask = dependentTask;
+    //    DependsOnTask = dependsOnTask;
+    //}
 }

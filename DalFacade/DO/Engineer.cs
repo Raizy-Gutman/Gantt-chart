@@ -11,21 +11,21 @@
 /// 
 
 public record Engineer
-{ 
-    public int Id { get; init; }
-    public string? Name { get; init; } = null;
-    public string? Email { get; init; } = null;
-    // public EngineerExperience? Level
-    public double? Cost { get; init; } = null;
-
-    public Engineer() { Id=0; }
-    public Engineer(int id, string name, string email, double cost)
-    {
-        Id = id;
-        Name = name;
-        Email = email;
-        Cost = cost;
-
-    }
-
+(
+    int Id,
+    string? Name,
+    string? Email,
+    //EngineerExperience Level,
+    double? Cost
+)
+{
+    public Engineer() : this(0, "", ""/*, 0*/, 0.0) { }  //empty ctor
+    //public Engineer(int id, string? name, string? email/*, EngineerExperience level*/, double cost)  //ctor with parameters
+    //{
+    //    Id = id;
+    //    Name = name;
+    //    Email = email;
+    //    Level = level;
+    //    Cost = cost;
+    //}
 }
