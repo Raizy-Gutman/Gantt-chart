@@ -24,7 +24,7 @@ public record Task
     string? Description,
     string? Alias,
     bool IsMilestone,
-    DateTime? CreatedAtDate, /*=> DateTime.Now;*/
+    DateTime? CreatedAtDate, 
     DateTime? StartDate,
     DateTime? SchedualDate,
     DateTime? ForecastDate,
@@ -32,9 +32,9 @@ public record Task
     DateTime? CompleteDate,
     string? Deliverables,
     string? Remarks,
-    int EngineerId
-//EngineerExperienc ComplexityLevel
+    int EngineerId,
+    EngineerExperience ComplexityLevel
 )
 {
-    public Task() : this(0, "", "", false, null, null, null, null, null, null, "", "", 0/*, 0*/) { }  //empty ctor
+    public Task() : this(0, "", "", false, null, null, null, null, null, null, "", "", 0, 0) { }  //empty ctor
 }
