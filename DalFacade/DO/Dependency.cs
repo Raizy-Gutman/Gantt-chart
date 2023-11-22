@@ -17,10 +17,4 @@ public record Dependency
 {
     public Dependency() : this(0, 0, 0) { }  //empty ctor
 
-    //public Dependency(int id, int dependentTask, int dependsOnTask)  //ctor with parameters
-    //{
-    //    Id = id;
-    //    DependentTask = dependentTask;
-    //    DependsOnTask = dependsOnTask;
-    //}
 }

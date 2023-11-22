@@ -20,12 +20,4 @@ public record Engineer
 )
 {
     public Engineer() : this(0, "", ""/*, 0*/, 0.0) { }  //empty ctor
-    //public Engineer(int id, string? name, string? email/*, EngineerExperience level*/, double cost)  //ctor with parameters
-    //{
-    //    Id = id;
-    //    Name = name;
-    //    Email = email;
-    //    Level = level;
-    //    Cost = cost;
-    //}
 }

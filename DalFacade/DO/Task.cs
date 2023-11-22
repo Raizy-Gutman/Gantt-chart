@@ -37,22 +37,4 @@ public record Task
 )
 {
     public Task() : this(0, "", "", false, null, null, null, null, null, null, "", "", 0/*, 0*/) { }  //empty ctor
-    //public Task(int id, string? description, string? alias, bool mileStone, DateTime? createdAtDate, DateTime startedDate, DateTime schedualDate,
-    //    DateTime forecast, DateTime deadline, DateTime complete, string? deliverables, string? remarks, int engineerid/*, EngineerExperienc complexityLevel*/) //ctor with parrameters
-    //{
-    //    Id = id;
-    //    Description = description;
-    //    Alias = alias;
-    //    IsMilestone = mileStone;
-    //    CreatedAtDate = createdAtDate;
-    //    StartDate = startedDate;
-    //    SchedualDate = schedualDate;
-    //    ForecastDate = forecast;
-    //    DeadlineDate = deadline;
-    //    CompleteDate = complete;
-    //    Deliverables = deliverables;
-    //    Remarks = remarks;
-    //    EngineerId = engineerid;
-    //    //ComplexityLevel = complexityLevel
-    //}
 }
