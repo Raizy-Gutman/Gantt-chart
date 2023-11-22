@@ -12,22 +12,25 @@ public static class Initialization
 
     private static readonly Random s_rand = new();
 
-    private static void craeteEngineers()
+    public enum EngineerExperience
     {
-        string[] engineerNames =
+        Novice,
+        AdvancedBeginner,
+        Competent,
+        Proficient,
+        Expert
+    };
+
+    private static void craeteEngineers()
+    {//לפחות 5 מהנדסים
+
+    
+
+    string[] engineerNames =
         {
             "Raizy Gutman", "Yeudit Itamar", "Dani Levi", "Eli Amar", "Yair Cohen",
             "Ariela Levin", "Dina Klein", "Shira Israelof"
         };
-
-        //public enum Engineerlevel
-        //{
-        //    Novice,
-        //    AdvancedBeginner,
-        //    Competent,
-        //    Proficient,
-        //    Expert
-        //};
 
         foreach (var _name in engineerNames)
         {
@@ -38,33 +41,33 @@ public static class Initialization
 
             string? _email = string.Join("", _name.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries)) + "@gmail.com";
             double? _cost = null;  //להחליט על ערך כחלשהו
-            //EngineerExperience _level=gbhu
+            EngineerExperience _level = (EngineerExperience)s_rand.Next(Enum.GetNames(typeof(EngineerExperience)).Length);
 
-            Engineer newEngineer = new(_id, _name, _email/*, _level*/, _cost);
+            Engineer newEngineer = new(_id, _name, _email, _level, _cost);
 
             s_dalEngineer!.Create(newEngineer);
 
         }
     }
 
-    //private static craeteDependency()
-    //{
+    private static craeteDependency()
+    {
 
-    ////    int Id,
-    ////int DependentTask,
-    ////int DependsOnTask
-    ////לפחות 20 משימות
+        //    int Id,
+        //int DependentTask,
+        //int DependsOnTask
+        //לפחות 20 משימות
 
 
-        
-    //}
+
+    }
 
 
 
 
 
     //private static craeteTask()
-    //{
+    //{//לפחות 40 תלויות
     //    
 
     //}

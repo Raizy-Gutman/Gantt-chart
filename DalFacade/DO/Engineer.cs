@@ -15,9 +15,9 @@ public record Engineer
     int Id,
     string? Name,
     string? Email,
-    //EngineerExperience Level,
+    EngineerExperience Level,
     double? Cost
 )
 {
-    public Engineer() : this(0, "", ""/*, 0*/, 0.0) { }  //empty ctor
+    public Engineer() : this(0, "", "", 0, 0.0) { }  //empty ctor
 }
