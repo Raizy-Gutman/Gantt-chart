@@ -9,4 +9,7 @@ public enum EngineerExperience
     Expert
 }
 
-
+public enum Crud
+{
+    EXIT, CREATE, READ, READALL, UPDATE, DELETE
+}

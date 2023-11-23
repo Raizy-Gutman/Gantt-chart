@@ -48,7 +48,7 @@ public static class Initialization
     }
 
     private static void craeteTask()
-    {//לפחות 20 משימות
+    {
 
         for (int i = 0; i < 30; i++)
         {
@@ -79,7 +79,7 @@ public static class Initialization
     {//לפחות 40 תלויות
 
         int _id = 0;// ללא הקצאת ID??
-        for(int i = 0; i < 30; i++)
+        for(int i = 0; i < 40; i++)
         {
             int _dependentTask = i;
             for (int j = 0; j < i; j++)
