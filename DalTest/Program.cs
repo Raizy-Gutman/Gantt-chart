@@ -35,58 +35,78 @@ namespace DalTest
                     case (int)Crud.CREATE:
                         Console.WriteLine("Enter Task description, alias, milestone(True or False),created date time, a short description for the product, any remarks, the engineer Id and complexity level: ");
                         int _id = 0;
-                        string _description = Console.ReadLine()!;
-                        string _alias = Console.ReadLine()!;
-                        bool _milestone = bool.Parse(Console.ReadLine()!);
-                        DateTime _creatAt = DateTime.Parse(Console.ReadLine()!);
+                        string _description = Console.ReadLine()??"";
+                        string _alias = Console.ReadLine()??"";
+                        bool _milestone = bool.Parse(Console.ReadLine()??"false");
+                        DateTime _creatAt = DateTime.Parse(Console.ReadLine()??"${ DateTime.Today}");
                         DateTime _start = _creatAt.AddDays(s_rand.Next(0, 6));
-                        DateTime _scheduledDate = _start.AddDays(s_rand.Next(14, 20)); 
+                        DateTime _scheduledDate = _start.AddDays(s_rand.Next(14, 20));
                         DateTime _deadLine = _scheduledDate.AddDays(s_rand.Next(0, 6));
                         DateTime _forecastDate = _deadLine;
                         DateTime _complete = _deadLine.AddDays(s_rand.Next(0, 6));
                         string? _productDescription = Console.ReadLine();
                         string? _remarks = Console.ReadLine();
-                        int _engineerId = int.Parse(Console.ReadLine());
-                        EngineerExperience _complexityLevel = (EngineerExperience)Enum.Parse(typeof(EngineerExperience), Console.ReadLine());
-                        DO.Task newTask = new DO.Task(_id, _description, _alias, _milestone, _creatAt, _start, _scheduledDate, _deadLine,_forecastDate, _complete, _productDescription, _remarks, _engineerId, _complexityLevel);
-                        s_dalTask.Create(newTask);
+                        int _engineerId = int.Parse(Console.ReadLine()??"0");
+                        EngineerExperience _complexityLevel = (EngineerExperience)Enum.Parse(typeof(EngineerExperience), Console.ReadLine()??"${(EngineerExperience)s_rand.Next(Enum.GetNames(typeof(EngineerExperience)).Length)}");
+                        DO.Task newTask = new DO.Task(_id, _description, _alias, _milestone, _creatAt, _start, _scheduledDate, _deadLine, _forecastDate, _complete, _productDescription, _remarks, _engineerId, _complexityLevel);
+                        s_dalTask?.Create(newTask);
                         break;
                     case (int)Crud.READ:
                         Console.WriteLine("Enter Task ID: ");
-                        int _idRead = int.Parse(Console.ReadLine());
-                        Console.WriteLine(s_dalTask.Read(_idRead));
+                        int _idRead = int.Parse(Console.ReadLine()??"0");
+                        Console.WriteLine(s_dalTask?.Read(_idRead));
                         break;
                     case (int)Crud.READALL:
-                        foreach (DO.Task task in s_dalTask.ReadAll())
+                        if (s_dalTask != null)
                         {
-                            Console.WriteLine(task);
+                            foreach (DO.Task task in s_dalTask.ReadAll())
+                            {
+                                Console.WriteLine(task);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("there are not tasks.");
                         }
                         break;
                     case (int)Crud.DELETE:
                         Console.WriteLine("Enter Task ID: ");
-                        int _idDelete = int.Parse(Console.ReadLine());
-                        try
+                        string? todelete = Console.ReadLine();
+                        if (todelete != null)
                         {
-                            s_dalTask.Delete(_idDelete);
+                            int _idDelete = int.Parse(todelete);
+                            try
+                            {
+                                s_dalTask?.Delete(_idDelete);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            Console.WriteLine(ex.Message);
+                            Console.WriteLine("you didn't press any ID to delete");
                         }
                         break;
                     case (int)Crud.UPDATE:
                         try
                         {
                             Console.WriteLine("Enter a task Id ,task description, alias, milestone(True or False) ,Date it was cerated at, אhe ID of the responsible engineer and his level: ");
-                            int _idUpdate = int.Parse(Console.ReadLine());
-                            string _descriptionUpdate = Console.ReadLine();
-                            string _aliasUpdate = Console.ReadLine();
-                            bool _milestoneUpdate = bool.Parse(Console.ReadLine());
-                            DateTime _creatAtUpdate = DateTime.Parse(Console.ReadLine());
-                            int _engineerNum = int.Parse(Console.ReadLine()!);
-                            EngineerExperience _complexityLevelUpdate = (EngineerExperience)Enum.Parse(typeof(EngineerExperience), Console.ReadLine());
-                            DO.Task updateTask = new DO.Task(_idUpdate, _descriptionUpdate, _aliasUpdate, _milestoneUpdate, _creatAtUpdate, null, null, null, null, null, null, null, _engineerNum, _complexityLevelUpdate);
-                            s_dalTask.Update(updateTask);
+                            string? toupdate = Console.ReadLine();
+                            if (toupdate != null)
+                            {
+                                int _idUpdate = int.Parse(toupdate);
+                                string _descriptionUpdate = Console.ReadLine()??"";
+                                string _aliasUpdate = Console.ReadLine()??"";
+                                bool _milestoneUpdate = bool.Parse(Console.ReadLine()??"false");
+                                DateTime _creatAtUpdate = DateTime.Parse(Console.ReadLine()??"${DateTime.New}");
+                                int _engineerNum = int.Parse(Console.ReadLine()!);
+                                EngineerExperience _complexityLevelUpdate = (EngineerExperience)Enum.Parse(typeof(EngineerExperience), Console.ReadLine()??"${(EngineerExperience)s_rand.Next(Enum.GetNames(typeof(EngineerExperience)).Length)}");
+                                DO.Task updateTask = new DO.Task(_idUpdate, _descriptionUpdate, _aliasUpdate, _milestoneUpdate, _creatAtUpdate, null, null, null, null, null, null, null, _engineerNum, _complexityLevelUpdate);
+                                s_dalTask?.Update(updateTask);
+                            }
+                            else { Console.WriteLine("you didn't press any ID to update."); }
                         }
                         catch (Exception ex)
                         {
@@ -112,68 +132,79 @@ namespace DalTest
             while (true)
             {
                 DisplayEntitysMenu("engineer");
-                int choise = int.Parse(Console.ReadLine()!);
-                switch (choise)
+                string? schoise = Console.ReadLine();
+                if (schoise == null) { Console.WriteLine("uoy didn't prees any choise."); }
+                else
                 {
-                    case (int)Crud.CREATE:
-                        Console.WriteLine("Enter engineer ID, Name, Email, Cost, and level: ");
-                        int _id = int.Parse(Console.ReadLine()!);
-                        string _name = Console.ReadLine()!;
-                        string _email = Console.ReadLine()!;
-                        double _cost = double.Parse(Console.ReadLine()!);
-                        EngineerExperience _level = (EngineerExperience)Enum.Parse(typeof(EngineerExperience), Console.ReadLine()!);
-                        Engineer newEngineer = new(_id, _name, _email, _level, _cost);
-                        s_dalEngineer.Create(newEngineer);
-                        break;
-                    case (int)Crud.READ:
-                        Console.WriteLine("Enter engineer ID: ");
-                        int _idRead = int.Parse(Console.ReadLine()!);
-                        Console.WriteLine(s_dalEngineer.Read(_idRead));
-                        break;
-                    case (int)Crud.READALL:
-                        foreach (Engineer engineer in s_dalEngineer.ReadAll())
-                        {
-                            Console.WriteLine(engineer);
-                        }
-                        break;
+                    int choise = int.Parse(schoise);
+                    switch (choise)
+                    {
+                        case (int)Crud.CREATE:
+                            Console.WriteLine("Enter engineer ID, Name, Email, Cost, and level: ");
+                            int _id = int.Parse(Console.ReadLine()!);
+                            string _name = Console.ReadLine()!;
+                            string _email = Console.ReadLine()!;
+                            double _cost = double.Parse(Console.ReadLine()!);
+                            EngineerExperience _level = (EngineerExperience)Enum.Parse(typeof(EngineerExperience), Console.ReadLine()!);
+                            Engineer newEngineer = new(_id, _name, _email, _level, _cost);
+                            s_dalEngineer?.Create(newEngineer);
+                            break;
+                        case (int)Crud.READ:
+                            Console.WriteLine("Enter engineer ID: ");
+                            int _idRead = int.Parse(Console.ReadLine()!);
+                            Console.WriteLine(s_dalEngineer?.Read(_idRead));
+                            break;
+                        case (int)Crud.READALL:
+                            if(s_dalEngineer != null) { 
+                            foreach (Engineer engineer in s_dalEngineer.ReadAll())
+                            {
+                                Console.WriteLine(engineer);
+                            }
+                            }
+                            else
+                            {
+                                Console.WriteLine("there are not engineers");
+                            }
+                            break;
 
-                    case (int)Crud.DELETE:
-                        Console.WriteLine("Enter engineer ID: ");
-                        int _idDelete = int.Parse(Console.ReadLine()!);
-                        try
-                        {
-                            s_dalEngineer.Delete(_idDelete);
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex.Message);
-                        }
-                        break;
+                        case (int)Crud.DELETE:
+                            Console.WriteLine("Enter engineer ID: ");
+                            int _idDelete = int.Parse(Console.ReadLine()!);
+                            try
+                            {
+                                s_dalEngineer?.Delete(_idDelete);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
+                            break;
 
-                    case (int)Crud.UPDATE:
-                        Console.WriteLine("Enter the engineer's ןג, and the details for the update (name, email, level, and cost)");
-                        int _idUpdate = int.Parse(Console.ReadLine()!);
-                        string? _nameUpdate = Console.ReadLine();
-                        string? _emailUpdate = Console.ReadLine();
-                        double _costUpdate = double.Parse(Console.ReadLine()!);
-                        EngineerExperience _levelUpdate = (EngineerExperience)Enum.Parse(typeof(EngineerExperience), Console.ReadLine()!);
-                        try
-                        {
-                            Engineer updateEngineer = new(_idUpdate, _nameUpdate, _emailUpdate, _levelUpdate, _costUpdate);
-                            s_dalEngineer.Update(updateEngineer);
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex.Message);
-                        }
-                        break;
+                        case (int)Crud.UPDATE:
+                            Console.WriteLine("Enter the engineer's , and the details for the update (name, email, level, and cost)");
+                            int _idUpdate = int.Parse(Console.ReadLine()!);
+                            string? _nameUpdate = Console.ReadLine();
+                            string? _emailUpdate = Console.ReadLine();
+                            double _costUpdate = double.Parse(Console.ReadLine()!);
+                            EngineerExperience _levelUpdate = (EngineerExperience)Enum.Parse(typeof(EngineerExperience), Console.ReadLine()!);
+                            try
+                            {
+                                Engineer updateEngineer = new(_idUpdate, _nameUpdate, _emailUpdate, _levelUpdate, _costUpdate);
+                                s_dalEngineer?.Update(updateEngineer);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
+                            break;
 
-                    case (int)Crud.EXIT:
-                        Console.WriteLine("Exiting CRUD menu...");
-                        return;
-                    default:
-                        Console.WriteLine("Invalid input. Please enter a valid option.");
-                        break;
+                        case (int)Crud.EXIT:
+                            Console.WriteLine("Exiting CRUD menu...");
+                            return;
+                        default:
+                            Console.WriteLine("Invalid input. Please enter a valid option.");
+                            break;
+                    }
                 }
             }
         }
@@ -192,23 +223,29 @@ namespace DalTest
                         int _DependentTask = int.Parse(Console.ReadLine()!); ;
                         int _DependsOnTask = int.Parse(Console.ReadLine()!); ;
                         DO.Dependency newDependency = new DO.Dependency(_Id, _DependentTask, _DependsOnTask);
-                        s_dalDependency.Create(newDependency);
+                        s_dalDependency?.Create(newDependency);
                         break;
                     case (int)Crud.READ:
                         Console.WriteLine("Enter Dependency ID: ");
                         int _idRead = int.Parse(Console.ReadLine()!);
-                        Console.WriteLine(s_dalDependency.Read(_idRead));
+                        Console.WriteLine(s_dalDependency?.Read(_idRead));
                         break;
                     case (int)Crud.READALL:
+                        if(s_dalDependency != null) { 
                         foreach (Dependency dependency in s_dalDependency.ReadAll())
                         {
                             Console.WriteLine(dependency);
+                        }
+                        }
+                        else
+                        {
+                            Console.WriteLine("there are not Dependencies.");
                         }
                         break;
                     case (int)Crud.DELETE:
                         Console.WriteLine("Enter Dependency ID: ");
                         int _idDelete = int.Parse(Console.ReadLine()!);
-                        s_dalDependency.Delete(_idDelete);
+                        s_dalDependency?.Delete(_idDelete);
                         break;
                     case (int)Crud.UPDATE:
                         Console.WriteLine("Enter the requested dependency number, and two updated task codes:");
@@ -216,7 +253,7 @@ namespace DalTest
                         int _DependentTaskUpdate = int.Parse(Console.ReadLine()!);
                         int _DependsOnTaskUpdate = int.Parse(Console.ReadLine()!);
                         DO.Dependency updateDependency = new DO.Dependency(_IdUpdate, _DependentTaskUpdate, _DependsOnTaskUpdate);
-                        s_dalDependency.Update(updateDependency);
+                        s_dalDependency?.Update(updateDependency);
                         break;
                     case (int)Crud.EXIT:
                         Console.WriteLine("Exiting dependency menu...");
@@ -255,9 +292,3 @@ namespace DalTest
         }
     }
 }
-
-
-
-
-
-
