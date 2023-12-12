@@ -8,15 +8,13 @@ using System.Xml.Linq;
 
 public static class Initialization
 {
-    private static IEngineer? s_dalEngineer;
-    private static IDependency? s_dalDependency;
-    private static ITask? s_dalTask;
-
-    public static void Do(IEngineer? dalEngineer, IDependency? dalDependency, ITask? dalTask)
+    //private static IEngineer? s_dalEngineer;
+    //private static IDependency? s_dalDependency;
+    //private static ITask? s_dalTask;
+    private static IDal? s_dal; //stage 2
+    public static void Do(IDal dal)
     {
-        s_dalEngineer = dalEngineer ?? throw new NullReferenceException("DAL can not be null!");
-        s_dalDependency = dalDependency ?? throw new NullReferenceException("DAL can not be null!");
-        s_dalTask = dalTask ?? throw new NullReferenceException("DAL can not be null!");
+        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); //stage 2
         craeteEngineers();
         craeteTask();
         craeteDependency();
@@ -37,13 +35,13 @@ public static class Initialization
             int _id;
             do
                 _id = s_rand.Next(200000000, 400000000);
-            while (s_dalEngineer!.Read(_id) != null);
+            while (s_dal!.Engineer.Read(_id) != null);
 
             string? _email = string.Join("", _name.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries)) + "@gmail.com";
             double? _cost = s_rand.Next(5000, 15000);
             EngineerExperience _level = (EngineerExperience)s_rand.Next(Enum.GetNames(typeof(EngineerExperience)).Length);
             Engineer newEngineer = new(_id, _name, _email, _level, _cost);
-            s_dalEngineer!.Create(newEngineer);
+            s_dal!.Engineer.Create(newEngineer);
         }
     }
 
@@ -70,7 +68,7 @@ public static class Initialization
             int _engineerId = 0;//ללא הקצאת מהנדס?!
             EngineerExperience _complexityLevel = (EngineerExperience)s_rand.Next(Enum.GetNames(typeof(EngineerExperience)).Length);
             Task newTask = new(_id, _Description, _alias, _isMilestone, _createdAtDate, _startDate, _schedualDate, _forecastDate, _deadlineDate, _completeDate, _deliverables, _remarks, _engineerId, _complexityLevel);
-            s_dalTask!.Create(newTask);
+            s_dal!.Task.Create(newTask);
         }
     }
 
@@ -86,7 +84,7 @@ public static class Initialization
             {
                 int DependsOnTask = j;
                 Dependency newDependency = new(_id, _dependentTask, DependsOnTask);
-                s_dalDependency!.Create(newDependency);
+                s_dal!.Dependency.Create(newDependency);
             }
         }
     }
