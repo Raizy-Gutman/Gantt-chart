@@ -9,7 +9,7 @@ namespace DalTest
 {
     internal class Program
     {
-        static readonly IDal s_dal = new DalList(); //stage 2
+        static readonly IDal s_dal = new DalList(); 
         private static readonly Random s_rand = new();
         static void DisplayMainMenu()
         {
