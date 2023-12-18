@@ -1,9 +1,8 @@
-﻿
-
-namespace Dal;
+﻿namespace Dal;
 using DalApi;
 using DO;
 using System.Collections.Generic;
+using System.Linq;
 
 internal class DependencyImplementation : IDependency
 {
@@ -17,38 +16,40 @@ internal class DependencyImplementation : IDependency
 
     public void Delete(int id)
     {
-        Dependency? d = DataSource.Dependencies.Find(d => d?.Id == id);
-        if (d != null)
+        if (DataSource.Dependencies.FirstOrDefault(d => d?.Id == id) == null)
         {
-            DataSource.Dependencies.Remove(d);
+            throw new DalDoesNotExistException($"Can't delete, Dependency with ID: {id} does not exist!!");
         }
-        else
-        {
-            throw new Exception($"Can't delete, Dependency with ID: {id} does not exist!!");
-        }
+        DataSource.Dependencies.RemoveAll(d => d?.Id == id);
+
     }
 
     public Dependency? Read(int id)
     {
-        return DataSource.Dependencies.Find(d => d?.Id == id);
+        return DataSource.Dependencies.FirstOrDefault(d => d?.Id == id);
     }
 
-    public List<Dependency> ReadAll()
+    public Dependency? Read(Func<Dependency, bool> filter)
     {
-        return new List<Dependency>(DataSource.Dependencies!/*?*/);
+        return DataSource.Dependencies.FirstOrDefault(filter!);
     }
 
-    public void Update(Dependency? _dependency)
+    public IEnumerable<Dependency?> ReadAll(Func<Dependency?, bool>? filter = null)
     {
-        Dependency? d = DataSource.Dependencies.Find(d => d?.Id == _dependency?.Id);
-        if (d != null)
-        {
-            DataSource.Dependencies.Remove(d);
-            DataSource.Dependencies.Add(_dependency);
-        }
+        if (filter == null)
+            return DataSource.Dependencies.Select(d => d);
         else
-        {
-            throw new Exception($"Can't update, Dependency with ID: {_dependency?.Id} does not exist!!");
-        }
+            return DataSource.Dependencies.Where(filter!);
     }
+
+    public void Update(Dependency _dependency)
+    {
+        if (DataSource.Dependencies.FirstOrDefault(d => d?.Id == _dependency.Id) == null)
+        {
+            throw new DalDoesNotExistException($"Can't update, Dependency with ID: {_dependency?.Id} does not exist!!");
+        }
+        DataSource.Dependencies.RemoveAll(d => d?.Id == _dependency.Id);
+        DataSource.Dependencies.Add(_dependency);
+    }
+
 }

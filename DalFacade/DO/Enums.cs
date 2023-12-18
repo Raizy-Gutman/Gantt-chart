@@ -2,13 +2,12 @@
 
 public enum EngineerExperience
 {
-    Novice,
+    Beginner,
     AdvancedBeginner,
     Competent,
     Proficient,
     Expert
 }
-
 public enum Crud
 {
     EXIT, CREATE, READ, READALL, UPDATE, DELETE

@@ -1,60 +1,55 @@
-﻿
-
-namespace Dal;
+﻿namespace Dal;
 using DalApi;
 using DO;
 using System.Collections.Generic;
+using System.Linq;
 
 internal class EngineerImplementation : IEngineer
 {
-    public int Create(Engineer? _engineer)
+    public int Create(Engineer _engineer)
     {
-        if (DataSource.Engineers.Find(e => e?.Id == _engineer?.Id) != null)
+        if (DataSource.Engineers.FirstOrDefault(e => e!.Id == _engineer.Id) != null)
         {
-            throw new Exception($"The new engineer cannot be created, an engineer with ID: {_engineer?.Id} already exists in the system.");
+            throw new DalAlreadyExistsException($"The new engineer cannot be created, an engineer with ID: {_engineer.Id} already exists in the system.");
         }
-        else
-        {
-            DataSource.Engineers.Add(_engineer);
-            return _engineer!.Id;
-        }
+        DataSource.Engineers.Add(_engineer);
+        return _engineer.Id;
     }
 
     public void Delete(int id)
     {
-        Engineer? e = DataSource.Engineers.Find(e => e?.Id == id);
-        if (e != null)
+        if (DataSource.Engineers.FirstOrDefault(e => e!.Id == id) == null)
         {
-            DataSource.Engineers.Remove(e);
-            //אם צריך לעדכן לא פעיל- נוסיף שדה מתאים...
+            throw new DalDoesNotExistException($"Can't delete, engineer with ID: {id} does not exist!!");
         }
-        else
-        {
-            throw new Exception($"Can't delete, engineer with ID: {id} does not exist!!");
-        }
+        DataSource.Engineers.RemoveAll(e => e!.Id == id);
     }
 
     public Engineer? Read(int id)
     {
-        return DataSource.Engineers.Find(e => e?.Id == id);
+        return DataSource.Engineers.FirstOrDefault(e => e!.Id == id);
     }
 
-    public List<Engineer> ReadAll()
+    public Engineer? Read(Func<Engineer, bool> filter)
     {
-        return new List<Engineer>(DataSource.Engineers!/*?*/);
+        return DataSource.Engineers.FirstOrDefault(filter!);
     }
 
-    public void Update(Engineer? _engineer)
+    public IEnumerable<Engineer?> ReadAll(Func<Engineer?, bool>? filter = null)
     {
-        Engineer? e = DataSource.Engineers.Find(e => e?.Id == _engineer?.Id);
-        if (e != null)
-        {
-            DataSource.Engineers.Remove(e);
-            DataSource.Engineers.Add(_engineer);
-        }
+        if (filter == null)
+            return DataSource.Engineers.Select(e => e);
         else
+            return DataSource.Engineers.Where(filter);
+    }
+
+    public void Update(Engineer _engineer)
+    {
+        if (DataSource.Engineers.FirstOrDefault(e => e!.Id == _engineer.Id) == null)
         {
-            throw new Exception($"Can't update, engineer with ID: {_engineer?.Id} does not exist!!");
+            throw new DalDoesNotExistException($"Can't update, engineer with ID: {_engineer?.Id} does not exist!!");
         }
+        DataSource.Engineers.RemoveAll(e => e!.Id == _engineer.Id);
+        DataSource.Engineers.Add(_engineer);
     }
 }

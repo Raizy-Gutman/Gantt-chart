@@ -31,22 +31,22 @@ namespace DalTest
                 {
 
                     case (int)Crud.CREATE:
-                        Console.WriteLine("Enter Task description, alias, milestone(True or False),created date time, a short description for the product, any remarks, the engineer Id and complexity level: ");
+                        Console.WriteLine("Enter Task description, alias, milestone(True or False),all relevant dates, a short description for the product, any remarks, the engineer Id and complexity level: ");
                         int _id = 0;
                         string _description = Console.ReadLine()??"";
                         string _alias = Console.ReadLine()??"";
                         bool _milestone = bool.Parse(Console.ReadLine()??"false");
                         DateTime _creatAt = DateTime.Parse(Console.ReadLine()??$"{ DateTime.Today}");
-                        DateTime _start = _creatAt.AddDays(s_rand.Next(0, 6));
-                        DateTime _scheduledDate = _start.AddDays(s_rand.Next(14, 20));
-                        DateTime _deadLine = _scheduledDate.AddDays(s_rand.Next(0, 6));
-                        DateTime _forecastDate = _deadLine;
-                        DateTime _complete = _deadLine.AddDays(s_rand.Next(0, 6));
+                        DateTime _scheduledDate = DateTime.Parse(Console.ReadLine() ??$"{_creatAt.AddDays(s_rand.Next(0, 6))}");                       
+                        DateTime _start = DateTime.Parse(Console.ReadLine() ?? $"{_scheduledDate.AddDays(s_rand.Next(14, 20))}"); 
+                        TimeSpan _forecastDate = TimeSpan.Parse(Console.ReadLine() ?? $"{new TimeSpan(s_rand.Next(0, 30),0,0)}");
+                        DateTime _deadLine = DateTime.Parse(Console.ReadLine() ?? $"{_start.Add(_forecastDate)}");
+                        DateTime _complete = DateTime.Parse(Console.ReadLine() ?? $"{_deadLine.AddDays(s_rand.Next(0, 6))}");
                         string? _productDescription = Console.ReadLine();
                         string? _remarks = Console.ReadLine();
                         int _engineerId = int.Parse(Console.ReadLine()??"0");
                         EngineerExperience _complexityLevel = (EngineerExperience)Enum.Parse(typeof(EngineerExperience), Console.ReadLine()??"${(EngineerExperience)s_rand.Next(Enum.GetNames(typeof(EngineerExperience)).Length)}");
-                        DO.Task newTask = new DO.Task(_id, _description, _alias, _milestone, _creatAt, _start, _scheduledDate, _deadLine, _forecastDate, _complete, _productDescription, _remarks, _engineerId, _complexityLevel);
+                        DO.Task newTask = new DO.Task(_id, _description, _alias, _milestone, _creatAt, _start, _scheduledDate, _forecastDate,_deadLine, _complete, _productDescription, _remarks, _engineerId, _complexityLevel);
                         s_dal.Task!.Create(newTask);
                         break;
                     case (int)Crud.READ:
@@ -57,7 +57,7 @@ namespace DalTest
                     case (int)Crud.READALL:
                         if (s_dal.Task != null)
                         {
-                            foreach (DO.Task task in s_dal.Task.ReadAll())
+                            foreach (var task in s_dal.Task.ReadAll())
                             {
                                 Console.WriteLine(task);
                             }
@@ -114,7 +114,7 @@ namespace DalTest
                         break;
                     case (int)Crud.EXIT:
                         Console.WriteLine("Exiting CRUD menu...");
-                        break;
+                        return;
 
                     default:
                         Console.WriteLine("Invalid input. Please enter a valid option.");
@@ -154,7 +154,7 @@ namespace DalTest
                             break;
                         case (int)Crud.READALL:
                             if(s_dal.Engineer != null) { 
-                            foreach (Engineer engineer in s_dal.Engineer.ReadAll())
+                            foreach (var engineer in s_dal.Engineer.ReadAll())
                             {
                                 Console.WriteLine(engineer);
                             }
@@ -230,7 +230,7 @@ namespace DalTest
                         break;
                     case (int)Crud.READALL:
                         if(s_dal.Dependency != null) { 
-                        foreach (Dependency dependency in s_dal.Dependency.ReadAll())
+                        foreach (var dependency in s_dal.Dependency.ReadAll())
                         {
                             Console.WriteLine(dependency);
                         }
@@ -277,8 +277,8 @@ namespace DalTest
                     {
                         case 0: return;
                         case 1: EngineerMenu(); break;
-                        case 2: DependencyMenu(); break;
-                        case 3: TaskMenu(); break;
+                        case 2: TaskMenu(); break;
+                        case 3: DependencyMenu(); break;
                         default: Console.WriteLine("Invalid selection, please try again."); break;
                     }
                 }

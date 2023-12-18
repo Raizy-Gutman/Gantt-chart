@@ -10,7 +10,7 @@
 /// <param name="CreatedAtDate">Task creation date</param>
 /// <param name="start">Date of starting work on the task</param>
 /// <param name="schedual">Planned date for the start of work</param>
-/// <param name="forecast">The amount of time required to perform the task</param>
+/// <param name="duration ">The amount of time required to perform the task</param>
 /// <param name="deadline">Last possible end date</param>
 /// <param name="complete">Actual end date</param>
 /// <param name="deliverables">product</param>
@@ -27,7 +27,7 @@ public record Task
     DateTime? CreatedAtDate, 
     DateTime? StartDate,
     DateTime? SchedualDate,
-    DateTime? ForecastDate,
+    TimeSpan? Duration,
     DateTime? DeadlineDate,
     DateTime? CompleteDate,
     string? Deliverables,

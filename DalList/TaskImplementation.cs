@@ -1,9 +1,8 @@
-﻿
-
-namespace Dal;
+﻿namespace Dal;
 using DalApi;
 using DO;
 using System.Collections.Generic;
+using System.Linq;
 
 internal class TaskImplementation : ITask
 {
@@ -17,39 +16,39 @@ internal class TaskImplementation : ITask
 
     public void Delete(int id)
     {
-        Task? t = DataSource.Tasks.Find(t => t?.Id == id);
-        if (t != null)
+        if (DataSource.Tasks.FirstOrDefault(t => t!.Id == id) == null)
         {
-            DataSource.Tasks.Remove(t);
-            //אם צריך לעדכן לא פעיל- נוסיף שדה מתאים...
+            throw new DalDoesNotExistException($"Can't delete, task with ID: {id} does not exist!!");
         }
-        else
-        {
-            throw new Exception($"Can't delete, task with ID: {id} does not exist!!");
-        }
+        DataSource.Tasks.RemoveAll(t => t!.Id == id);
+        
     }
 
     public Task? Read(int id)
     {
-        return DataSource.Tasks.Find(t => t?.Id == id);
+        return DataSource.Tasks.FirstOrDefault(t => t?.Id == id);
     }
 
-    public List<Task> ReadAll()
+    public Task? Read(Func<Task, bool> filter)
     {
-        return new List<Task>(DataSource.Tasks!/*?*/);
+        return DataSource.Tasks.FirstOrDefault(filter!);
+    }
+
+    public IEnumerable<Task?> ReadAll(Func<Task?, bool>? filter = null)
+    {
+        if (filter == null)
+            return DataSource.Tasks.Select(t => t);
+        else
+            return DataSource.Tasks.Where(filter);
     }
 
     public void Update(Task _task)
     {
-        Task? t = DataSource.Tasks.Find(t => t?.Id == _task.Id);
-        if (t != null)
+        if (DataSource.Tasks.FirstOrDefault(t => t!.Id == _task.Id) == null)
         {
-            DataSource.Tasks.Remove(t);
-            DataSource.Tasks.Add(_task);
+            throw new DalDoesNotExistException($"Can't update, task with ID: {_task?.Id} does not exist!!");
         }
-        else
-        {
-            throw new Exception($"Can't update, task with ID: {_task?.Id} does not exist!!");
-        }
+        DataSource.Tasks.RemoveAll(t => t!.Id == _task.Id);
+        DataSource.Tasks.Add(_task);        
     }
 }
