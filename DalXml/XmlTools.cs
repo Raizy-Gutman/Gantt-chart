@@ -27,6 +27,20 @@ static class XMLTools
     public static int? ToIntNullable(this XElement element, string name) =>
         int.TryParse((string?)element.Element(name), out var result) ? (int?)result : null;
 
+    /// <summary>
+    /// A helper function for class dependencyImplementation, which is implemented with XElement.
+    /// The function gets a root and converts it to a dependency object.
+    /// </summary>
+    /// <param name="element"></param>
+    /// <returns></returns>
+    public static Dependency ToDependency(XElement element) => new()
+    {
+        Id = (int)element.Element("Id")!,
+        DependentTask = (int)element.Element("DependentTask")!,
+        DependsOnTask = (int)element.Element("DependsOnTask")!
+    };
+    
+
     #endregion
 
     #region XmlConfig

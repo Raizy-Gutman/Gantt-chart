@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <config>
-	<NextTaskId>1008</NextTaskId>
-	<NextDependencyId>41</NextDependencyId>
+  <NextTaskId>31</NextTaskId>
+  <NextDependencyId>1</NextDependencyId>
 </config>
-//צריך לאתחל את זה למשהו אחר!!!!!

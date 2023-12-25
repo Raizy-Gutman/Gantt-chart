@@ -1,35 +1,45 @@
-﻿using DalApi;
-namespace Dal;
+﻿namespace Dal;
+using DalApi;
+using DO;
 
 internal class TaskImplementation : ITask
 {
-    public int Create(DO.Task item)
+    const string taskRoot = "tasks"; //XML Serializer
+
+    public int Create(DO.Task task)
     {
-        throw new NotImplementedException();
+        var tasksList = XMLTools.LoadListFromXMLSerializer<DO.Task>(taskRoot);
+        int id = Config.NextTaskId;
+        tasksList.Add(task with { Id = id });
+        XMLTools.SaveListToXMLSerializer(tasksList, taskRoot);
+        return id;
     }
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        var tasksList = XMLTools.LoadListFromXMLSerializer<DO.Task>(taskRoot);
+        if (tasksList.RemoveAll(t => t?.Id == id) == 0)
+            throw new DalDoesNotExistException($"Can't delete, task with ID: {id} does not exist!!");
+        XMLTools.SaveListToXMLSerializer(tasksList, taskRoot);
     }
 
-    public DO.Task? Read(int id)
-    {
-        throw new NotImplementedException();
-    }
+    public DO.Task? Read(int id) =>
+    
+        XMLTools.LoadListFromXMLSerializer<DO.Task>(taskRoot).FirstOrDefault(t => t?.Id == id) ?? null;       
 
-    public DO.Task? Read(Func<DO.Task, bool> filter)
-    {
-        throw new NotImplementedException();
-    }
+    public DO.Task? Read(Func<DO.Task, bool> filter) =>
 
+        XMLTools.LoadListFromXMLSerializer<DO.Task>(taskRoot).FirstOrDefault(filter) ?? null;
+        
     public IEnumerable<DO.Task?> ReadAll(Func<DO.Task?, bool>? filter = null)
     {
-        throw new NotImplementedException();
+        var tasksList = XMLTools.LoadListFromXMLSerializer<DO.Task>(taskRoot);
+        return filter == null? tasksList.Select(t=>t):tasksList.Where(filter);
     }
 
-    public void Update(DO.Task item)
+    public void Update(DO.Task task)
     {
-        throw new NotImplementedException();
+        Delete(task.Id);
+        Create(task);
     }
 }

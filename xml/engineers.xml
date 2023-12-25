@@ -1,66 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ArrayOfEngineer>
-	<Engineer>
-		<Id></Id>
-		<Name></Name>
-		<Email></Email>
-		<Level></Level>
-		<Cost></Cost>
-	</Engineer>
-	<Engineer>
-		<Id></Id>
-		<Name></Name>
-		<Email></Email>
-		<Level></Level>
-		<Cost></Cost>
-	</Engineer>
-	<Engineer>
-		<Id></Id>
-		<Name></Name>
-		<Email></Email>
-		<Level></Level>
-		<Cost></Cost>
-	</Engineer>
-	<Engineer>
-		<Id></Id>
-		<Name></Name>
-		<Email></Email>
-		<Level></Level>
-		<Cost></Cost>
-	</Engineer>
-	<Engineer>
-		<Id></Id>
-		<Name></Name>
-		<Email></Email>
-		<Level></Level>
-		<Cost></Cost>
-	</Engineer>
-	<Engineer>
-		<Id></Id>
-		<Name></Name>
-		<Email></Email>
-		<Level></Level>
-		<Cost></Cost>
-	</Engineer>
-	<Engineer>
-		<Id></Id>
-		<Name></Name>
-		<Email></Email>
-		<Level></Level>
-		<Cost></Cost>
-	</Engineer>
-	<Engineer>
-		<Id></Id>
-		<Name></Name>
-		<Email></Email>
-		<Level></Level>
-		<Cost></Cost>
-	</Engineer>
-	<Engineer>
-		<Id></Id>
-		<Name></Name>
-		<Email></Email>
-		<Level></Level>
-		<Cost></Cost>
-	</Engineer>
+<ArrayOfEngineer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Engineer>
+    <Id>213191841</Id>
+    <Name>Raizy Gutman</Name>
+    <Email>RaizyGutman@gmail.com</Email>
+    <Level>Beginner</Level>
+    <Cost>6726</Cost>
+  </Engineer>
+  <Engineer>
+    <Id>266809051</Id>
+    <Name>Yeudit Itamar</Name>
+    <Email>YeuditItamar@gmail.com</Email>
+    <Level>Expert</Level>
+    <Cost>6646</Cost>
+  </Engineer>
+  <Engineer>
+    <Id>291878807</Id>
+    <Name>Dani Levi</Name>
+    <Email>DaniLevi@gmail.com</Email>
+    <Level>Proficient</Level>
+    <Cost>7952</Cost>
+  </Engineer>
+  <Engineer>
+    <Id>322312350</Id>
+    <Name>Eli Amar</Name>
+    <Email>EliAmar@gmail.com</Email>
+    <Level>Proficient</Level>
+    <Cost>7309</Cost>
+  </Engineer>
+  <Engineer>
+    <Id>285316855</Id>
+    <Name>Yair Cohen</Name>
+    <Email>YairCohen@gmail.com</Email>
+    <Level>Expert</Level>
+    <Cost>10199</Cost>
+  </Engineer>
+  <Engineer>
+    <Id>260978429</Id>
+    <Name>Ariela Levin</Name>
+    <Email>ArielaLevin@gmail.com</Email>
+    <Level>Proficient</Level>
+    <Cost>5527</Cost>
+  </Engineer>
+  <Engineer>
+    <Id>316454523</Id>
+    <Name>Dina Klein</Name>
+    <Email>DinaKlein@gmail.com</Email>
+    <Level>Competent</Level>
+    <Cost>14760</Cost>
+  </Engineer>
+  <Engineer>
+    <Id>315715015</Id>
+    <Name>Shira Israelof</Name>
+    <Email>ShiraIsraelof@gmail.com</Email>
+    <Level>Competent</Level>
+    <Cost>14403</Cost>
+  </Engineer>
 </ArrayOfEngineer>
