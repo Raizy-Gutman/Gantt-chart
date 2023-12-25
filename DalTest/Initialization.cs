@@ -16,6 +16,7 @@ public static class Initialization
         CraeteEngineers();
         CraeteTask();
         CraeteDependency();
+
     }
 
     private static readonly Random s_rand = new();
@@ -49,7 +50,7 @@ public static class Initialization
         for (int i = 1; i < 31; i++)
         {
             int _id = 0;
-            string _Description = "this is the " + i.ToString()+ "task.";
+            string _Description = "this is the " + i.ToString() + "task.";
             string _alias = "T" + i.ToString();
             bool _isMilestone = false;
             DateTime _createdAtDate = DateTime.Now;
@@ -57,7 +58,7 @@ public static class Initialization
             DateTime _startDate = _schedualDate.AddDays(s_rand.Next(0, 3));
             TimeSpan _duration = new(s_rand.Next(1, 30), 0, 0, 0);
             DateTime _deadlineDate = (_startDate.Add(_duration)).AddDays(s_rand.Next(0, 14));
-            DateTime? _completeDate = null;            
+            DateTime? _completeDate = null;
             string _deliverables = "Deliverable of the " + i.ToString() + "task.";
             string? _remarks = null;
             EngineerExperience _complexityLevel = (EngineerExperience)s_rand.Next(Enum.GetNames(typeof(EngineerExperience)).Length);
@@ -70,7 +71,7 @@ public static class Initialization
 
     private static void CraeteDependency()
     {
-        for(int i = 0; i < 40; i++)
+        for (int i = 0; i < 40; i++)
         {
             DO.Task _task = s_dal!.Task.Read(s_rand.Next(1, 31))!;
             int _taskNum = _task.Id;
@@ -78,13 +79,13 @@ public static class Initialization
             int _dependencyTask = 0;
             foreach (var task in optionalTasks)
             {
-                if(s_dal!.Dependency.Read(d => d?.DependentTask == _taskNum && d?.DependsOnTask == task?.Id) == null)
+                if (s_dal!.Dependency.Read(d => d?.DependentTask == _taskNum && d?.DependsOnTask == task?.Id) == null)
                 {
                     _dependencyTask = task!.Id;
                     break;
                 }
             }
-            if(_dependencyTask != 0)
+            if (_dependencyTask != 0)
             {
                 Dependency d = new(0, _task.Id, _dependencyTask);
                 s_dal!.Dependency.Create(d);

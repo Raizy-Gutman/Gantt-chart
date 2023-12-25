@@ -219,9 +219,9 @@ namespace DalTest
                     case (int)Crud.CREATE:
                         Console.WriteLine("Enter ID numbers for two tasks:");
                         int _Id = 0;
-                        int _DependentTask = int.Parse(Console.ReadLine()!); ;
-                        int _DependsOnTask = int.Parse(Console.ReadLine()!); ;
-                        DO.Dependency newDependency = new DO.Dependency(_Id, _DependentTask, _DependsOnTask);
+                        int _DependentTask = int.Parse(Console.ReadLine()!); 
+                        int _DependsOnTask = int.Parse(Console.ReadLine()!); 
+                        DO.Dependency newDependency = new(_Id, _DependentTask, _DependsOnTask);
                         s_dal.Dependency!.Create(newDependency);
                         break;
                     case (int)Crud.READ:

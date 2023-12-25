@@ -21,7 +21,7 @@ internal class TaskImplementation : ITask
             throw new DalDoesNotExistException($"Can't delete, task with ID: {id} does not exist!!");
         }
         DataSource.Tasks.RemoveAll(t => t!.Id == id);
-        
+
     }
 
     public Task? Read(int id)
@@ -35,11 +35,8 @@ internal class TaskImplementation : ITask
     }
 
     public IEnumerable<Task?> ReadAll(Func<Task?, bool>? filter = null)
-    {
-        if (filter == null)
-            return DataSource.Tasks.Select(t => t);
-        else
-            return DataSource.Tasks.Where(filter);
+    { 
+        return filter == null ? DataSource.Tasks.Select(t => t) : DataSource.Tasks.Where(filter);
     }
 
     public void Update(Task _task)
@@ -49,6 +46,6 @@ internal class TaskImplementation : ITask
             throw new DalDoesNotExistException($"Can't update, task with ID: {_task?.Id} does not exist!!");
         }
         DataSource.Tasks.RemoveAll(t => t!.Id == _task.Id);
-        DataSource.Tasks.Add(_task);        
+        DataSource.Tasks.Add(_task);
     }
 }

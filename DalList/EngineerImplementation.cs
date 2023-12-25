@@ -8,7 +8,7 @@ internal class EngineerImplementation : IEngineer
 {
     public int Create(Engineer _engineer)
     {
-        if (DataSource.Engineers.FirstOrDefault(e => e!.Id == _engineer.Id) != null)
+        if (DataSource.Engineers.FirstOrDefault(e => e?.Id == _engineer.Id) != null)
         {
             throw new DalAlreadyExistsException($"The new engineer cannot be created, an engineer with ID: {_engineer.Id} already exists in the system.");
         }
@@ -18,7 +18,7 @@ internal class EngineerImplementation : IEngineer
 
     public void Delete(int id)
     {
-        if (DataSource.Engineers.FirstOrDefault(e => e!.Id == id) == null)
+        if (DataSource.Engineers.FirstOrDefault(e => e?.Id == id) == null)
         {
             throw new DalDoesNotExistException($"Can't delete, engineer with ID: {id} does not exist!!");
         }
@@ -27,7 +27,7 @@ internal class EngineerImplementation : IEngineer
 
     public Engineer? Read(int id)
     {
-        return DataSource.Engineers.FirstOrDefault(e => e!.Id == id);
+        return DataSource.Engineers.FirstOrDefault(e => e?.Id == id);
     }
 
     public Engineer? Read(Func<Engineer, bool> filter)
@@ -49,7 +49,7 @@ internal class EngineerImplementation : IEngineer
         {
             throw new DalDoesNotExistException($"Can't update, engineer with ID: {_engineer?.Id} does not exist!!");
         }
-        DataSource.Engineers.RemoveAll(e => e!.Id == _engineer.Id);
+        DataSource.Engineers.RemoveAll(e => e?.Id == _engineer.Id);
         DataSource.Engineers.Add(_engineer);
     }
 }
