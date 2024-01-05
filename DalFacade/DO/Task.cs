@@ -1,4 +1,6 @@
-﻿namespace DO;
+﻿using System.Xml.Linq;
+
+namespace DO;
 
 /// <summary>
 /// The task entity contains all the information needed to perform the task.
@@ -24,7 +26,7 @@ public record Task
     string? Description,
     string? Alias,
     bool IsMilestone,
-    DateTime? CreatedAtDate, 
+    DateTime? CreatedAtDate,
     DateTime? StartDate,
     DateTime? SchedualDate,
     TimeSpan? Duration,
@@ -37,4 +39,21 @@ public record Task
 )
 {
     public Task() : this(0, "", "", false, null, null, null, null, null, null, "", "", 0, 0) { }  //empty ctor
+    public override string ToString()//print the value
+    {
+        return $"Id: {Id},\n" +    
+               $"Description: {Description ?? "-----"},\n " +
+               $"Alias: {Alias ?? "------"},\n " +
+               $"Deliverables: {Deliverables ?? "------"}\n " +
+               $"Remarks: {Remarks ?? "------"},\n " +
+               $"Mile Stone: {IsMilestone},\n" +                           
+               $"Createion time: {CreatedAtDate},\n " +
+               $"Schedual date: {SchedualDate}, " + "\n " +
+               $"Start date:: {StartDate}, \n " +
+               $"Duration: {Duration},\n " +
+               $"Dead line date: {DeadlineDate},\n " +
+               $"Complete at: {CompleteDate}\n" +
+               $"Engineer in charge: {EngineerId},\n " +
+               $"Complexity level: {ComplexityLevel},\n ";
+    }
 }

@@ -21,4 +21,9 @@ public record Engineer
 )
 {
     public Engineer() : this(0, "", "", 0, 0.0) { }  //empty ctor
+    public override string ToString()
+    {
+        return $"Id: {Id},\nName: {Name},\nEmail: {Email},\nLevel: {Level},\nCost: {Cost}\n";       
+    }
+
 }
