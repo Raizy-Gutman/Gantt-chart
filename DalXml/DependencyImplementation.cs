@@ -23,7 +23,8 @@ internal class DependencyImplementation : IDependency
     {
         XElement dependencyElement = XMLTools.LoadListFromXMLElement(dependencyRoot);
         (dependencyElement.Elements().FirstOrDefault(d => (int?)d.Element("ID") == id)
-            ?? throw new DalDoesNotExistException($"Can't delete, Dependency with ID: {id} does not exist!!")).Remove();    
+            ?? throw new DalDoesNotExistException($"Can't delete, Dependency with ID: {id} does not exist!!")).Remove();
+        XMLTools.SaveListToXMLElement(dependencyElement, dependencyRoot);
     }
 
     public Dependency? Read(int id) => XMLTools.ToDependency(
@@ -42,4 +43,5 @@ internal class DependencyImplementation : IDependency
         Delete(dependency.Id);
         Create(dependency);
     }
+
 }

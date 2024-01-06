@@ -104,7 +104,7 @@ namespace DalTest
                         }
                         break;
 
-                    case Crud.EXIT:
+                    case Crud.NONE:
                         Console.WriteLine("Exiting CRUD menu...");
                         return;
 
@@ -186,7 +186,7 @@ namespace DalTest
                         }
                         break;
 
-                    case (int)Crud.EXIT:
+                    case (int)Crud.NONE:
                         Console.WriteLine("Exiting CRUD menu...");
                         return;
 
@@ -249,7 +249,7 @@ namespace DalTest
                         catch (DalDoesNotExistException ex) { Console.WriteLine(ex.Message); }
                         break;
 
-                    case (int)Crud.EXIT:
+                    case (int)Crud.NONE:
                         Console.WriteLine("Exiting dependency menu...");
                         return;
 
@@ -260,7 +260,6 @@ namespace DalTest
             }
 
         }
-
         static void Main(string[] args)
         {
             try

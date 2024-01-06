@@ -41,19 +41,20 @@ public record Task
     public Task() : this(0, "", "", false, null, null, null, null, null, null, "", "", 0, 0) { }  //empty ctor
     public override string ToString()//print the value
     {
-        return $"Id: {Id},\n" +    
-               $"Description: {Description ?? "-----"},\n " +
-               $"Alias: {Alias ?? "------"},\n " +
-               $"Deliverables: {Deliverables ?? "------"}\n " +
-               $"Remarks: {Remarks ?? "------"},\n " +
-               $"Mile Stone: {IsMilestone},\n" +                           
-               $"Createion time: {CreatedAtDate},\n " +
-               $"Schedual date: {SchedualDate}, " + "\n " +
-               $"Start date:: {StartDate}, \n " +
-               $"Duration: {Duration},\n " +
-               $"Dead line date: {DeadlineDate},\n " +
-               $"Complete at: {CompleteDate}\n" +
-               $"Engineer in charge: {EngineerId},\n " +
-               $"Complexity level: {ComplexityLevel},\n ";
+        return 
+@$"Id: {Id},    
+Description: {Description ?? "-----"},
+Alias: {Alias ?? "------"},
+Deliverables: {Deliverables ?? "------"}
+Remarks: {Remarks ?? "------"},
+Mile Stone: {IsMilestone},                           
+Createion time: {CreatedAtDate},
+Schedual date: {SchedualDate}, 
+Start date: {StartDate}, 
+Duration: {Duration},
+Dead line date: {DeadlineDate},
+Complete at: {CompleteDate}
+Engineer in charge: {EngineerId},
+Complexity level: {ComplexityLevel} ";
     }
 }

@@ -31,7 +31,7 @@ public static class Initialization
         foreach (var _name in engineerNames)
         {
             int _id = s_rand.Next(200000000, 400000000);
-            string _email = string.Join("", string.Join("", _name)) + "@gmail.com";
+            string _email = _name.Replace(" ", "") + "@gmail.com";
             double _cost = s_rand.Next(5000, 15000);
             EngineerExperience _level = (EngineerExperience)((level++) % 5);
             Engineer newEngineer = new(_id, _name, _email, _level, _cost);
@@ -73,11 +73,12 @@ public static class Initialization
 
     private static void CraeteDependency()
     {
-        for (int i = 0; i < 40; i++)
+        int i = 0;
+        do
         {
             DO.Task _task = s_dal!.Task.Read(s_rand.Next(1, 31))!;
             int _taskNum = _task.Id;
-            var optionalTasks = s_dal!.Task.ReadAll();
+            var optionalTasks = s_dal!.Task.ReadAll().ToList();
             int _dependencyTask = 0;
             foreach (var task in optionalTasks)
             {
@@ -89,19 +90,12 @@ public static class Initialization
                     if (DateTime.Compare(taskDeadline + dependentDuration, dependentDeadline) < 0)
                     {
                         _dependencyTask = task!.Id;
-                        break;
+                        Dependency d = new(0, _task.Id, _dependencyTask);
+                        s_dal!.Dependency.Create(d);
+                        if (++i == 40) break;
                     }
                 }
             }
-            if (_dependencyTask != 0)
-            {
-                Dependency d = new(0, _task.Id, _dependencyTask);
-                s_dal!.Dependency.Create(d);
-            }
-            else
-            {
-                i--;
-            }
-        }
+        } while (i < 40);
     }
 }

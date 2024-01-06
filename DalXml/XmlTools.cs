@@ -52,7 +52,6 @@ static class XMLTools
         XMLTools.SaveListToXMLElement(root, data_config_xml);
         return nextId;
     }
-
     #endregion
 
     #region SaveLoadWithXElement

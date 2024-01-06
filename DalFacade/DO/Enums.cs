@@ -10,5 +10,5 @@ public enum EngineerExperience
 }
 public enum Crud
 {
-    EXIT, CREATE, READ, READALL, UPDATE, DELETE
+    NONE, CREATE, READ, READALL, UPDATE, DELETE
 }
