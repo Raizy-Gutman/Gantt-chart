@@ -12,11 +12,29 @@ namespace DalTest
         //static readonly IDal s_dal = new DalList(); //stage 2
         static readonly IDal s_dal = new DalXml(); //stage 3
         private static readonly Random s_rand = new();
+
+        #region casting functions
+        //Functions to convert empty values received from the user to default values or previous values.
+        static string? toString(string? source, string? defaulte) => string.IsNullOrEmpty(source) ? defaulte : source;
+        static DateTime? toDateTime(string? source, DateTime? defaulte) => string.IsNullOrEmpty(source) ? defaulte : DateTime.Parse(source);
+        static TimeSpan? toTimeSpan(string? source, TimeSpan? defaulte) => string.IsNullOrEmpty(source) ? defaulte : TimeSpan.Parse(source);
+        static EngineerExperience toEngineerExperience(string? source, EngineerExperience defaulte)
+        {
+            if (string.IsNullOrEmpty(source)) return defaulte;
+            Enum.TryParse(source, out EngineerExperience level);
+            return level;
+        }
+        static int toInt(string? source, int defaulte) => string.IsNullOrEmpty(source) ? defaulte : int.Parse(source);
+        static double? toDouble(string? source, double? defaulte) => string.IsNullOrEmpty(source) ? defaulte : double.Parse(source);
+        static bool toBool(string? source, bool defaulte) => string.IsNullOrEmpty(source) ? defaulte : bool.Parse(source);
+
+        #endregion
         static void DisplayMainMenu()
         {
             Console.WriteLine("Main Menu:\n1. Engineers\n2. Tasks\n3. Dependencies\nPress 0 to exit.");
 
         }
+
         static void DisplayEntitysMenu(string entity)
         {
             Console.WriteLine($"{entity} entity menu:\r\n1. Add a {entity}\r\n2. Present a {entity}\r\n3. View all {entity}s\r\n4. Update a {entity}\r\n5. Delete a {entity}\r\nPress 0 to exit back to the main menu");
@@ -35,17 +53,17 @@ namespace DalTest
                         int id = 0;
                         string? description = Console.ReadLine();
                         string? alias = Console.ReadLine();
-                        bool milestone = bool.Parse(Console.ReadLine() ?? "false");
-                        DateTime creatAt = DateTime.Parse(Console.ReadLine() ?? $"{DateTime.Today}");
-                        DateTime scheduledDate = DateTime.Parse(Console.ReadLine() ?? $"{creatAt.AddDays(s_rand.Next(1, 31))}");
-                        DateTime start = DateTime.Parse(Console.ReadLine() ?? $"{scheduledDate.AddDays(s_rand.Next(0, 3))}");
-                        TimeSpan forecastDate = TimeSpan.Parse(Console.ReadLine() ?? $"{new TimeSpan(s_rand.Next(1, 15), 0, 0)}");
-                        DateTime deadLine = DateTime.Parse(Console.ReadLine() ?? $"{start.Add(forecastDate)}");
-                        DateTime complete = DateTime.Parse(Console.ReadLine() ?? $"{deadLine.AddDays(s_rand.Next(0, 6))}");
+                        bool milestone = toBool(Console.ReadLine(), false);
+                        DateTime? creatAt = toDateTime(Console.ReadLine(), DateTime.Today);
+                        DateTime? scheduledDate = toDateTime(Console.ReadLine(), ((DateTime)creatAt!).AddDays(s_rand.Next(1, 31)));
+                        DateTime? start = toDateTime(Console.ReadLine(), ((DateTime)scheduledDate!).AddDays(s_rand.Next(0, 3)));
+                        TimeSpan? forecastDate = toTimeSpan(Console.ReadLine(), new TimeSpan(s_rand.Next(1, 15), 0, 0));
+                        DateTime? deadLine = toDateTime(Console.ReadLine(), ((DateTime)start!).Add((TimeSpan)forecastDate!));
+                        DateTime? complete = toDateTime(Console.ReadLine(), ((DateTime)deadLine!).AddDays(s_rand.Next(0, 6)));
                         string? productDescription = Console.ReadLine();
                         string? remarks = Console.ReadLine();
-                        int engineerId = int.Parse(Console.ReadLine() ?? "0");
-                        EngineerExperience complexityLevel = (EngineerExperience)int.Parse(Console.ReadLine() ?? $"{s_rand.Next(0, 5)}");
+                        int engineerId = toInt(Console.ReadLine(), s_rand.Next(200000000, 400000000));
+                        EngineerExperience complexityLevel = toEngineerExperience(Console.ReadLine(), (EngineerExperience)s_rand.Next(0, 5));
                         s_dal.Task!.Create(new(id, description, alias, milestone, creatAt, start, scheduledDate, forecastDate, deadLine, complete, productDescription, remarks, engineerId, complexityLevel));
                         break;
 
@@ -83,19 +101,19 @@ namespace DalTest
                             int updateId = int.Parse(Console.ReadLine()!);
                             DO.Task? updateTask = s_dal.Task!.Read(updateId) ?? throw new DalDoesNotExistException($"Can't update, task with ID: {updateId} does not exist!!");
                             Console.WriteLine("For each detaile, if it's need to be update, insert updated value. else,  press ENTER.\n");
-                            string? updatedDescription = Console.ReadLine() ?? updateTask.Description;
-                            string? updatedAlias = Console.ReadLine() ?? updateTask.Alias;
-                            bool updatedMilestone = bool.Parse(Console.ReadLine() ?? $"{updateTask.IsMilestone}");
-                            DateTime updatedCreatAt = DateTime.Parse(Console.ReadLine() ?? $"{updateTask.CreatedAtDate}");
-                            DateTime updatedScheduledDate = DateTime.Parse(Console.ReadLine() ?? $"{updateTask.SchedualDate}");
-                            DateTime updatedStart = DateTime.Parse(Console.ReadLine() ?? $"{updateTask.StartDate}");
-                            TimeSpan updatedForecastDate = TimeSpan.Parse(Console.ReadLine() ?? $"{updateTask.Duration}");
-                            DateTime updatedDeadLine = DateTime.Parse(Console.ReadLine() ?? $"{updateTask.DeadlineDate}");
-                            DateTime updatedComplete = DateTime.Parse(Console.ReadLine() ?? $"{updateTask.CompleteDate}");
-                            string? updatedProductDescription = Console.ReadLine() ?? updateTask.Deliverables;
-                            string? updatedRemarks = Console.ReadLine() ?? updateTask.Remarks;
-                            int updatedEngineer = int.Parse(Console.ReadLine() ?? $"{updateTask.EngineerId}");
-                            EngineerExperience updatedComplexityLevel = (EngineerExperience)int.Parse(Console.ReadLine() ?? $"{updateTask.ComplexityLevel}");
+                            string? updatedDescription = toString(Console.ReadLine(), updateTask.Description);
+                            string? updatedAlias = toString(Console.ReadLine(), updateTask.Alias);
+                            bool updatedMilestone = toBool(Console.ReadLine(), updateTask.IsMilestone);
+                            DateTime? updatedCreatAt = toDateTime(Console.ReadLine(), updateTask.CreatedAtDate);
+                            DateTime? updatedScheduledDate = toDateTime(Console.ReadLine(), updateTask.SchedualDate);
+                            DateTime? updatedStart = toDateTime(Console.ReadLine(), updateTask.StartDate);
+                            TimeSpan? updatedForecastDate = toTimeSpan(Console.ReadLine(), updateTask.Duration);
+                            DateTime? updatedDeadLine = toDateTime(Console.ReadLine(), updateTask.DeadlineDate);
+                            DateTime? updatedComplete = toDateTime(Console.ReadLine(), updateTask.CompleteDate);
+                            string? updatedProductDescription = toString(Console.ReadLine(), updateTask.Deliverables);
+                            string? updatedRemarks = toString(Console.ReadLine(), updateTask.Remarks);
+                            int updatedEngineer = toInt(Console.ReadLine(), updateTask.EngineerId);
+                            EngineerExperience updatedComplexityLevel = toEngineerExperience(Console.ReadLine(), updateTask.ComplexityLevel);
                             s_dal.Task.Update(new(updateId, updatedDescription, updatedAlias, updatedMilestone, updatedCreatAt, updatedStart, updatedScheduledDate, updatedForecastDate, updatedDeadLine, updatedComplete, updatedProductDescription, updatedRemarks, updatedEngineer, updatedComplexityLevel));
                         }
                         catch (DalDoesNotExistException ex)
@@ -128,8 +146,8 @@ namespace DalTest
                         int id = int.Parse(Console.ReadLine()!);
                         string? name = Console.ReadLine();
                         string? email = Console.ReadLine();
-                        double? cost = double.Parse(Console.ReadLine() ?? $"{s_rand.Next(9000, 15000)}");
-                        EngineerExperience level = (EngineerExperience)int.Parse(Console.ReadLine()!);
+                        EngineerExperience level = toEngineerExperience(Console.ReadLine(), (EngineerExperience)s_rand.Next(0, 5));
+                        double? cost = toDouble(Console.ReadLine(), s_rand.Next(7000, 15000));
                         try
                         {
                             s_dal.Engineer!.Create(new(id, name, email, level, cost));
@@ -170,14 +188,14 @@ namespace DalTest
                     case Crud.UPDATE:
                         try
                         {
-                            Console.WriteLine("Enter the engineer's id:\n");
+                            Console.WriteLine("Enter the engineer's id:");
                             int updatedId = int.Parse(Console.ReadLine()!);
-                            Engineer updatedEngineer = s_dal.Engineer.Read(updatedId) ?? throw new DalDoesNotExistException($"Can't update, engineer with ID: {updatedId} does not exist!!");
+                            Engineer updatedEngineer = s_dal.Engineer.Read(updatedId) ?? throw new DalDoesNotExistException($"Can't update, engineer with ID {updatedId} does not exist!!");
                             Console.WriteLine("For each detaile, if it's need to be update, insert updated value. else,  press ENTER.\n");
-                            string updatedName = Console.ReadLine() ?? $"{updatedEngineer.Name}";
-                            string updetedEmail = Console.ReadLine() ?? $"{updatedEngineer.Email}";
-                            double updatedCost = double.Parse(Console.ReadLine() ?? $"{updatedEngineer.Cost}");
-                            EngineerExperience updatedLevel = (EngineerExperience)int.Parse(Console.ReadLine() ?? $"{updatedEngineer.Level}");
+                            string? updatedName = toString(Console.ReadLine(), updatedEngineer.Name);
+                            string? updetedEmail = toString(Console.ReadLine(), updatedEngineer.Email);
+                            EngineerExperience updatedLevel = toEngineerExperience(Console.ReadLine(), updatedEngineer.Level);
+                            double? updatedCost = toDouble(Console.ReadLine(), updatedEngineer.Cost);
                             s_dal.Engineer!.Update(new(updatedId, updatedName, updetedEmail, updatedLevel, updatedCost));
                         }
                         catch (DalDoesNotExistException ex)
@@ -196,7 +214,6 @@ namespace DalTest
                 }
             }
         }
-
 
         static void DependencyMenu()
         {
@@ -232,18 +249,18 @@ namespace DalTest
                     case Crud.DELETE:
                         Console.WriteLine("Enter Dependency ID: ");
                         int deleteId = int.Parse(Console.ReadLine()!);
-                        try {s_dal.Dependency!.Delete(deleteId);}
-                        catch(DalDoesNotExistException ex) { Console.WriteLine(ex.Message);}
-                        
+                        try { s_dal.Dependency!.Delete(deleteId); }
+                        catch (DalDoesNotExistException ex) { Console.WriteLine(ex.Message); }
+
                         break;
                     case Crud.UPDATE:
                         try
                         {
                             Console.WriteLine("Enter the requested dependency number, and two updated task codes:");
                             int updatedId = int.Parse(Console.ReadLine()!);
-                            Dependency? updatedDependency = s_dal.Dependency.Read(updatedId) ?? throw new DalDoesNotExistException($"Can't update, dependency with ID: {updatedId} does not exist!!");
-                            int updatedTask = int.Parse(Console.ReadLine()?? $"{updatedDependency.DependentTask}");
-                            int updatedDepentOn = int.Parse(Console.ReadLine()?? $"{updatedDependency.DependsOnTask}");
+                            Dependency? updatedDependency = s_dal.Dependency.Read(updatedId) ?? throw new DalDoesNotExistException($"Can't update, dependency with ID {updatedId} does not exist!!");
+                            int updatedTask = toInt(Console.ReadLine(), updatedDependency.DependentTask);
+                            int updatedDepentOn = toInt(Console.ReadLine() ,updatedDependency.DependsOnTask);
                             s_dal.Dependency!.Update(new(updatedId, updatedTask, updatedDepentOn));
                         }
                         catch (DalDoesNotExistException ex) { Console.WriteLine(ex.Message); }
@@ -260,11 +277,12 @@ namespace DalTest
             }
 
         }
-        static void Main(string[] args)
+
+        static void Main()
         {
             try
             {
-                Initialization.Do(s_dal);
+                //Initialization.Do(s_dal);
                 while (true)
                 {
                     DisplayMainMenu();

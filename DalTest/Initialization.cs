@@ -27,21 +27,22 @@ public static class Initialization
             "Raizy Gutman", "Yeudit Itamar", "Dani Levi", "Eli Amar", "Yair Cohen",
             "Ariela Levin", "Dina Klein", "Shira Israelof"
         };
+        //variable for engineer level, so that engineers of all levels will be created.
         int level = 0;
-        foreach (var _name in engineerNames)
+        for (int i = 0; i < engineerNames.Length; i++)
         {
             int _id = s_rand.Next(200000000, 400000000);
-            string _email = _name.Replace(" ", "") + "@gmail.com";
+            string _email = engineerNames[i].Replace(" ", "") + "@gmail.com";
             double _cost = s_rand.Next(5000, 15000);
             EngineerExperience _level = (EngineerExperience)((level++) % 5);
-            Engineer newEngineer = new(_id, _name, _email, _level, _cost);
+            Engineer newEngineer = new(_id, engineerNames[i], _email, _level, _cost);
             try
             {
                 s_dal!.Engineer.Create(newEngineer);
             }
             catch (DalAlreadyExistsException)
             {
-                continue;
+                i--;
             }
         }
     }
@@ -58,41 +59,43 @@ public static class Initialization
             DateTime _createdAtDate = new(currentDate.Year, currentDate.Month, currentDate.Day);
             DateTime _schedualDate = _createdAtDate.AddDays(s_rand.Next(1, 31));
             DateTime _startDate = _schedualDate.AddDays(s_rand.Next(0, 3));
-            TimeSpan _duration = new(s_rand.Next(1, 15), 0, 0);
+            TimeSpan _duration = new(s_rand.Next(1, 15), 0, 0, 0);
             DateTime _deadlineDate = (_startDate.Add(_duration)).AddDays(s_rand.Next(0, 14));
-            DateTime? _completeDate = null;
             string _deliverables = "Deliverable of the " + i.ToString() + " task.";
-            string? _remarks = null;
             EngineerExperience _complexityLevel = (EngineerExperience)s_rand.Next(0, 5);
+            //Finding an engineer that fits the difficulty level of the task.
             Engineer? e = s_dal!.Engineer.Read(e => e!.Level == _complexityLevel);
-            DO.Task newTask = new(_id, _Description, _alias, _isMilestone, _createdAtDate, _startDate, _schedualDate, _duration, _deadlineDate, _completeDate, _deliverables, _remarks, e!.Id, _complexityLevel);
+            DO.Task newTask = new(_id, _Description, _alias, _isMilestone, _createdAtDate, _startDate, _schedualDate, _duration, _deadlineDate, null, _deliverables, null, e!.Id, _complexityLevel);
             s_dal!.Task.Create(newTask);
         }
     }
-
 
     private static void CraeteDependency()
     {
         int i = 0;
         do
         {
-            DO.Task _task = s_dal!.Task.Read(s_rand.Next(1, 31))!;
-            int _taskNum = _task.Id;
+            DO.Task _task;
+            do { _task = s_dal!.Task.Read(s_rand.Next(1, 31))!; } while (_task is null);
+            int _taskNum = _task!.Id;
             var optionalTasks = s_dal!.Task.ReadAll().ToList();
-            int _dependencyTask = 0;
+            //A variable that limits the number of dependencies for _task.
+            int countOfDependecies = 0;
             foreach (var task in optionalTasks)
             {
+                //Checking whether this dependency has already been created in the past
                 if (s_dal!.Dependency.Read(d => d?.DependentTask == _taskNum && d?.DependsOnTask == task?.Id) == null)
                 {
+                    //Conversion of the relevant dates from nullable to normal type in order to run + and Compare on them
                     DateTime taskDeadline = (DateTime)task!.DeadlineDate!;
                     DateTime dependentDeadline = (DateTime)_task.DeadlineDate!;
                     TimeSpan dependentDuration = (TimeSpan)_task.Duration!;
                     if (DateTime.Compare(taskDeadline + dependentDuration, dependentDeadline) < 0)
                     {
-                        _dependencyTask = task!.Id;
-                        Dependency d = new(0, _task.Id, _dependencyTask);
+                        Dependency d = new(0, _task.Id, task.Id);
                         s_dal!.Dependency.Create(d);
-                        if (++i == 40) break;
+                        i++;
+                        if (++countOfDependecies >= 3) break;
                     }
                 }
             }

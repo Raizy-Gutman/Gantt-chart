@@ -1,4 +1,5 @@
 ﻿using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace DO;
 
@@ -39,9 +40,24 @@ public record Task
 )
 {
     public Task() : this(0, "", "", false, null, null, null, null, null, null, "", "", 0, 0) { }  //empty ctor
-    public override string ToString()//print the value
+
+    #region Ignore If Null
+    //Boolean functions for all nullable properties, so that null values wont be written in the xml file.
+    public bool ShouldSerializeDescription() => !string.IsNullOrEmpty(Description);
+    public bool ShouldSerializeAlias() => !string.IsNullOrEmpty(Alias);
+    public bool ShouldSerializeCreatedAtDate() => CreatedAtDate.HasValue;
+    public bool ShouldSerializeStartDate() => StartDate.HasValue;
+    public bool ShouldSerializeSchedualDate() => SchedualDate.HasValue;
+    public bool ShouldSerializeCompleteDate() => CompleteDate.HasValue;
+    public bool ShouldSerializeDuration() => Duration.HasValue;
+    public bool ShouldSerializeDeadlineDate() => DeadlineDate.HasValue;
+    public bool ShouldSerializeDeliverables() => !string.IsNullOrEmpty(Deliverables);
+    public bool ShouldSerializeRemarks() => !string.IsNullOrEmpty(Remarks);   
+    
+    #endregion
+    public override string ToString()//print the task
     {
-        return 
+        return
 @$"Id: {Id},    
 Description: {Description ?? "-----"},
 Alias: {Alias ?? "------"},
