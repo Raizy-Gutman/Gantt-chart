@@ -16,6 +16,11 @@ internal class EngineerImplementation : IEngineer
         return _engineer.Id;
     }
 
+    public void Reset()
+    {
+        DataSource.Engineers.Clear();
+    }
+
     public void Delete(int id)
     {
         if (DataSource.Engineers.FirstOrDefault(e => e?.Id == id) == null)

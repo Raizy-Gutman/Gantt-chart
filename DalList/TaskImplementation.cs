@@ -14,6 +14,11 @@ internal class TaskImplementation : ITask
         return newId;
     }
 
+    public void Reset()
+    {
+        DataSource.Tasks.Clear();
+    }
+
     public void Delete(int id)
     {
         if (DataSource.Tasks.FirstOrDefault(t => t!.Id == id) == null)
