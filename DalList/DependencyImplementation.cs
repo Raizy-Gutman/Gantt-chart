@@ -14,6 +14,11 @@ internal class DependencyImplementation : IDependency
         return newId;
     }
 
+    public void Reset()
+    {
+        DataSource.Dependencies.Clear();
+    }
+
     public void Delete(int id)
     {
         if (DataSource.Dependencies.FirstOrDefault(d => d?.Id == id) == null)

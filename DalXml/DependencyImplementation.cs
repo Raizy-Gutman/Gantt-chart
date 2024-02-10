@@ -1,4 +1,4 @@
-﻿namespace Dal; 
+﻿namespace Dal;
 using DalApi;
 using DO;
 using System;
@@ -8,7 +8,8 @@ using System.Xml.Linq;
 internal class DependencyImplementation : IDependency
 {
     const string dependencyRoot = "dependencies"; // XElement
-    public int Create(Dependency dependency) { 
+    public int Create(Dependency dependency)
+    {
         XElement dependencyElement = XMLTools.LoadListFromXMLElement(dependencyRoot);
         int runId = Config.NextDependencyId;
         XElement id = new("Id", runId);
@@ -19,16 +20,26 @@ internal class DependencyImplementation : IDependency
         return runId;
     }
 
+    public void Reset()
+    {
+        List<Dependency> dependencyElement = new();
+        XMLTools.SaveListToXMLSerializer(dependencyElement!, dependencyRoot);
+    }
+
     public void Delete(int id)
     {
         XElement dependencyElement = XMLTools.LoadListFromXMLElement(dependencyRoot);
-        (dependencyElement.Elements().FirstOrDefault(d => (int?)d.Element("ID") == id)
+        (dependencyElement.Elements().FirstOrDefault(d => (int?)d.Element("Id") == id)
             ?? throw new DalDoesNotExistException($"Can't delete, Dependency with ID: {id} does not exist!!")).Remove();
         XMLTools.SaveListToXMLElement(dependencyElement, dependencyRoot);
     }
 
     public Dependency? Read(int id) => XMLTools.ToDependency(
-        XMLTools.LoadListFromXMLElement(dependencyRoot)!.Elements().FirstOrDefault(d => (int?)d.Element("ID") == id)!);
+         XMLTools.LoadListFromXMLElement(dependencyRoot)!.Elements().FirstOrDefault(d =>
+
+            (int?)d.Element("Id") == id
+         )!
+);
 
     public Dependency? Read(Func<Dependency, bool> filter) => XMLTools.LoadListFromXMLElement(dependencyRoot).Elements()
         .Select(e => XMLTools.ToDependency(e)).FirstOrDefault(filter);

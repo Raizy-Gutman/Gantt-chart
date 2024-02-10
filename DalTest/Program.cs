@@ -10,9 +10,13 @@ namespace DalTest
     internal class Program
     {
         //static readonly IDal s_dal = new DalList(); //stage 2
-        static readonly IDal s_dal = new DalXml(); //stage 3
+        static readonly IDal s_dal = new DalXml();
+        // = new DalXml(); //stage 3???
         private static readonly Random s_rand = new();
-
+        //static Program()
+        //{
+        //    s_dal = new DalXml();
+        //}
         #region casting functions
         //Functions to convert empty values received from the user to default values or previous values.
         static string? toString(string? source, string? defaulte) => string.IsNullOrEmpty(source) ? defaulte : source;
@@ -28,10 +32,17 @@ namespace DalTest
         static double? toDouble(string? source, double? defaulte) => string.IsNullOrEmpty(source) ? defaulte : double.Parse(source);
         static bool toBool(string? source, bool defaulte) => string.IsNullOrEmpty(source) ? defaulte : bool.Parse(source);
 
+        //static void Initialize()
+        //{
+        //    Console.Write("Would you like to create Initial data? (Y/N)"); //stage 3
+        //    string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input"); //stage 3
+        //    if (ans == "Y") //stage 3
+        //        Initialization.Do(s_dal); //stage 2
+        //}
         #endregion
         static void DisplayMainMenu()
         {
-            Console.WriteLine("Main Menu:\n1. Engineers\n2. Tasks\n3. Dependencies\nPress 0 to exit.");
+            Console.WriteLine("Main Menu:\n1. Engineers\n2. Tasks\n3. Dependencies\n4. Initialization\nPress 0 to exit.");
 
         }
 
@@ -142,7 +153,7 @@ namespace DalTest
                 switch (choise)
                 {
                     case Crud.CREATE:
-                        Console.WriteLine("Enter engineer ID, Name, Email, Cost, and level: ");
+                        Console.WriteLine("Enter engineer ID, Name, Email, level, and Cost: ");
                         int id = int.Parse(Console.ReadLine()!);
                         string? name = Console.ReadLine();
                         string? email = Console.ReadLine();
@@ -191,6 +202,7 @@ namespace DalTest
                             Console.WriteLine("Enter the engineer's id:");
                             int updatedId = int.Parse(Console.ReadLine()!);
                             Engineer updatedEngineer = s_dal.Engineer.Read(updatedId) ?? throw new DalDoesNotExistException($"Can't update, engineer with ID {updatedId} does not exist!!");
+                            Console.Write("you can update name, email, level and cost");
                             Console.WriteLine("For each detaile, if it's need to be update, insert updated value. else,  press ENTER.\n");
                             string? updatedName = toString(Console.ReadLine(), updatedEngineer.Name);
                             string? updetedEmail = toString(Console.ReadLine(), updatedEngineer.Email);
@@ -260,7 +272,7 @@ namespace DalTest
                             int updatedId = int.Parse(Console.ReadLine()!);
                             Dependency? updatedDependency = s_dal.Dependency.Read(updatedId) ?? throw new DalDoesNotExistException($"Can't update, dependency with ID {updatedId} does not exist!!");
                             int updatedTask = toInt(Console.ReadLine(), updatedDependency.DependentTask);
-                            int updatedDepentOn = toInt(Console.ReadLine() ,updatedDependency.DependsOnTask);
+                            int updatedDepentOn = toInt(Console.ReadLine(), updatedDependency.DependsOnTask);
                             s_dal.Dependency!.Update(new(updatedId, updatedTask, updatedDepentOn));
                         }
                         catch (DalDoesNotExistException ex) { Console.WriteLine(ex.Message); }
@@ -282,7 +294,7 @@ namespace DalTest
         {
             try
             {
-                Initialization.Do(s_dal);
+                //Initialization.Do(s_dal);
                 while (true)
                 {
                     DisplayMainMenu();
@@ -293,6 +305,12 @@ namespace DalTest
                         case 1: EngineerMenu(); break;
                         case 2: TaskMenu(); break;
                         case 3: DependencyMenu(); break;
+                        case 4:
+                            Console.Write("Would you like to create Initial data? (Y/N)"); //stage 3
+                            string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input"); //stage 3
+                            if (ans == "Y") //stage 3
+                                Initialization.Do(s_dal); //stage 2
+                            break;
                         default: Console.WriteLine("Invalid selection, please try again."); break;
                     }
                 }
