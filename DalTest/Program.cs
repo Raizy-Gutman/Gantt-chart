@@ -282,7 +282,7 @@ namespace DalTest
         {
             try
             {
-                //Initialization.Do(s_dal);
+                Initialization.Do(s_dal);
                 while (true)
                 {
                     DisplayMainMenu();
