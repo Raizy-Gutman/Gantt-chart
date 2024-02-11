@@ -10,9 +10,13 @@ using System.Xml.Linq;
 public static class Initialization
 {
     private static IDal? s_dal; //stage 2
-    public static void Do(IDal dal)
+    //public static void Do(IDal dal)
+    public static void Do()
     {
-        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); //stage 2
+        //s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); //stage 2
+        //s_dal = DalApi.Factory.Get; //stage 4
+        s_dal = Factory.Get; //stage 4
+
         CraeteEngineers();
         CraeteTask();
         CraeteDependency();
@@ -22,7 +26,7 @@ public static class Initialization
     private static readonly Random s_rand = new();
     private static void CraeteEngineers()
     {
-        s_dal?.Engineer.Reset();
+        //s_dal?.Engineer.Reset();
         string[] engineerNames =
         {
             "Raizy Gutman", "Yeudit Itamar", "Dani Levi", "Eli Amar", "Yair Cohen",
@@ -50,7 +54,7 @@ public static class Initialization
 
     private static void CraeteTask()
     {
-        s_dal?.Task.Reset();
+        //s_dal?.Task.Reset();
         DateTime currentDate = DateTime.Now;
         for (int i = 1; i < 31; i++)
         {
@@ -74,7 +78,7 @@ public static class Initialization
 
     private static void CraeteDependency()
     {
-        s_dal?.Dependency.Reset();
+        //s_dal?.Dependency.Reset();
         int i = 0;
         do
         {
