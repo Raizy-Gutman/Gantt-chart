@@ -10,13 +10,11 @@ namespace DalTest
     internal class Program
     {
         //static readonly IDal s_dal = new DalList(); //stage 2
-        static readonly IDal s_dal = new DalXml();
-        // = new DalXml(); //stage 3???
+        //static readonly IDal s_dal = new DalXml(); //stage 3
+        static readonly IDal s_dal = Factory.Get; //stage 4
+
         private static readonly Random s_rand = new();
-        //static Program()
-        //{
-        //    s_dal = new DalXml();
-        //}
+
         #region casting functions
         //Functions to convert empty values received from the user to default values or previous values.
         static string? toString(string? source, string? defaulte) => string.IsNullOrEmpty(source) ? defaulte : source;
@@ -308,8 +306,15 @@ namespace DalTest
                         case 4:
                             Console.Write("Would you like to create Initial data? (Y/N)"); //stage 3
                             string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input"); //stage 3
-                            if (ans == "Y") //stage 3
-                                Initialization.Do(s_dal); //stage 2
+                            if (ans == "Y")
+                            {
+                                
+                                s_dal?.Engineer.Reset();
+                                s_dal?.Task.Reset();
+                                s_dal?.Dependency.Reset();
+                                //Initialization.Do(s_dal); //stage 2
+                                Initialization.Do(); //stage 4
+                            }
                             break;
                         default: Console.WriteLine("Invalid selection, please try again."); break;
                     }
