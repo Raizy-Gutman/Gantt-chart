@@ -17,30 +17,45 @@ namespace DalTest
 
         #region casting functions
         //Functions to convert empty values received from the user to default values or previous values.
-        static string? toString(string? source, string? defaulte) => string.IsNullOrEmpty(source) ? defaulte : source;
-        static DateTime? toDateTime(string? source, DateTime? defaulte) => string.IsNullOrEmpty(source) ? defaulte : DateTime.Parse(source);
-        static TimeSpan? toTimeSpan(string? source, TimeSpan? defaulte) => string.IsNullOrEmpty(source) ? defaulte : TimeSpan.Parse(source);
-        static EngineerExperience toEngineerExperience(string? source, EngineerExperience defaulte)
+        private static string? toString(string? source, string? defaulte) => string.IsNullOrEmpty(source) ? defaulte : source;
+        private static DateTime? toDateTime(string? source, DateTime? defaulte) => string.IsNullOrEmpty(source) ? defaulte : DateTime.Parse(source);
+        private static TimeSpan? toTimeSpan(string? source, TimeSpan? defaulte) => string.IsNullOrEmpty(source) ? defaulte : TimeSpan.Parse(source);
+        private static EngineerExperience toEngineerExperience(string? source, EngineerExperience defaulte)
         {
             if (string.IsNullOrEmpty(source)) return defaulte;
             Enum.TryParse(source, out EngineerExperience level);
             return level;
         }
-        static int toInt(string? source, int defaulte) => string.IsNullOrEmpty(source) ? defaulte : int.Parse(source);
-        static double? toDouble(string? source, double? defaulte) => string.IsNullOrEmpty(source) ? defaulte : double.Parse(source);
-        static bool toBool(string? source, bool defaulte) => string.IsNullOrEmpty(source) ? defaulte : bool.Parse(source);
+        private static int toInt(string? source, int defaulte) => string.IsNullOrEmpty(source) ? defaulte : int.Parse(source);
+        private static double? toDouble(string? source, double? defaulte) => string.IsNullOrEmpty(source) ? defaulte : double.Parse(source);
+        private static bool toBool(string? source, bool defaulte) => string.IsNullOrEmpty(source) ? defaulte : bool.Parse(source);
 
-        //static void Initialize()
-        //{
-        //    Console.Write("Would you like to create Initial data? (Y/N)"); //stage 3
-        //    string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input"); //stage 3
-        //    if (ans == "Y") //stage 3
-        //        Initialization.Do(s_dal); //stage 2
-        //}
+
         #endregion
+
+        static void Initialize()
+        {
+            Console.Write("Would you like to create Initial data? (y/n)"); //stage 3
+            string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input"); //stage 3
+            if (ans == "y") //stage 3
+                Initialization.Do(); //stage 4
+        }
+
+        static void Reset()
+        {
+            Console.Write("Would you like to clear all data? (y/n)"); 
+            string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input"); 
+            if (ans == "y")
+            {
+                s_dal?.Engineer.Reset();
+                s_dal?.Task.Reset();
+                s_dal?.Dependency.Reset();
+            }
+        }
+
         static void DisplayMainMenu()
         {
-            Console.WriteLine("Main Menu:\n1. Engineers\n2. Tasks\n3. Dependencies\n4. Initialization\nPress 0 to exit.");
+            Console.WriteLine("Main Menu:\n1. Engineers\n2. Tasks\n3. Dependencies\n4. Initialization\n5. Reset\nPress 0 to exit.");
 
         }
 
@@ -121,7 +136,7 @@ namespace DalTest
                             DateTime? updatedComplete = toDateTime(Console.ReadLine(), updateTask.CompleteDate);
                             string? updatedProductDescription = toString(Console.ReadLine(), updateTask.Deliverables);
                             string? updatedRemarks = toString(Console.ReadLine(), updateTask.Remarks);
-                            int updatedEngineer = toInt(Console.ReadLine(), updateTask.EngineerId);
+                            int updatedEngineer = toInt(Console.ReadLine(), (int)updateTask.EngineerId!);
                             EngineerExperience updatedComplexityLevel = toEngineerExperience(Console.ReadLine(), updateTask.ComplexityLevel);
                             s_dal.Task.Update(new(updateId, updatedDescription, updatedAlias, updatedMilestone, updatedCreatAt, updatedStart, updatedScheduledDate, updatedForecastDate, updatedDeadLine, updatedComplete, updatedProductDescription, updatedRemarks, updatedEngineer, updatedComplexityLevel));
                         }
@@ -292,7 +307,6 @@ namespace DalTest
         {
             try
             {
-                //Initialization.Do(s_dal);
                 while (true)
                 {
                     DisplayMainMenu();
@@ -303,19 +317,8 @@ namespace DalTest
                         case 1: EngineerMenu(); break;
                         case 2: TaskMenu(); break;
                         case 3: DependencyMenu(); break;
-                        case 4:
-                            Console.Write("Would you like to create Initial data? (Y/N)"); //stage 3
-                            string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input"); //stage 3
-                            if (ans == "Y")
-                            {
-                                
-                                s_dal?.Engineer.Reset();
-                                s_dal?.Task.Reset();
-                                s_dal?.Dependency.Reset();
-                                //Initialization.Do(s_dal); //stage 2
-                                Initialization.Do(); //stage 4
-                            }
-                            break;
+                        case 4: Initialize(); break;
+                        case 5: Reset(); break;                         
                         default: Console.WriteLine("Invalid selection, please try again."); break;
                     }
                 }

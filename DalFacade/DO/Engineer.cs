@@ -21,6 +21,7 @@ public record Engineer
 )
 {
     public Engineer() : this(0, "", "", 0, 0.0) { }  //empty ctor
+
     #region Ignore If Null
     //Boolean functions for all nullable properties, so that null values wont be written in the xml file.
     public bool ShouldSerializeName() => !string.IsNullOrEmpty(Name);
@@ -31,7 +32,7 @@ public record Engineer
     #endregion
     public override string ToString()
     {
-        return $"Id: {Id},\nName: {Name},\nEmail: {Email},\nLevel: {Level},\nCost: {Cost}\n";       
+        return $"\nId: {Id},\nName: {Name},\nEmail: {Email},\nLevel: {Level},\nCost: {Cost}\n";       
     }
 
 }

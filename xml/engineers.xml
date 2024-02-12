@@ -1,115 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfEngineer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Engineer>
-    <Id>378511778</Id>
+    <Id>341681913</Id>
     <Name>Raizy Gutman</Name>
     <Email>RaizyGutman@gmail.com</Email>
     <Level>Beginner</Level>
-    <Cost>14351</Cost>
+    <Cost>368</Cost>
   </Engineer>
   <Engineer>
-    <Id>266287615</Id>
+    <Id>260222881</Id>
     <Name>Yeudit Itamar</Name>
     <Email>YeuditItamar@gmail.com</Email>
     <Level>AdvancedBeginner</Level>
-    <Cost>9704</Cost>
+    <Cost>623</Cost>
   </Engineer>
   <Engineer>
-    <Id>374578205</Id>
+    <Id>321454404</Id>
     <Name>Dani Levi</Name>
     <Email>DaniLevi@gmail.com</Email>
-    <Level>Competent</Level>
-    <Cost>7375</Cost>
+    <Level>Intermediate</Level>
+    <Cost>428</Cost>
   </Engineer>
   <Engineer>
-    <Id>256656074</Id>
+    <Id>200839192</Id>
     <Name>Eli Amar</Name>
     <Email>EliAmar@gmail.com</Email>
-    <Level>Proficient</Level>
-    <Cost>5565</Cost>
+    <Level>Advanced</Level>
+    <Cost>643</Cost>
   </Engineer>
   <Engineer>
-    <Id>395177644</Id>
+    <Id>373294337</Id>
     <Name>Yair Cohen</Name>
     <Email>YairCohen@gmail.com</Email>
     <Level>Expert</Level>
-    <Cost>14721</Cost>
+    <Cost>352</Cost>
   </Engineer>
   <Engineer>
-    <Id>384660470</Id>
+    <Id>349807076</Id>
     <Name>Ariela Levin</Name>
     <Email>ArielaLevin@gmail.com</Email>
     <Level>Beginner</Level>
-    <Cost>14275</Cost>
+    <Cost>681</Cost>
   </Engineer>
   <Engineer>
-    <Id>249194180</Id>
+    <Id>233306832</Id>
     <Name>Dina Klein</Name>
     <Email>DinaKlein@gmail.com</Email>
     <Level>AdvancedBeginner</Level>
-    <Cost>8068</Cost>
+    <Cost>587</Cost>
   </Engineer>
   <Engineer>
-    <Id>228885216</Id>
+    <Id>282840628</Id>
     <Name>Shira Israelof</Name>
     <Email>ShiraIsraelof@gmail.com</Email>
-    <Level>Competent</Level>
-    <Cost>10710</Cost>
-  </Engineer>
-  <Engineer>
-    <Id>237290585</Id>
-    <Name>Raizy Gutman</Name>
-    <Email>RaizyGutman@gmail.com</Email>
-    <Level>Beginner</Level>
-    <Cost>10266</Cost>
-  </Engineer>
-  <Engineer>
-    <Id>341112146</Id>
-    <Name>Yeudit Itamar</Name>
-    <Email>YeuditItamar@gmail.com</Email>
-    <Level>AdvancedBeginner</Level>
-    <Cost>8090</Cost>
-  </Engineer>
-  <Engineer>
-    <Id>202150421</Id>
-    <Name>Dani Levi</Name>
-    <Email>DaniLevi@gmail.com</Email>
-    <Level>Competent</Level>
-    <Cost>12767</Cost>
-  </Engineer>
-  <Engineer>
-    <Id>270529570</Id>
-    <Name>Eli Amar</Name>
-    <Email>EliAmar@gmail.com</Email>
-    <Level>Proficient</Level>
-    <Cost>13230</Cost>
-  </Engineer>
-  <Engineer>
-    <Id>374640420</Id>
-    <Name>Yair Cohen</Name>
-    <Email>YairCohen@gmail.com</Email>
-    <Level>Expert</Level>
-    <Cost>7242</Cost>
-  </Engineer>
-  <Engineer>
-    <Id>381147452</Id>
-    <Name>Ariela Levin</Name>
-    <Email>ArielaLevin@gmail.com</Email>
-    <Level>Beginner</Level>
-    <Cost>9335</Cost>
-  </Engineer>
-  <Engineer>
-    <Id>364525150</Id>
-    <Name>Dina Klein</Name>
-    <Email>DinaKlein@gmail.com</Email>
-    <Level>AdvancedBeginner</Level>
-    <Cost>5251</Cost>
-  </Engineer>
-  <Engineer>
-    <Id>332654393</Id>
-    <Name>Shira Israelof</Name>
-    <Email>ShiraIsraelof@gmail.com</Email>
-    <Level>Competent</Level>
-    <Cost>9761</Cost>
+    <Level>Intermediate</Level>
+    <Cost>671</Cost>
   </Engineer>
 </ArrayOfEngineer>

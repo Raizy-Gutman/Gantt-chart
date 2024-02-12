@@ -35,7 +35,7 @@ public record Task
     DateTime? CompleteDate,
     string? Deliverables,
     string? Remarks,
-    int EngineerId,
+    int? EngineerId,
     EngineerExperience ComplexityLevel
 )
 {
@@ -58,7 +58,8 @@ public record Task
     public override string ToString()//print the task
     {
         return
-@$"Id: {Id},    
+@$"
+Id: {Id},    
 Description: {Description ?? "-----"},
 Alias: {Alias ?? "------"},
 Deliverables: {Deliverables ?? "------"}

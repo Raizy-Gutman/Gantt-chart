@@ -18,7 +18,7 @@ public record Dependency
     public Dependency() : this(0, 0, 0) { }  //empty ctor
     public override string ToString()//print the item
     {
-        return $"Id: {Id}\nDependent Task:{DependentTask}\nDepends On Task: {DependsOnTask}";
+        return $"\nId: {Id}\nDependent Task:{DependentTask}\nDepends On Task: {DependsOnTask}";
     }
 
 
