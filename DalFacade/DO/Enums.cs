@@ -2,11 +2,7 @@
 
 public enum EngineerExperience
 {
-    Beginner,
-    AdvancedBeginner,
-    Competent,
-    Proficient,
-    Expert
+    Beginner, AdvancedBeginner, Intermediate, Advanced, Expert
 }
 public enum Crud
 {

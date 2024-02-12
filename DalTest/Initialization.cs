@@ -34,7 +34,7 @@ public static class Initialization
         {
             int _id = s_rand.Next(200000000, 400000000);
             string _email = engineerNames[i].Replace(" ", "") + "@gmail.com";
-            double _cost = s_rand.Next(5000, 15000);
+            double _cost = s_rand.Next(300, 700);
             EngineerExperience _level = (EngineerExperience)((level++) % 5);
             Engineer newEngineer = new(_id, engineerNames[i], _email, _level, _cost);
             try
