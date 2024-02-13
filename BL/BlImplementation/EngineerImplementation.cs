@@ -4,6 +4,7 @@ using BO;
 namespace BlImplementation;
 internal class EngineerImplementation : IEngineer
 {
+    private readonly DalApi.IDal _dal = DalApi.Factory.Get;
     public void CreateEngineer(Engineer engineer)
     {
         throw new NotImplementedException();

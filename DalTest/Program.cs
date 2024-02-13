@@ -1,9 +1,5 @@
-﻿using Dal;
-using DalApi;
+﻿using DalApi;
 using DO;
-using System.ComponentModel;
-using System.Security.Cryptography;
-using System.Xml.Linq;
 
 namespace DalTest
 {

@@ -10,10 +10,8 @@ internal static class DataSource
         internal const int firstDependencyId = 1;
         private static int nextDependencyId = firstDependencyId;
         internal static int NextDependencyId { get => nextDependencyId++; }
-
         internal static DateTime? StartDate { get; set; }
         internal static DateTime? EndDate { get; set; }
-
     }
     internal static List<DO.Task?> Tasks = new();
     internal static List<DO.Dependency?> Dependencies = new();

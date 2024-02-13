@@ -1,7 +1,6 @@
 ﻿namespace Dal;
 
 using DO;
-using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -57,11 +56,16 @@ static class XMLTools
     {
         XElement root = XMLTools.LoadListFromXMLElement(data_config_xml);
         DateTime? date = root.ToDateTimeNullable(elemName) ?? throw new FormatException($"can't convert date.  {data_config_xml}, {elemName}");
-        XMLTools.SaveListToXMLElement(root, data_config_xml);
         return date;
     }
 
-    
+    public static void Set(string data_config_xml, string elemName, DateTime? date)
+    {
+        XElement root = XMLTools.LoadListFromXMLElement(data_config_xml);
+        root.Element(elemName)?.SetValue(date?.ToString()??"");
+        XMLTools.SaveListToXMLElement(root, data_config_xml);
+    }
+
     #endregion
 
     #region SaveLoadWithXElement

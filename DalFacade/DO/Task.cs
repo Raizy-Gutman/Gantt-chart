@@ -1,7 +1,4 @@
-﻿using System.Xml.Linq;
-using System.Xml.Serialization;
-
-namespace DO;
+﻿namespace DO;
 
 /// <summary>
 /// The task entity contains all the information needed to perform the task.
