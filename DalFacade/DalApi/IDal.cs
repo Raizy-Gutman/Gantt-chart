@@ -1,4 +1,5 @@
-﻿namespace DalApi;
+﻿using DO;
+namespace DalApi;
 public interface IDal
 {
     IDependency Dependency { get; }
@@ -6,5 +7,6 @@ public interface IDal
     ITask Task { get; }
     DateTime? StartDate { get; set; }
     DateTime? EndDate { get; set; }
+    ProjectStatus? ProjectStatus { get; set; }
 }
 

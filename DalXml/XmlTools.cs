@@ -52,17 +52,16 @@ static class XMLTools
         return nextId;
     }
 
-    public static DateTime? Get(string data_config_xml, string elemName)
+    public static T? Get<T>(string data_config_xml, string elemName, Func<XElement, string, T?> convert)
     {
-        XElement root = XMLTools.LoadListFromXMLElement(data_config_xml);
-        DateTime? date = root.ToDateTimeNullable(elemName) ?? throw new FormatException($"can't convert date.  {data_config_xml}, {elemName}");
-        return date;
+        XElement root = LoadListFromXMLElement(data_config_xml);
+        T? t =  convert(root, elemName) ?? throw new FormatException($"can't convert config data.  {data_config_xml}, {elemName}");
+        return t;
     }
-
-    public static void Set(string data_config_xml, string elemName, DateTime? date)
+    public static void Set<T>(string data_config_xml, string elemName, T? t)
     {
         XElement root = XMLTools.LoadListFromXMLElement(data_config_xml);
-        root.Element(elemName)?.SetValue(date?.ToString()??"");
+        root.Element(elemName)?.SetValue(t?.ToString()??"");
         XMLTools.SaveListToXMLElement(root, data_config_xml);
     }
 
