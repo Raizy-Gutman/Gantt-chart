@@ -13,7 +13,8 @@ namespace DalTest
 
         #region casting functions
         //Functions to convert empty values received from the user to default values or previous values.
-        private static string? toString(string? source, string? defaulte) => string.IsNullOrEmpty(source) ? defaulte : source;
+        private static string? toStringNullble(string? source, string? defaulte) => string.IsNullOrEmpty(source) ? defaulte : source;
+        private static string toString(string? source, string defaulte) => string.IsNullOrEmpty(source) ? defaulte : source;
         private static DateTime? toDateTime(string? source, DateTime? defaulte) => string.IsNullOrEmpty(source) ? defaulte : DateTime.Parse(source);
         private static TimeSpan? toTimeSpan(string? source, TimeSpan? defaulte) => string.IsNullOrEmpty(source) ? defaulte : TimeSpan.Parse(source);
         private static EngineerExperience toEngineerExperience(string? source, EngineerExperience defaulte)
@@ -71,8 +72,8 @@ namespace DalTest
                     case Crud.CREATE:
                         Console.WriteLine("Enter Task description, alias, milestone(True or False),all relevant dates, a short description for the product, any remarks, the engineer Id and complexity level: ");
                         int id = 0;
-                        string? description = Console.ReadLine();
-                        string? alias = Console.ReadLine();
+                        string? description = Console.ReadLine()?? "description";
+                        string? alias = Console.ReadLine() ?? "alias";
                         bool milestone = toBool(Console.ReadLine(), false);
                         DateTime? creatAt = toDateTime(Console.ReadLine(), DateTime.Today);
                         DateTime? scheduledDate = toDateTime(Console.ReadLine(), ((DateTime)creatAt!).AddDays(s_rand.Next(1, 31)));
@@ -121,8 +122,8 @@ namespace DalTest
                             int updateId = int.Parse(Console.ReadLine()!);
                             DO.Task? updateTask = s_dal.Task!.Read(updateId) ?? throw new DalDoesNotExistException($"Can't update, task with ID: {updateId} does not exist!!");
                             Console.WriteLine("For each detaile, if it's need to be update, insert updated value. else,  press ENTER.\n");
-                            string? updatedDescription = toString(Console.ReadLine(), updateTask.Description);
-                            string? updatedAlias = toString(Console.ReadLine(), updateTask.Alias);
+                            string updatedDescription = toString(Console.ReadLine(), updateTask.Description);
+                            string updatedAlias = toString(Console.ReadLine(), updateTask.Alias);
                             bool updatedMilestone = toBool(Console.ReadLine(), updateTask.IsMilestone);
                             DateTime? updatedCreatAt = toDateTime(Console.ReadLine(), updateTask.CreatedAtDate);
                             DateTime? updatedScheduledDate = toDateTime(Console.ReadLine(), updateTask.SchedualDate);
@@ -130,8 +131,8 @@ namespace DalTest
                             TimeSpan? updatedForecastDate = toTimeSpan(Console.ReadLine(), updateTask.Duration);
                             DateTime? updatedDeadLine = toDateTime(Console.ReadLine(), updateTask.DeadlineDate);
                             DateTime? updatedComplete = toDateTime(Console.ReadLine(), updateTask.CompleteDate);
-                            string? updatedProductDescription = toString(Console.ReadLine(), updateTask.Deliverables);
-                            string? updatedRemarks = toString(Console.ReadLine(), updateTask.Remarks);
+                            string? updatedProductDescription = toStringNullble(Console.ReadLine(), updateTask.Deliverables);
+                            string? updatedRemarks = toStringNullble(Console.ReadLine(), updateTask.Remarks);
                             int updatedEngineer = toInt(Console.ReadLine(), (int)updateTask.EngineerId!);
                             EngineerExperience updatedComplexityLevel = toEngineerExperience(Console.ReadLine(), updateTask.ComplexityLevel);
                             s_dal.Task.Update(new(updateId, updatedDescription, updatedAlias, updatedMilestone, updatedCreatAt, updatedStart, updatedScheduledDate, updatedForecastDate, updatedDeadLine, updatedComplete, updatedProductDescription, updatedRemarks, updatedEngineer, updatedComplexityLevel));
@@ -213,8 +214,8 @@ namespace DalTest
                             Engineer updatedEngineer = s_dal.Engineer.Read(updatedId) ?? throw new DalDoesNotExistException($"Can't update, engineer with ID {updatedId} does not exist!!");
                             Console.Write("you can update name, email, level and cost");
                             Console.WriteLine("For each detaile, if it's need to be update, insert updated value. else,  press ENTER.\n");
-                            string? updatedName = toString(Console.ReadLine(), updatedEngineer.Name);
-                            string? updetedEmail = toString(Console.ReadLine(), updatedEngineer.Email);
+                            string? updatedName = toStringNullble(Console.ReadLine(), updatedEngineer.Name);
+                            string? updetedEmail = toStringNullble(Console.ReadLine(), updatedEngineer.Email);
                             EngineerExperience updatedLevel = toEngineerExperience(Console.ReadLine(), updatedEngineer.Level);
                             double? updatedCost = toDouble(Console.ReadLine(), updatedEngineer.Cost);
                             s_dal.Engineer!.Update(new(updatedId, updatedName, updetedEmail, updatedLevel, updatedCost));

@@ -19,7 +19,7 @@ public class BlXMLFileLoadCreateException : Exception
 
 public class BlInvalidException : Exception
 {
-    public string InvalidPropertyName {  get; private set; }
+    public string InvalidPropertyName { get; private set; }
     public BlInvalidException(string invalidPropertyName) : base($"Invalid property {invalidPropertyName}") { this.InvalidPropertyName = invalidPropertyName; }
 }
 
@@ -29,14 +29,9 @@ public class BlNullException : Exception
     public BlNullException(string nullPropertyName) : base($"Null property {nullPropertyName}") { this.NullPropertyName = nullPropertyName; }
 }
 
-public class BlIllegalDeletionException : Exception
+public class BlIllegalException : Exception
 {
-    public string DeleteEntityName { get; private set; }
-    public BlIllegalDeletionException(string deleteEntityName) : base($"Illegal deletion of {deleteEntityName}") { this.DeleteEntityName = deleteEntityName; }
-}
-
-public class BlIllegalUpdateException : Exception
-{
-    public string updatePropertyName { get; private set; }
-    public BlIllegalUpdateException(string UpdatePropertyName) : base($"Illegal update of {UpdatePropertyName}") { this.updatePropertyName = UpdatePropertyName; }
+    public string propertyName { get; private set; }
+    public string funcName { get; private set; }
+    public BlIllegalException(string name, string func) : base($"Invalid {func} {name}") { propertyName = name; funcName = func; }
 }

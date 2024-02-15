@@ -6,7 +6,7 @@ namespace BlImplementation;
 internal class EngineerImplementation : IEngineer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
-    private void testEngineer(Engineer e)
+    private static void TestEngineer(Engineer e)
     {
         if (e == null)
             throw new BlNullException("Engineer");
@@ -21,7 +21,7 @@ internal class EngineerImplementation : IEngineer
     }
     public void CreateEngineer(Engineer engineer)
     {
-        testEngineer(engineer);
+        TestEngineer(engineer);
         try
         {
             _dal.Engineer.Create(engineer.Convert<BO.Engineer, DO.Engineer>());
@@ -36,7 +36,7 @@ internal class EngineerImplementation : IEngineer
         if (_dal.GetProjectStatus() == ProjectStatus.Execution)
         {
             if (_dal.Task.Read(t => t?.EngineerId == id) != null)
-                throw new BlIllegalDeletionException("Engineer");
+                throw new BlIllegalException("engineer", "deletion");
         }
         try
         {
@@ -63,13 +63,13 @@ internal class EngineerImplementation : IEngineer
 
     public void UpdateEngineer(Engineer engineer)
     {
-        testEngineer(engineer);
+        TestEngineer(engineer);
         Engineer beforeUpdates = GetEngineer(engineer.Id);
-        if (beforeUpdates.Level > engineer.Level) throw new BlIllegalUpdateException($"level");
+        if (beforeUpdates.Level > engineer.Level) throw new BlIllegalException("level", "update");
         //אהמממ מה
         if (beforeUpdates.Task != engineer.Task && engineer.Task != null)
         {
-            DO.Task task = _dal.Task.Read(engineer.Task.Id) ?? throw new BlIllegalUpdateException($"task");
+            DO.Task task = _dal.Task.Read(engineer.Task.Id) ?? throw new BlIllegalException("level", "update");
             DO.Task updateTask = task with { EngineerId = engineer.Id };
             _dal.Task.Update(updateTask);
         }
