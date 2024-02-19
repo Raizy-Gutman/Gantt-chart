@@ -1,11 +1,12 @@
 ﻿using BlApi;
 using BO;
+using System.Runtime.CompilerServices;
 
 namespace BlImplementation;
 
 internal class TaskImplementation : ITask
 {
-    private readonly DalApi.IDal _dal = DalApi.Factory.Get;
+    private static readonly DalApi.IDal _dal = DalApi.Factory.Get;
     private static void TestTask(BO.Task task)
     {
         if (task == null)
@@ -16,13 +17,30 @@ internal class TaskImplementation : ITask
             throw new BlInvalidException("Alias");
     }
 
-    private static void Calculations(ref BO.Task task)
+    private class Calculations
     {
-
-
-
+        public BO.Task T { get; }
+        public Calculations(BO.Task t)
+        {
+            T = t;
+            t.ForecastDate = t.StartDate == null ? null : ForecastDate();
+            t.Status = Status(t);
+            t.Dependencies = _dal.GetProjectStatus()<ProjectStatus.Execution? Dependencies(): null;
+            t.Engineer = EngineerInTask();
+        }
+        private DateTime ForecastDate() => ((DateTime)(T.StartDate < T.SchedualDate ? T.SchedualDate! : T.StartDate!)).Add((TimeSpan)T.Duration!);
+        public static BO.Status Status(BO.Task t) => t.SchedualDate is null ? BO.Status.Unscheduled : t.StartDate is null ? BO.Status.Scheduled : t.CompleteDate is null ? BO.Status.OnTrack : BO.Status.Done;
+        private List<TaskInList>? Dependencies()
+        {
+            var dependencies = _dal.Dependency.ReadAll(d => d.DependsOnTask == T.Id).Select(d=>d.DependsOnTask);
+            return _dal.Task.ReadAll().Where(t=> dependencies.Any(d=>d==t.Id)).ConvertList<DO.Task, BO.Task, BO.TaskInList>();       
+        }
+        private EngineerInTask? EngineerInTask()
+        {
+            int? eid = _dal.Task.Read(T.Id)!.EngineerId;
+            return eid is null ? null : _dal.Engineer.Read((int)eid)!.Convert<DO.Engineer, EngineerInTask>();
+        }
     }
-
     public void CreateTask(BO.Task task)
     {
         TestTask(task);
@@ -48,7 +66,6 @@ internal class TaskImplementation : ITask
     public BO.Task GetTask(int id)
     {
         BO.Task task = _dal.Task.Read(id)?.Convert<DO.Task, BO.Task>() ?? throw new BlDoesNotExistException($"Task {id}");
-        Calculations(ref task);
         return task;
     }
 

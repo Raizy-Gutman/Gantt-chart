@@ -13,19 +13,19 @@ namespace DalTest
 
         #region casting functions
         //Functions to convert empty values received from the user to default values or previous values.
-        private static string? toStringNullble(string? source, string? defaulte) => string.IsNullOrEmpty(source) ? defaulte : source;
-        private static string toString(string? source, string defaulte) => string.IsNullOrEmpty(source) ? defaulte : source;
-        private static DateTime? toDateTime(string? source, DateTime? defaulte) => string.IsNullOrEmpty(source) ? defaulte : DateTime.Parse(source);
-        private static TimeSpan? toTimeSpan(string? source, TimeSpan? defaulte) => string.IsNullOrEmpty(source) ? defaulte : TimeSpan.Parse(source);
-        private static EngineerExperience toEngineerExperience(string? source, EngineerExperience defaulte)
+        private static string? ToStringNullble(string? source, string? defaulte) => string.IsNullOrEmpty(source) ? defaulte : source;
+        private static string ToString(string? source, string defaulte) => string.IsNullOrEmpty(source) ? defaulte : source;
+        private static DateTime? ToDateTime(string? source, DateTime? defaulte) => string.IsNullOrEmpty(source) ? defaulte : DateTime.Parse(source);
+        private static TimeSpan? ToTimeSpan(string? source, TimeSpan? defaulte) => string.IsNullOrEmpty(source) ? defaulte : TimeSpan.Parse(source);
+        private static EngineerExperience ToEngineerExperience(string? source, EngineerExperience defaulte)
         {
             if (string.IsNullOrEmpty(source)) return defaulte;
-            Enum.TryParse(source, out EngineerExperience level);
+            _ = Enum.TryParse(source, out EngineerExperience level);
             return level;
         }
-        private static int toInt(string? source, int defaulte) => string.IsNullOrEmpty(source) ? defaulte : int.Parse(source);
-        private static double? toDouble(string? source, double? defaulte) => string.IsNullOrEmpty(source) ? defaulte : double.Parse(source);
-        private static bool toBool(string? source, bool defaulte) => string.IsNullOrEmpty(source) ? defaulte : bool.Parse(source);
+        private static int ToInt(string? source, int defaulte) => string.IsNullOrEmpty(source) ? defaulte : int.Parse(source);
+        private static double? ToDouble(string? source, double? defaulte) => string.IsNullOrEmpty(source) ? defaulte : double.Parse(source);
+        private static bool ToBool(string? source, bool defaulte) => string.IsNullOrEmpty(source) ? defaulte : bool.Parse(source);
 
 
         #endregion
@@ -74,17 +74,17 @@ namespace DalTest
                         int id = 0;
                         string? description = Console.ReadLine()?? "description";
                         string? alias = Console.ReadLine() ?? "alias";
-                        bool milestone = toBool(Console.ReadLine(), false);
-                        DateTime? creatAt = toDateTime(Console.ReadLine(), DateTime.Today);
-                        DateTime? scheduledDate = toDateTime(Console.ReadLine(), ((DateTime)creatAt!).AddDays(s_rand.Next(1, 31)));
-                        DateTime? start = toDateTime(Console.ReadLine(), ((DateTime)scheduledDate!).AddDays(s_rand.Next(0, 3)));
-                        TimeSpan? forecastDate = toTimeSpan(Console.ReadLine(), new TimeSpan(s_rand.Next(1, 15), 0, 0));
-                        DateTime? deadLine = toDateTime(Console.ReadLine(), ((DateTime)start!).Add((TimeSpan)forecastDate!));
-                        DateTime? complete = toDateTime(Console.ReadLine(), ((DateTime)deadLine!).AddDays(s_rand.Next(0, 6)));
+                        bool milestone = ToBool(Console.ReadLine(), false);
+                        DateTime? creatAt = ToDateTime(Console.ReadLine(), DateTime.Today);
+                        DateTime? scheduledDate = ToDateTime(Console.ReadLine(), ((DateTime)creatAt!).AddDays(s_rand.Next(1, 31)));
+                        DateTime? start = ToDateTime(Console.ReadLine(), ((DateTime)scheduledDate!).AddDays(s_rand.Next(0, 3)));
+                        TimeSpan? forecastDate = ToTimeSpan(Console.ReadLine(), new TimeSpan(s_rand.Next(1, 15), 0, 0));
+                        DateTime? deadLine = ToDateTime(Console.ReadLine(), ((DateTime)start!).Add((TimeSpan)forecastDate!));
+                        DateTime? complete = ToDateTime(Console.ReadLine(), ((DateTime)deadLine!).AddDays(s_rand.Next(0, 6)));
                         string? productDescription = Console.ReadLine();
                         string? remarks = Console.ReadLine();
-                        int engineerId = toInt(Console.ReadLine(), s_rand.Next(200000000, 400000000));
-                        EngineerExperience complexityLevel = toEngineerExperience(Console.ReadLine(), (EngineerExperience)s_rand.Next(0, 5));
+                        int engineerId = ToInt(Console.ReadLine(), s_rand.Next(200000000, 400000000));
+                        EngineerExperience complexityLevel = ToEngineerExperience(Console.ReadLine(), (EngineerExperience)s_rand.Next(0, 5));
                         s_dal.Task!.Create(new(id, description, alias, milestone, creatAt, start, scheduledDate, forecastDate, deadLine, complete, productDescription, remarks, engineerId, complexityLevel));
                         break;
 
@@ -122,19 +122,19 @@ namespace DalTest
                             int updateId = int.Parse(Console.ReadLine()!);
                             DO.Task? updateTask = s_dal.Task!.Read(updateId) ?? throw new DalDoesNotExistException($"Can't update, task with ID: {updateId} does not exist!!");
                             Console.WriteLine("For each detaile, if it's need to be update, insert updated value. else,  press ENTER.\n");
-                            string updatedDescription = toString(Console.ReadLine(), updateTask.Description);
-                            string updatedAlias = toString(Console.ReadLine(), updateTask.Alias);
-                            bool updatedMilestone = toBool(Console.ReadLine(), updateTask.IsMilestone);
-                            DateTime? updatedCreatAt = toDateTime(Console.ReadLine(), updateTask.CreatedAtDate);
-                            DateTime? updatedScheduledDate = toDateTime(Console.ReadLine(), updateTask.SchedualDate);
-                            DateTime? updatedStart = toDateTime(Console.ReadLine(), updateTask.StartDate);
-                            TimeSpan? updatedForecastDate = toTimeSpan(Console.ReadLine(), updateTask.Duration);
-                            DateTime? updatedDeadLine = toDateTime(Console.ReadLine(), updateTask.DeadlineDate);
-                            DateTime? updatedComplete = toDateTime(Console.ReadLine(), updateTask.CompleteDate);
-                            string? updatedProductDescription = toStringNullble(Console.ReadLine(), updateTask.Deliverables);
-                            string? updatedRemarks = toStringNullble(Console.ReadLine(), updateTask.Remarks);
-                            int updatedEngineer = toInt(Console.ReadLine(), (int)updateTask.EngineerId!);
-                            EngineerExperience updatedComplexityLevel = toEngineerExperience(Console.ReadLine(), updateTask.ComplexityLevel);
+                            string updatedDescription = ToString(Console.ReadLine(), updateTask.Description);
+                            string updatedAlias = ToString(Console.ReadLine(), updateTask.Alias);
+                            bool updatedMilestone = ToBool(Console.ReadLine(), updateTask.IsMilestone);
+                            DateTime? updatedCreatAt = ToDateTime(Console.ReadLine(), updateTask.CreatedAtDate);
+                            DateTime? updatedScheduledDate = ToDateTime(Console.ReadLine(), updateTask.SchedualDate);
+                            DateTime? updatedStart = ToDateTime(Console.ReadLine(), updateTask.StartDate);
+                            TimeSpan? updatedForecastDate = ToTimeSpan(Console.ReadLine(), updateTask.Duration);
+                            DateTime? updatedDeadLine = ToDateTime(Console.ReadLine(), updateTask.DeadlineDate);
+                            DateTime? updatedComplete = ToDateTime(Console.ReadLine(), updateTask.CompleteDate);
+                            string? updatedProductDescription = ToStringNullble(Console.ReadLine(), updateTask.Deliverables);
+                            string? updatedRemarks = ToStringNullble(Console.ReadLine(), updateTask.Remarks);
+                            int updatedEngineer = ToInt(Console.ReadLine(), (int)updateTask.EngineerId!);
+                            EngineerExperience updatedComplexityLevel = ToEngineerExperience(Console.ReadLine(), updateTask.ComplexityLevel);
                             s_dal.Task.Update(new(updateId, updatedDescription, updatedAlias, updatedMilestone, updatedCreatAt, updatedStart, updatedScheduledDate, updatedForecastDate, updatedDeadLine, updatedComplete, updatedProductDescription, updatedRemarks, updatedEngineer, updatedComplexityLevel));
                         }
                         catch (DalDoesNotExistException ex)
@@ -167,8 +167,8 @@ namespace DalTest
                         int id = int.Parse(Console.ReadLine()!);
                         string? name = Console.ReadLine();
                         string? email = Console.ReadLine();
-                        EngineerExperience level = toEngineerExperience(Console.ReadLine(), (EngineerExperience)s_rand.Next(0, 5));
-                        double? cost = toDouble(Console.ReadLine(), s_rand.Next(7000, 15000));
+                        EngineerExperience level = ToEngineerExperience(Console.ReadLine(), (EngineerExperience)s_rand.Next(0, 5));
+                        double? cost = ToDouble(Console.ReadLine(), s_rand.Next(7000, 15000));
                         try
                         {
                             s_dal.Engineer!.Create(new(id, name, email, level, cost));
@@ -214,10 +214,10 @@ namespace DalTest
                             Engineer updatedEngineer = s_dal.Engineer.Read(updatedId) ?? throw new DalDoesNotExistException($"Can't update, engineer with ID {updatedId} does not exist!!");
                             Console.Write("you can update name, email, level and cost");
                             Console.WriteLine("For each detaile, if it's need to be update, insert updated value. else,  press ENTER.\n");
-                            string? updatedName = toStringNullble(Console.ReadLine(), updatedEngineer.Name);
-                            string? updetedEmail = toStringNullble(Console.ReadLine(), updatedEngineer.Email);
-                            EngineerExperience updatedLevel = toEngineerExperience(Console.ReadLine(), updatedEngineer.Level);
-                            double? updatedCost = toDouble(Console.ReadLine(), updatedEngineer.Cost);
+                            string? updatedName = ToStringNullble(Console.ReadLine(), updatedEngineer.Name);
+                            string? updetedEmail = ToStringNullble(Console.ReadLine(), updatedEngineer.Email);
+                            EngineerExperience updatedLevel = ToEngineerExperience(Console.ReadLine(), updatedEngineer.Level);
+                            double? updatedCost = ToDouble(Console.ReadLine(), updatedEngineer.Cost);
                             s_dal.Engineer!.Update(new(updatedId, updatedName, updetedEmail, updatedLevel, updatedCost));
                         }
                         catch (DalDoesNotExistException ex)
@@ -281,8 +281,8 @@ namespace DalTest
                             Console.WriteLine("Enter the requested dependency number, and two updated task codes:");
                             int updatedId = int.Parse(Console.ReadLine()!);
                             Dependency? updatedDependency = s_dal.Dependency.Read(updatedId) ?? throw new DalDoesNotExistException($"Can't update, dependency with ID {updatedId} does not exist!!");
-                            int updatedTask = toInt(Console.ReadLine(), updatedDependency.DependentTask);
-                            int updatedDepentOn = toInt(Console.ReadLine(), updatedDependency.DependsOnTask);
+                            int updatedTask = ToInt(Console.ReadLine(), updatedDependency.DependentTask);
+                            int updatedDepentOn = ToInt(Console.ReadLine(), updatedDependency.DependsOnTask);
                             s_dal.Dependency!.Update(new(updatedId, updatedTask, updatedDepentOn));
                         }
                         catch (DalDoesNotExistException ex) { Console.WriteLine(ex.Message); }

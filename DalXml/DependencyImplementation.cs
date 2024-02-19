@@ -44,11 +44,9 @@ internal class DependencyImplementation : IDependency
     public Dependency? Read(Func<Dependency, bool> filter) => XMLTools.LoadListFromXMLElement(dependencyRoot).Elements()
         .Select(e => XMLTools.ToDependency(e)).FirstOrDefault(filter);
 
-    public IEnumerable<Dependency?> ReadAll(Func<Dependency?, bool>? filter = null) =>
-        filter is null ?
-        XMLTools.LoadListFromXMLElement(dependencyRoot).Elements().Select(e => XMLTools.ToDependency(e))
-        : XMLTools.LoadListFromXMLElement(dependencyRoot).Elements().Select(e => XMLTools.ToDependency(e)).Where(filter);
-
+    public IEnumerable<Dependency> ReadAll(Func<Dependency, bool>? filter = null) =>
+        XMLTools.LoadListFromXMLElement(dependencyRoot).Elements().Select(e => XMLTools.ToDependency(e)).Where(filter is null? x=>true: filter);
+        
     public void Update(Dependency dependency)
     {
         Delete(dependency.Id);

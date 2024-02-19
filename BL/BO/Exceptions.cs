@@ -31,7 +31,7 @@ public class BlNullException : Exception
 
 public class BlIllegalException : Exception
 {
-    public string propertyName { get; private set; }
-    public string funcName { get; private set; }
-    public BlIllegalException(string name, string func) : base($"Invalid {func} {name}") { propertyName = name; funcName = func; }
+    public string PropertyName { get; private set; }
+    public string FuncName { get; private set; }
+    public BlIllegalException(string name, string func) : base($"Invalid {func} {name}") { PropertyName = name; FuncName = func; }
 }

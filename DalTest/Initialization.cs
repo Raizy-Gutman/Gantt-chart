@@ -171,8 +171,9 @@ public static class Initialization
         for (int i = 0; i < Descriptions.Length; i++)
         {
             DateTime createdAtDate = DateTime.Now.AddDays(s_rand.Next(0, 14));
+            TimeSpan duration = new (s_rand.Next(1, 4), 0, 0, 0);
             EngineerExperience complexityLevel = (EngineerExperience)s_rand.Next(0, 5);
-            DO.Task newTask = new(0, Descriptions[i], Aliases[i], false, createdAtDate, null, null, null, null, null, Deliverables[i], Comments[i], null, complexityLevel);
+            DO.Task newTask = new(0, Descriptions[i], Aliases[i], false, createdAtDate, null, null, duration, null, null, Deliverables[i], Comments[i], null, complexityLevel);
             s_dal!.Task.Create(newTask);
         }
     }

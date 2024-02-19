@@ -39,10 +39,10 @@ internal class DependencyImplementation : IDependency
         return DataSource.Dependencies.FirstOrDefault(filter!);
     }
 
-    public IEnumerable<Dependency?> ReadAll(Func<Dependency?, bool>? filter = null)
+    public IEnumerable<Dependency> ReadAll(Func<Dependency, bool>? filter = null)
     {
         if (filter == null)
-            return DataSource.Dependencies.Select(d => d);
+            return DataSource.Dependencies;
         else
             return DataSource.Dependencies.Where(filter!);
     }

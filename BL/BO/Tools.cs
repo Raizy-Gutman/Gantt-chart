@@ -38,11 +38,13 @@ public static class Tools
         return destination;
     }
 
-    public static BO.Engineer ConvertToBEngineer(this DalApi.IDal d, DO.Engineer source) 
+    public static List<TD> ConvertList<TS,TE,TD>(this IEnumerable<TS> list) where TE: new() where TD : new()
     {
-        Engineer dest = source.Convert<DO.Engineer, BO.Engineer>();
-        DO.Task? t = d.Task.Read(t => t?.EngineerId == dest.Id);
-        dest.Task = t == null ? null : t.Convert<DO.Task, BO.TaskInEngineer>();
-        return dest;
+        return list.Select(d => d.Convert<TS, TE>()).Select(e => e.Convert<TE, TD>()).ToList();
+    }
+
+    public static TD? Convert<TS, TE, TD>(this TS ts) where TE : new() where TD : new()
+    {
+        return ts.Convert<TS, TE>().Convert<TE, TD>();
     }
 }

@@ -51,7 +51,10 @@ internal class EngineerImplementation : IEngineer
     public Engineer GetEngineer(int id)
     {
         DO.Engineer de = _dal.Engineer.Read(id) ?? throw new BlDoesNotExistException($"Engineer {id}");
-        return _dal.ConvertToBEngineer(de);
+        TaskInEngineer? t = _dal.Task.Read(t => t.EngineerId == de.Id)?.Convert<DO.Task, BO.Task, BO.TaskInEngineer>() ?? null;
+        BO.Engineer be = de.Convert<DO.Engineer, BO.Engineer>();
+        be.Task = t;
+        return be;
     }
 
     //Func<Engineer, bool>? filter

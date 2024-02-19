@@ -16,8 +16,8 @@ internal static class DataSource
         internal static DateTime? EndDate { get; set; }
         internal static ProjectStatus? ProjectStatus { get; set; } = 0;
     }
-    internal static List<DO.Task?> Tasks = new();
-    internal static List<DO.Dependency?> Dependencies = new();
-    internal static List<DO.Engineer?> Engineers = new();
+    internal static List<DO.Task> Tasks { get; } = new();
+    internal static List<DO.Dependency> Dependencies { get; } = new();
+    internal static List<DO.Engineer> Engineers { get; } = new();
 }
 

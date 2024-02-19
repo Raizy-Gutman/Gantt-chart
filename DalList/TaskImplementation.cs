@@ -39,7 +39,7 @@ internal class TaskImplementation : ITask
         return DataSource.Tasks.FirstOrDefault(filter!);
     }
 
-    public IEnumerable<Task?> ReadAll(Func<Task?, bool>? filter = null)
+    public IEnumerable<Task> ReadAll(Func<Task, bool>? filter = null)
     { 
         return filter == null ? DataSource.Tasks.Select(t => t) : DataSource.Tasks.Where(filter);
     }

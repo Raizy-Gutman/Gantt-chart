@@ -37,7 +37,7 @@ internal class EngineerImplementation : IEngineer
     public Engineer? Read(Func<Engineer, bool> filter) =>
         XMLTools.LoadListFromXMLSerializer<Engineer>(engineerRoot).FirstOrDefault(filter) ?? null;
 
-    public IEnumerable<Engineer?> ReadAll(Func<Engineer?, bool>? filter = null)
+    public IEnumerable<Engineer> ReadAll(Func<Engineer, bool>? filter = null)
     {
         var engineersList = XMLTools.LoadListFromXMLSerializer<Engineer>(engineerRoot);
         return filter == null ? engineersList.Select(e => e) : engineersList.Where(filter);
