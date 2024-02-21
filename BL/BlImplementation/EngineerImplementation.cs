@@ -19,19 +19,19 @@ internal class EngineerImplementation : IEngineer
         if (!MailAddress.TryCreate(e.Email, out _))
             throw new BlInvalidException("Email");
     }
-    public void CreateEngineer(Engineer engineer)
+    public int CreateEngineer(BO.Engineer engineer)
     {
         TestEngineer(engineer);
         try
         {
-            _dal.Engineer.Create(engineer.Convert<BO.Engineer, DO.Engineer>());
+           return  _dal.Engineer.Create(engineer.Convert<BO.Engineer, DO.Engineer>());
         }
         catch (DO.DalAlreadyExistsException e)
         {
             throw new BlAlreadyExistsException(e);
         }
     }
-    public void DeleteEngineer(int id)
+    public void DeleteEngineer(int? id)
     {
         if (_dal.GetProjectStatus() == ProjectStatus.Execution)
         {
@@ -48,7 +48,7 @@ internal class EngineerImplementation : IEngineer
         }
     }
 
-    public Engineer GetEngineer(int id)
+    public Engineer GetEngineer(int? id)
     {
         DO.Engineer de = _dal.Engineer.Read(id) ?? throw new BlDoesNotExistException($"Engineer {id}");
         TaskInEngineer? t = _dal.Task.Read(t => t.EngineerId == de.Id)?.Convert<DO.Task, BO.Task, BO.TaskInEngineer>() ?? null;
