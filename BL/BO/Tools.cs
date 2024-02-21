@@ -1,6 +1,8 @@
 ﻿
+using System.Collections;
 using System.ComponentModel;
 using System.Reflection;
+using System.Text;
 
 namespace BO;
 public static class Tools
@@ -47,4 +49,25 @@ public static class Tools
     {
         return ts.Convert<TS, TE>().Convert<TE, TD>();
     }
+    public static string ToStringProperties<T>(this T obj)
+    {
+        var result = new StringBuilder();
+        foreach (var prop in typeof(T).GetProperties())
+        { 
+            var value = prop.GetValue(obj);
+            if(prop.PropertyType.GetInterfaces().Contains(typeof(IEnumerable)))
+            {
+                var sb = new StringBuilder();
+                foreach (var item in (IEnumerable)prop.GetValue(obj, null)!)
+                {
+                    sb.Append($"\t\n{item}");
+                }
+                value = sb.ToString();
+            }            
+            result.Append($"{prop.Name}:{value}\n");
+        }
+        return result.ToString();
+    }
+
+   
 }

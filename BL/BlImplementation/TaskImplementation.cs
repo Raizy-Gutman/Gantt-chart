@@ -71,7 +71,7 @@ internal class TaskImplementation : ITask
 
     public IEnumerable<BO.TaskInList> ReadAllTasks(/*Func<BO.Task, bool>? filter*/)
     {
-        return from DO.Task t in _dal.Task.ReadAll()
+        return from DO.Task t in _dal.Task.ReadAll(t=>!t.IsMilestone)
                select new BO.TaskInList { Id = t.Id, Description = t.Description, Alias = t.Alias, Status = 0 /*איך לחשב סטטוס*/};
     }
     public void UpdateTask(BO.Task task)

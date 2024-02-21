@@ -9,9 +9,10 @@ public class Milestone
     public DateTime? SchedualDate { get; set; }
     public DateTime? DeadlineDate { get; set; }
     public DateTime? CompleteDate { get; set; }
-    public Double? CompletionPercentage { get; set; }
+    public double? CompletionPercentage { get; set; }
     public string? Remarks { get; set; }
     public List<TaskInList> Dependencies {  get; set; }
 
+    public override string ToString() => this.ToStringProperties();
 }
 
