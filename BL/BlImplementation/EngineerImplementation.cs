@@ -31,7 +31,7 @@ internal class EngineerImplementation : IEngineer
             throw new BlAlreadyExistsException(e);
         }
     }
-    public void DeleteEngineer(int? id)
+    public void DeleteEngineer(int id)
     {
         if (_dal.GetProjectStatus() == ProjectStatus.Execution)
         {
@@ -48,7 +48,7 @@ internal class EngineerImplementation : IEngineer
         }
     }
 
-    public Engineer GetEngineer(int? id)
+    public Engineer GetEngineer(int id)
     {
         DO.Engineer de = _dal.Engineer.Read(id) ?? throw new BlDoesNotExistException($"Engineer {id}");
         TaskInEngineer? t = _dal.Task.Read(t => t.EngineerId == de.Id)?.Convert<DO.Task, BO.Task, BO.TaskInEngineer>() ?? null;

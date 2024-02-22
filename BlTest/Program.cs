@@ -13,8 +13,8 @@ using System.Globalization;
 namespace BlTest
 {
     internal class Program
-    {
-
+    {//איפה לבצע את כל הבדיקות והזריקות???
+        //לשאול את יהודית אם הוא עובר דרך הטסט ואיפה נראה לה נכון לזרוק את השגיאות.
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
         static void Main()
@@ -79,39 +79,44 @@ namespace BlTest
                         Console.WriteLine("Enter Engineer details:");
                         Console.Write("Enter ID: ");
                         //int id = int.Parse(Console.ReadLine());
-                        int? id = null;
+                        int id = -1;
                         if (int.TryParse(Console.ReadLine(), out int result))
                         {
                             id = result;
                         }
                         Console.Write("Enter Name: ");
-                        string Name = Console.ReadLine()??"no name";
+                        string Name = Console.ReadLine()??"";
                         Console.Write("Enter Email: ");
-                        string Email = Console.ReadLine()??"no email";
+                        string Email = Console.ReadLine()??"";
                         Console.Write("Enter  Level:");
-                        BO.EngineerExperience level = (BO.EngineerExperience)Enum.Parse(typeof(BO.EngineerExperience), Console.ReadLine(), true);
-                        double cost;
-                        if (level == 0)
-                            cost = 200;
-                        else
-                            cost = 400;
+                        BO.EngineerExperience level = (BO.EngineerExperience)Enum.Parse(typeof(BO.EngineerExperience), Console.ReadLine()??"0", true);// או שצריך לכתוב:??"Beginnerלשאול את יהודית אם זה נכון"
+                        Console.Write("Enter Cost: ");
+                        double cost = -1;
+                        if (int.TryParse(Console.ReadLine(), out int resultParse))
+                        {
+                            cost = resultParse;
+                        }
                         Console.Write("Did you want assign a task to an engineer? (Y/N)");
                         string ans = Console.ReadLine() ?? throw new FormatException("Wrong input");
                         TaskInEngineer? taskToEngineer = null;
-                        if (ans == "Y")
+                        if (ans == "Y")//הTaskImplementation כבר יבדוק אותם ויזרוק שגיאות? או שצריך לבדוק אותם כאן???
                         {
                             Console.Write("Enter Id Task For Engineer:");
                             string strIdTask = Console.ReadLine()??"";
-                            int idTask;
-                            if (!int.TryParse(strIdTask, out idTask))
-                                throw new FormatException("Wrong input");
+                            int idTask = -1;
+                            if (int.TryParse(strIdTask, out int resoultTaskId))
+                            {
+                                idTask = resoultTaskId;
+                            };
+                            //if (!int.TryParse(strIdTask, out idTask))
+                            //    throw new FormatException("Wrong input");
 
                             Console.Write("Enter Alias Task For Engineer:");
                             string aliasTask = Console.ReadLine()??"";
-                            if (aliasTask == string.Empty)
-                                throw new FormatException("Wrong input");
+                            //if (aliasTask == string.Empty)
+                            //    throw new FormatException("Wrong input");
 
-                            taskToEngineer = new BO.TaskInEngineer()
+                            taskToEngineer = new ()
                             {
                                 Id = idTask,
                                 Alias = aliasTask
@@ -119,7 +124,7 @@ namespace BlTest
                         }
 
 
-                        BO.Engineer newEngineer = new BO.Engineer()
+                        BO.Engineer newEngineer = new ()
                         {
                             Id = id,
                             Name = Name,
@@ -142,7 +147,7 @@ namespace BlTest
 
                     case "2":
                         Console.Write("Enter Engineer ID to delete: ");
-                        int? engineerIdToDelete = null;
+                        int engineerIdToDelete = -1;
                         if (int.TryParse(Console.ReadLine(), out int answer))
                         {
                             engineerIdToDelete = answer;
@@ -160,10 +165,10 @@ namespace BlTest
 
                     case "3":
                         Console.Write("Enter Engineer ID to get details: ");
-                        int? engineerIdToGetDetails = null;
+                        int engineerIdToGetDetails = -1;
                         if (int.TryParse(Console.ReadLine(), out int answerb))
                         {
-                            engineerIdToDelete = answerb;
+                            engineerIdToGetDetails = answerb;
                         }
                         try
                         {
@@ -189,29 +194,64 @@ namespace BlTest
 
                     case "5":
                         Console.Write("Enter updated Engineer details: ");
-                        int idUpdate = int.Parse(Console.ReadLine());
+                        Console.Write("Enter ID: ");
+                        int idUpdate = -1;
+                        if (int.TryParse(Console.ReadLine(), out int resultIdUpdate))
+                        {
+                            idUpdate = resultIdUpdate;
+                        }
                         Console.Write("Enter updated Name: ");
-                        string NameUpdate = Console.ReadLine();
+                        string NameUpdate = Console.ReadLine()??"";
                         Console.Write("Enter updated Email: ");
-                        string EmailUpdate = Console.ReadLine();
+                        string EmailUpdate = Console.ReadLine()??"";
                         Console.Write("Enter updated Level: ");
-                        BO.EngineerExperience levelUpdate = (BO.EngineerExperience)Enum.Parse(typeof(BO.EngineerExperience), Console.ReadLine(), true);
-                        double CostUpdate;
-                        if (levelUpdate == 0)
-                            CostUpdate = 200;
-                        else
-                            CostUpdate = 400;
-                        BO.Engineer UpdateEngineer = new BO.Engineer()
+                        BO.EngineerExperience levelUpdate = (BO.EngineerExperience)Enum.Parse(typeof(BO.EngineerExperience), Console.ReadLine()??"0", true);//אותו שאלה
+                        Console.Write("Enter Cost: ");
+                        double CostUpdate = -1;
+                        if (int.TryParse(Console.ReadLine(), out int resultParseCost))
+                        {
+                            CostUpdate = resultParseCost;
+                        }
+                        Console.Write("Did you want assign a task to an engineer? (Y/N)");
+                        string ansYOrN = Console.ReadLine() ?? throw new FormatException("Wrong input");
+                        TaskInEngineer? taskToUpdateEngineer = null;
+                        if (ansYOrN == "Y")//הTaskImplementation כבר יבדוק אותם ויזרוק שגיאות? או שצריך לבדוק אותם כאן???
+                        {
+                            Console.Write("Enter Id Task For Engineer:");
+                            string strIdTask = Console.ReadLine()??"";
+                            int idTask = -1;
+                            if (int.TryParse(strIdTask, out int resoultTaskId))
+                            {
+                                idTask = resoultTaskId;
+                            };
+                            //if (!int.TryParse(strIdTask, out idTask))
+                            //    throw new FormatException("Wrong input");
+
+                            Console.Write("Enter Alias Task For Engineer:");
+                            string aliasTask = Console.ReadLine()??"";
+                            //if (aliasTask == string.Empty)
+                            //    throw new FormatException("Wrong input");
+
+                            taskToUpdateEngineer = new()
+                            {
+                                Id = idTask,
+                                Alias = aliasTask
+                            };
+                        }
+
+
+                        BO.Engineer updateEngineer = new()
                         {
                             Id = idUpdate,
                             Name = NameUpdate,
                             Email = EmailUpdate,
                             Level = levelUpdate,
                             Cost = CostUpdate,
+                            Task = taskToUpdateEngineer//לבדוק איך הפונקציה של update עובדת ואם היא לוקחת את הערך הזה?
                         };
                         try
                         {
-                            s_bl.Engineer.UpdateEngineer(UpdateEngineer);
+                            s_bl.Engineer.UpdateEngineer(updateEngineer);
                             Console.WriteLine($"Engineer with id: {idUpdate} was succesfully updated!");
                         }
                         catch (BlDoesNotExistException ex)
@@ -221,7 +261,7 @@ namespace BlTest
                         break;
                     case "6":
                         Console.WriteLine("retuning to main");
-                        return; // Returning to the main menu
+                        return; // Returning to the main menu איך??
                     default:
                         Console.WriteLine("Invalid choice. Please try again.");
                         break;
@@ -242,18 +282,18 @@ namespace BlTest
                 Console.WriteLine("6. Back to Main Menu");
 
                 Console.Write("Enter your choice: ");
-                string choice = Console.ReadLine();
+                string? choice = Console.ReadLine();
                 switch (choice)
                 {
                     case "1":
                         Console.WriteLine("Enter Task details:");
                         Console.Write("Enter Task Description: ");
-                        string taskDescription = Console.ReadLine();
+                        string taskDescription = Console.ReadLine()??"";
                         Console.Write("Enter Task Alias: ");
-                        string taskAlias = Console.ReadLine();
+                        string taskAlias = Console.ReadLine()??"";
                         Console.Write("Enter list of dependencies: ");
                         //the dependencies that this task is dependent on
-                        List<BO.TaskInList> dependencies = new List<BO.TaskInList>();
+                        List<BO.TaskInList> dependencies = new();
                         Console.WriteLine("Enter dependency id");
                         int dependencyId = int.Parse(Console.ReadLine() ?? "-1");
                         while (dependencyId > 0)
@@ -262,24 +302,24 @@ namespace BlTest
                             dependencies.Add(new BO.TaskInList()
                             {
                                 Id = task.Id,
-                                Alias = task.Alias,
                                 Description = task.Description,
-                                Status = task.Status
+                                Alias = task.Alias,
+                                Status = task.Status//לשאול את יהודית אם הstatus יכול להיות nullגם במשימה וגם במשימה ברשימה
                             });
                             Console.WriteLine("enter another task, your task is dependent on it");
                             dependencyId = int.Parse(Console.ReadLine() ?? "-1");
                         }
                         Console.Write("Enter Required Effort Time: ");
-                        TimeSpan requiredEffortTime = TimeSpan.Parse(Console.ReadLine());
+                        TimeSpan requiredEffortTime = TimeSpan.Parse(Console.ReadLine()??"7.00:00:00");
 
-                        Console.Write("Enter Short Description for the Product: ");
-                        string deliverables = Console.ReadLine();
+                        Console.Write("Enter deliverables: ");
+                        string deliverables = Console.ReadLine()??"";
                         Console.Write("Enter Remarks: ");
-                        string remarks = Console.ReadLine();
+                        string remarks = Console.ReadLine()??"";
                         Console.Write("Enter Engineer Id in task: ");
-                        int engineerId = int.Parse(Console.ReadLine());
-                        BO.Engineer engineer = s_bl.Engineer.GetEngineer(engineerId);
-                        BO.EngineerInTask engineerInTask = new BO.EngineerInTask();
+                        int engineerId = int.Parse(Console.ReadLine()??"-1");
+                        BO.Engineer engineer = s_bl.Engineer.GetEngineer(engineerId);//לבדוק אם הוא בודק
+                        BO.EngineerInTask? engineerInTask = null;
                         if (engineer != null)
                         {
                             try
@@ -296,8 +336,8 @@ namespace BlTest
                             }
                         }
                         Console.Write("Enter Complexity Level: ");
-                        BO.EngineerExperience complexityLevel = (BO.EngineerExperience)Enum.Parse(typeof(BO.EngineerExperience), Console.ReadLine());
-                        BO.Task newTask = new BO.Task()
+                        BO.EngineerExperience complexityLevel = (BO.EngineerExperience)Enum.Parse(typeof(BO.EngineerExperience), Console.ReadLine()??"0");//???
+                        BO.Task newTask = new()
                         {
                             Id = 0,
                             Description = taskDescription,
@@ -328,7 +368,7 @@ namespace BlTest
                         break;
                     case "2":
                         Console.Write("Enter Task ID to delete: ");
-                        var taskIdToDelete = int.Parse(Console.ReadLine());
+                        int taskIdToDelete = int.Parse(Console.ReadLine()??"-1");
                         try
                         {
                             s_bl.Task.DeleteTask(taskIdToDelete);
@@ -340,7 +380,7 @@ namespace BlTest
                         break;
                     case "3":
                         Console.Write("Enter Task ID to get details: ");
-                        var taskIdToGetDetails = int.Parse(Console.ReadLine());
+                        int taskIdToGetDetails = int.Parse(Console.ReadLine()??"-1");
                         try
                         {
                             var taskDetails = s_bl.Task.GetTask(taskIdToGetDetails);
@@ -363,15 +403,15 @@ namespace BlTest
                     case "5":
                         Console.WriteLine("Enter Task details to update:");
                         Console.Write("Enter Task ID: ");
-                        int taskIdUpdate = int.Parse(Console.ReadLine());
+                        int taskIdUpdate = int.Parse(Console.ReadLine()??"-1");//נראה לי עדיף לעשות trypars
                         BO.Task updateTask = s_bl.Task.GetTask(taskIdUpdate);
                         Console.Write("Enter Task Description: ");
-                        updateTask.Description = Console.ReadLine();
+                        updateTask.Description = Console.ReadLine()??"";
                         Console.Write("Enter Task Alias: ");
-                        updateTask.Alias = Console.ReadLine();
+                        updateTask.Alias = Console.ReadLine()??"";
                         Console.Write("Enter Status: ");
-                        updateTask.Status = (BO.Status)Enum.Parse(typeof(BO.Status), Console.ReadLine());
-                        List<BO.TaskInList> newDependencies = new List<BO.TaskInList>();
+                        updateTask.Status = (BO.Status)Enum.Parse(typeof(BO.Status), Console.ReadLine()??"0");//זה טוב?
+                        List<BO.TaskInList> newDependencies = new();
                         Console.WriteLine("Enter dependency id");
                         int newDependencyId = int.Parse(Console.ReadLine() ?? "-1");
                         while (newDependencyId > 0)
@@ -389,16 +429,16 @@ namespace BlTest
                         }
                         updateTask.Dependencies= newDependencies;
                         Console.Write("Enter Required Effort Time: ");
-                        updateTask.Duration = TimeSpan.Parse(Console.ReadLine());
+                        updateTask.Duration = TimeSpan.Parse(Console.ReadLine()??"7.00:00:00");
                         Console.Write("Enter Short Description for the Product: ");
                         updateTask.Deliverables = Console.ReadLine();
                         Console.Write("Enter Remarks: ");
                         updateTask.Remarks = Console.ReadLine();
                         Console.Write("Enter Engineer Id: ");
-                        BO.Engineer newEngineer = s_bl.Engineer.GetEngineer(int.Parse(Console.ReadLine()));
+                        BO.Engineer newEngineer = s_bl.Engineer.GetEngineer(int.Parse(Console.ReadLine()??"-1"));
                         updateTask.Engineer = new EngineerInTask { Id = newEngineer.Id, Name = newEngineer.Name };
                         Console.Write("Enter Complexity Level: ");
-                        updateTask.ComplexityLevel = (BO.EngineerExperience)Enum.Parse(typeof(BO.EngineerExperience), Console.ReadLine());
+                        updateTask.ComplexityLevel = (BO.EngineerExperience)Enum.Parse(typeof(BO.EngineerExperience), Console.ReadLine()??"0");//??
                         try
                         {
                             s_bl.Task.UpdateTask(updateTask);
@@ -411,7 +451,7 @@ namespace BlTest
 
                     case "6":
                         Console.WriteLine("returning to main");
-                        return; // returning to the main menu
+                        return; // how returning to the main menu?
 
                     default:
                         Console.WriteLine("Invalid choice. Please try again.");
@@ -433,7 +473,7 @@ namespace BlTest
                 Console.WriteLine("4. Back to Main Menu");
 
                 Console.Write("Enter your choice: ");
-                string choice = Console.ReadLine();
+                string choice = Console.ReadLine()??"";
 
                 switch (choice)
                 {
@@ -503,23 +543,24 @@ namespace BlTest
                         if (int.TryParse(Console.ReadLine(), out int milestoneIdToUpdate))
                         {
                             try
-                            {
-                                var existingMilestone = s_bl.Milestone.GetMilestone(milestoneIdToUpdate);
+                            {//במיילסטון אין את הtest נראה לי צריך לבדוק את זה.
+                                BO.Milestone? existingMilestone = s_bl.Milestone.GetMilestone(milestoneIdToUpdate);
                                 if (existingMilestone != null)
                                 {
                                     // Get updated values from the user
-                                    Console.Write("Enter new Alias: ");
-                                    string newAlias = Console.ReadLine();
                                     Console.Write("Enter new Description: ");
-                                    string newDescription = Console.ReadLine();
+                                    string newDescription = Console.ReadLine()??"";
+                                    Console.Write("Enter new Alias: ");
+                                    string newAlias = Console.ReadLine()??"";
                                     Console.Write("Enter new Remarks: ");
-                                    string newRemarks = Console.ReadLine();
-                                    // Update the milestone
-                                    existingMilestone.Alias = newAlias;
-                                    existingMilestone.Description = newDescription;
-                                    existingMilestone.Remarks = newRemarks;
+                                    string newRemarks = Console.ReadLine()??"";
+                                    string comments = "";//לשאול את יהודית למה צריך את זה הרי אין את זה בישות?!
+                                    //// Update the milestone
+                                    //existingMilestone.Description = newDescription;
+                                    //existingMilestone.Alias = newAlias;
+                                    //existingMilestone.Remarks = newRemarks;
                                     // Update the milestone in the data layer
-                                    var updatedMilestone = s_bl.Milestone.UpdateMilestone(existingMilestone);
+                                    var updatedMilestone = s_bl.Milestone.UpdateMilestone(milestoneIdToUpdate, newAlias, newDescription, comments);
                                     Console.WriteLine("Milestone updated successfully!");
                                 }
                             }
