@@ -7,9 +7,6 @@ using System.Text;
 namespace BO;
 public static class Tools
 {
-
-
-
     public static ProjectStatus? GetProjectStatus(this DalApi.IDal d) => (ProjectStatus?)d.ProjectStatus;
     public static void SetProjectStatus(this DalApi.IDal d, ProjectStatus s) => d.ProjectStatus = (DO.ProjectStatus)s;
     public static TD Convert<TS, TD>(this TS source) where TD : new()
@@ -39,15 +36,9 @@ public static class Tools
         }
         return destination;
     }
-
-    public static List<TD> ConvertList<TS,TE,TD>(this IEnumerable<TS> list) where TE: new() where TD : new()
+    public static List<TD> ConvertList<TS,TD>(this IEnumerable<TS> list) where TD : new()
     {
-        return list.Select(d => d.Convert<TS, TE>()).Select(e => e.Convert<TE, TD>()).ToList();
-    }
-
-    public static TD? Convert<TS, TE, TD>(this TS ts) where TE : new() where TD : new()
-    {
-        return ts.Convert<TS, TE>().Convert<TE, TD>();
+        return list.Select(d => d.Convert<TS, TD>()).ToList();
     }
     public static string ToStringProperties<T>(this T obj)
     {
@@ -55,7 +46,7 @@ public static class Tools
         foreach (var prop in typeof(T).GetProperties())
         { 
             var value = prop.GetValue(obj);
-            if(prop.PropertyType.GetInterfaces().Contains(typeof(IEnumerable)))
+            if(prop.PropertyType.GetInterfaces().Contains(typeof(IList)))
             {
                 var sb = new StringBuilder();
                 foreach (var item in (IEnumerable)prop.GetValue(obj, null)!)
@@ -68,6 +59,4 @@ public static class Tools
         }
         return result.ToString();
     }
-
-   
 }

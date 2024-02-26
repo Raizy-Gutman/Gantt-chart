@@ -33,7 +33,11 @@ public class BlIllegalException : Exception
 {
     public string PropertyName { get; private set; }
     public string FuncName { get; private set; }
-    public BlIllegalException(string name, string func) : base($"Invalid {func} {name}") { PropertyName = name; FuncName = func; }
+    public string? Details {  get; private set; }
+    public BlIllegalException(string name, string func, string? details = null) : base($"Invalid {func} {name}.")
+    {
+        PropertyName = name; FuncName = func; Details = details;
+    }
 }
 public class BlDeletionImpossible : Exception
 {
