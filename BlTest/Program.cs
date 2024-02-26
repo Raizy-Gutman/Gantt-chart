@@ -5,8 +5,8 @@ using System.Globalization;
 namespace BlTest
 {
     internal class Program
-    {
-
+    {//איפה לבצע את כל הבדיקות והזריקות???
+        //לשאול את יהודית אם הוא עובר דרך הטסט ואיפה נראה לה נכון לזרוק את השגיאות.
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
         #region Input Functions
@@ -149,10 +149,11 @@ Engineer menue:
                             Email = EmailUpdate,
                             Level = levelUpdate,
                             Cost = CostUpdate,
+                            Task = taskToUpdateEngineer//לבדוק איך הפונקציה של update עובדת ואם היא לוקחת את הערך הזה?
                         };
                         try
                         {
-                            s_bl.Engineer.UpdateEngineer(UpdateEngineer);
+                            s_bl.Engineer.UpdateEngineer(updateEngineer);
                             Console.WriteLine($"Engineer with id: {idUpdate} was succesfully updated!");
                         }
                         catch (BlDoesNotExistException ex)
@@ -178,7 +179,7 @@ Engineer menue:
                         break;
                     case "7":
                         Console.WriteLine("retuning to main");
-                        return; // Returning to the main menu
+                        return; // Returning to the main menu איך??
                     default:
                         Console.WriteLine("Invalid choice. Please try again.");
                         break;
