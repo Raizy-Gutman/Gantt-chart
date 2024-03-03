@@ -6,9 +6,9 @@ internal class TaskImplementation : ITask
 {
     const string taskRoot = "tasks"; //XML Serializer
 
-    public int Create(DO.Task task)
+    public int Create(Task task)
     {
-        var tasksList = XMLTools.LoadListFromXMLSerializer<DO.Task>(taskRoot);
+        var tasksList = XMLTools.LoadListFromXMLSerializer<Task>(taskRoot);
         int id = Config.NextTaskId;
         tasksList.Add(task with { Id = id });
         XMLTools.SaveListToXMLSerializer(tasksList, taskRoot);
@@ -23,29 +23,31 @@ internal class TaskImplementation : ITask
 
     public void Delete(int id)
     {
-        var tasksList = XMLTools.LoadListFromXMLSerializer<DO.Task>(taskRoot);
-        if (tasksList.RemoveAll(t => t?.Id == id) == 0)
+        var tasksList = XMLTools.LoadListFromXMLSerializer<Task>(taskRoot);
+        if (tasksList.RemoveAll(t => t.Id == id) == 0)
             throw new DalDoesNotExistException($"Can't delete, task with ID: {id} does not exist!!");
         XMLTools.SaveListToXMLSerializer(tasksList, taskRoot);
     }
 
-    public DO.Task? Read(int id) =>
+    public Task? Read(int id) =>
     
-        XMLTools.LoadListFromXMLSerializer<DO.Task>(taskRoot).FirstOrDefault(t => t?.Id == id) ?? null;       
+        XMLTools.LoadListFromXMLSerializer<Task>(taskRoot).FirstOrDefault(t => t?.Id == id) ?? null;       
 
-    public DO.Task? Read(Func<DO.Task, bool> filter) =>
+    public Task? Read(Func<Task, bool> filter) =>
 
-        XMLTools.LoadListFromXMLSerializer<DO.Task>(taskRoot).FirstOrDefault(filter) ?? null;
+        XMLTools.LoadListFromXMLSerializer<Task>(taskRoot).FirstOrDefault(filter) ?? null;
         
-    public IEnumerable<DO.Task> ReadAll(Func<DO.Task, bool>? filter = null)
+    public IEnumerable<Task> ReadAll(Func<Task, bool>? filter = null)
     {
-        var tasksList = XMLTools.LoadListFromXMLSerializer<DO.Task>(taskRoot);
+        var tasksList = XMLTools.LoadListFromXMLSerializer<Task>(taskRoot);
         return filter == null? tasksList.Select(t=>t):tasksList.Where(filter);
     }
 
-    public void Update(DO.Task task)
+    public void Update(Task task)
     {
-        Delete(task.Id);
-        Create(task);
+        var tasksList = XMLTools.LoadListFromXMLSerializer<Task>(taskRoot);
+        tasksList.RemoveAll(t => t.Id == task.Id);
+        tasksList.Add(task);
+        XMLTools.SaveListToXMLSerializer(tasksList, taskRoot);
     }
 }

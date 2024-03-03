@@ -6,7 +6,7 @@ public class MilestoneInList
     public  string Description { get; set; }
     public string Alias { get; set; }
     public Status Status { get; set; }
-    public Double? CompletionPercentage { get; set; }
+    public double? CompletionPercentage { get; set; }
     public override string ToString() => this.ToStringProperties();
 }
 

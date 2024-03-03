@@ -1,17 +1,30 @@
 ﻿using BlApi;
 using BO;
+using System.Net.Http.Headers;
 
 namespace BlImplementation;
-
 internal class MilestoneImplementation : IMilestone
 {
     private static readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
-    #region private help functions
+    /// <summary>
+    /// Private inner class that implements IEqualityComparer to enable the distinct operation on <IEnumerable<T>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    private class CollectionComparer<T> : IEqualityComparer<IEnumerable<T>>
+    {
+        public bool Equals(IEnumerable<T>? x, IEnumerable<T>? y)
+        {
+            return x!.SequenceEqual(y!);
+        }
 
-    //A static field that will hold the final milestone.
-    //(The field is static so we can know if the milestones have already been created or not.)
-    private static DO.Task? _lastMilestone = null;
+        public int GetHashCode(IEnumerable<T> obj)
+        {
+            return obj.Aggregate(17, (hash, item) => hash * 31 + item!.GetHashCode());
+        }
+    }
+
+    #region private help functions
 
     /// <summary>
     /// In case an attempt is made to create a timetable that fails, 
@@ -23,46 +36,43 @@ internal class MilestoneImplementation : IMilestone
             .ToList()
             .ForEach(t => _dal.Task.Update(t with { DeadlineDate = null, SchedualDate = null }));
     }
+
     /// <summary>
     /// The function takes the list of dependencies and creates in the database a new list of dependencies between tasks and milestones and vice versa.
     /// </summary>
     private static void CreateMilestones()
-    {
-        //Make sure that the milestones have not already been created, and if so, we will clean the database of the wrong dates
-        if (_lastMilestone != null)
-        {
-            CleaerIllegalSchedual();
-            return;
-        }
-           
+    { 
         //Milestone runner ID number
         int nextId = 1;
         int getNextId() => nextId++;
 
         //List of all existing dependencies
-        var dependenciesList = _dal.Dependency.ReadAll();
+        var dependenciesList = _dal.Dependency.ReadAll().ToList();
 
         //Deleting the dependency pool
         _dal.Dependency.Reset();
 
         //ID numbers of all tasks
-        var tasks = from t in _dal.Task.ReadAll() select t.Id;
+        var tasks = (from t in _dal.Task.ReadAll()
+                     select t.Id).ToList();
+
 
         //A collection that contains for each dependent task:
         //Key: ID number of pending task
         //Tasks: collection of ID numbers of the previous tasks.
+
         var dependentGroups = from DO.Dependency d in dependenciesList
                               group d by d.DependentTask into gs
                               select new
                               {
                                   key = gs.Key,
-                                  tasks = (from g in gs
-                                           orderby g.DependsOnTask
-                                           select g.DependsOnTask)
+                                  tasks = gs.Select(g => g.DependsOnTask).OrderBy(task => task)
                               };
 
+
+
         //A collection of lists of previous tasks without duplicates
-        var distinctGroups = dependentGroups.Select(d => d.tasks).Distinct();
+        var distinctGroups = dependentGroups.Select(d => d.tasks).Distinct(new CollectionComparer<int>());
 
         //Creating a first milestone
         int firstMilestonId = _dal.Task.Create(new(0, "", "Start", true, null, null, null, null, null, null, "", "", 0, 0));
@@ -90,18 +100,16 @@ internal class MilestoneImplementation : IMilestone
         milestones.Add(lastMileston);
 
         //Create a new dependency between a milestone and each of its previous tasks
-        var milestonesDependencies = from m in milestones
-                                     from t in m.PreviousTasks
-                                     select (_dal.Dependency.Create(new(0, m.MilestoneTaskId, t)));
+        var milestonesDependencies = (from m in milestones
+                                      from t in m.PreviousTasks
+                                      select (_dal.Dependency.Create(new(0, m.MilestoneTaskId, t)))).ToList();
 
         //Create a dependency between each task and a milestone corresponding to its list of previous tasks.
-        var tasksDependencies = from milestone in milestones
-                                from dependency in dependentGroups
-                                where milestone.PreviousTasks.SequenceEqual(dependency.tasks)
-                                select (_dal.Dependency.Create(new(0, dependency.key, milestone.MilestoneTaskId)));
-
-        //Updating the _lastMilestone static field in the DAL object of the last milestone
-        _lastMilestone = _dal.Task.Read(lastMileston.MilestoneTaskId);
+        var tasksDependencies = (from milestone in milestones
+                                 from dependency in dependentGroups
+                                 where milestone.PreviousTasks.SequenceEqual(dependency.tasks)
+                                 select (_dal.Dependency.Create(new(0, dependency.key, milestone.MilestoneTaskId)))).ToList();
+        
     }
 
     /// <summary>
@@ -110,7 +118,7 @@ internal class MilestoneImplementation : IMilestone
     /// <param name="milestone">Milestone DAL object</param>
     /// <param name="end">The deadline date for updating</param>
     /// <returns>A list of the next milestones in line, and for each a calculated deadline.</returns>
-    private static IEnumerable<(DO.Task? prevMileston, DateTime nextEndDate)> SetEndDate(DO.Task milestone, DateTime end)
+    private static IEnumerable<(DO.Task? prevMileston, DateTime nextEndDate)>? SetEndDate(DO.Task milestone, DateTime end)
     {
         //In case the last date has already been updated in the milestone and it is earlier than the end,
         //we will update the previous tasks with the existing date in the milestone.
@@ -133,7 +141,12 @@ internal class MilestoneImplementation : IMilestone
                 //The Milestone DAL object
                 var prevMileston = _dal.Task.Read(g.Key);
                 //Task objects that depend on the milestone
-                var prevTasks = g.Select(d => _dal.Task.Read(d.DependentTask));
+                var prevTasks = g.Select(d => _dal.Task.Read(d.DependentTask)).ToList();
+                if(prevTasks == null)
+                    return (
+                   prevMileston,
+                   nextEndDate: end
+               );
                 //All possible deadline dates for the milestone that the tasks depend on.
                 var endDates = prevTasks
                 .Select(task =>
@@ -151,10 +164,10 @@ internal class MilestoneImplementation : IMilestone
                 return (
                     prevMileston,
                     nextEndDate: endDates.Min()!.Value
-                ); 
+                );
             }));
 
-        return prevMilestons.First();
+        return prevMilestons.Any()? prevMilestons.First():null;
     }
 
     /// <summary>
@@ -166,6 +179,7 @@ internal class MilestoneImplementation : IMilestone
     private static DateTime ScheduleEnd(DO.Task lastMileston, DateTime end)
     {
         var prevMilestons = SetEndDate(lastMileston, end);
+        if (prevMilestons == null) return end;
         foreach (var (prevMileston, nextEndDate) in prevMilestons)
         {
             if (prevMileston != null)
@@ -173,7 +187,7 @@ internal class MilestoneImplementation : IMilestone
         }
         return prevMilestons.Min(m => m.nextEndDate);
     }
-    
+
     /// <summary>
     /// The function does the same as the SetEndDate functionת
     /// only that the date to be updated is a planned date for starting work,
@@ -182,7 +196,7 @@ internal class MilestoneImplementation : IMilestone
     /// <param name="milestone">mileston Dal object</param>
     /// <param name="start">Project start date</param>
     /// <returns> a list of next milestones and start dates accordingly.</returns>
-    private static IEnumerable<(DO.Task? nextMileston, DateTime nextStartDate)> SetStartDate(DO.Task milestone, DateTime start)
+    private static IEnumerable<(DO.Task? nextMileston, DateTime nextStartDate)>? SetStartDate(DO.Task milestone, DateTime start)
     {
         if (milestone.SchedualDate != null && milestone.SchedualDate > start)
             start = milestone.SchedualDate.Value;
@@ -197,6 +211,11 @@ internal class MilestoneImplementation : IMilestone
             {
                 var nextMileston = _dal.Task.Read(g.Key);
                 var prevTasks = g.Select(d => _dal.Task.Read(d.DependsOnTask));
+                if(prevTasks ==  null)
+                    return (
+                   nextMileston,
+                   nextStartDate: start
+               );
                 var startDates = prevTasks
                 .Select(task =>
                         {
@@ -210,8 +229,9 @@ internal class MilestoneImplementation : IMilestone
                     nextStartDate: startDates.Max()
                 );
             }));
-        return nextMilestons.First();
+        return nextMilestons.Any() ? nextMilestons.First() : null;
     }
+    
     /// <summary>
     /// A recursive function to calculate and update a planned start date for milestones and tasks.
     /// </summary>
@@ -221,6 +241,7 @@ internal class MilestoneImplementation : IMilestone
     private static DateTime ScheduleStart(DO.Task firstMileston, DateTime start)
     {
         var nextMilestons = SetStartDate(firstMileston, start);
+        if (null == nextMilestons) return start;
         foreach (var (nextMileston, nextStartDate) in nextMilestons)
         {
             if (nextMileston != null)
@@ -228,14 +249,21 @@ internal class MilestoneImplementation : IMilestone
         }
         return nextMilestons.Max(m => m.nextStartDate);
     }
-    private Milestone setValues(DO.Task milestone)
+    private static Status GetStatus(double percentage) => percentage == 0.0 ? Status.Scheduled : percentage == 100.0 ? Status.Done : Status.OnTrack;
+    private static Milestone SetValues(DO.Task task)
     {
-        return milestone.Convert<DO.Task, Milestone>();
+
+        Milestone milestone =  task.Convert<DO.Task, Milestone>();
+        milestone.Dependencies = _dal.GetListOfTasks(task);
+        int doneTasks = milestone.Dependencies.Where(t => t.Status == Status.Done).Count();
+        milestone.CompletionPercentage = doneTasks != 0? doneTasks / milestone.Dependencies.Count * 100.0 : 0.0;
+        milestone.Status = GetStatus((double)milestone.CompletionPercentage);
+        return milestone;
     }
     #endregion
 
-    private static bool scheduleExists { get; set; } = false;
-    public bool ScheduleExists { get => scheduleExists; }
+    
+    public bool ScheduleExists { get => _dal.GetProjectStatus() == ProjectStatus.Execution; }
 
     /// <summary>
     /// A function to create a project schedule automatically
@@ -245,35 +273,44 @@ internal class MilestoneImplementation : IMilestone
     /// <exception cref="BlIllegalException">Failure to create schedule</exception>
     public void CreateSchedule(DateTime start, DateTime end)
     {
-        if (_dal.GetProjectStatus() != ProjectStatus.Planning) 
+        //Checking that the project is not running
+        if (ScheduleExists)
             throw new BlIllegalException("Schedule", "creation", "A project not in the planning stage.");
-        _dal.SetProjectStatus(ProjectStatus.Scheduling);
-        CreateMilestones();
-        if (ScheduleEnd(_lastMilestone!, end) < start) 
+        //If we have already tried to create a schedule, we will clear the previous attempt.
+        if (_dal.GetProjectStatus() == ProjectStatus.Scheduling)
+            CleaerIllegalSchedual();
+        //Otherwise we will create milestones and change project status
+        else
+        {
+            CreateMilestones();
+            _dal.SetProjectStatus(ProjectStatus.Scheduling);
+        }
+        DO.Task? _lastMilestone = _dal.Task.Read(t=>t.Alias== "End");
+        //We will check the correctness of the dates and put values in the tasks, the milestones, the project dates, and the project status.
+        if (ScheduleEnd(_lastMilestone!, end) < start)
             throw new BlIllegalException("Schedule", "creation", "End date too early.");
-        if (ScheduleStart(_dal.Task.Read(t => t.Alias == "Start")!, start) > end) 
+        if (ScheduleStart(_dal.Task.Read(t => t.Alias == "Start")!, start) > end)
             throw new BlIllegalException("Schedule", "creation", "Start date too late.");
         _dal.StartDate = start;
         _dal.EndDate = end;
-        scheduleExists = true;
         _dal.SetProjectStatus(ProjectStatus.Execution);
-    }  
+    }
     public Milestone GetMilestone(int id)
     {
         DO.Task? task = _dal.Task.Read(id);
         if (task == null || !task.IsMilestone) throw new BlDoesNotExistException("Milestone");
-        return setValues(task);
+        return SetValues(task);
     }
     public Milestone UpdateMilestone(int id, string alias, string description, string? comments)
     {
         DO.Task? toUpdate = _dal.Task.Read(id);
-        if (toUpdate == null || !toUpdate.IsMilestone) 
+        if (toUpdate == null || !toUpdate.IsMilestone)
             throw new BlDoesNotExistException("Milestone");
         description = string.IsNullOrEmpty(description) ? toUpdate.Description : description;
         alias = string.IsNullOrEmpty(alias) ? toUpdate.Alias : alias;
         comments = string.IsNullOrEmpty(comments) ? toUpdate.Remarks : comments;
         toUpdate = toUpdate with { Alias = alias, Description = description, Remarks = comments };
         _dal.Task.Update(toUpdate);
-        return setValues(toUpdate);
+        return SetValues(toUpdate);
     }
 }

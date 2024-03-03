@@ -25,21 +25,6 @@ internal class TaskImplementation : ITask
     }
 
     /// <summary>
-    /// Help method for calculating the status of a task according to the dates of the DAL entity
-    /// </summary>
-    /// <param name="task">a DO task object</param>
-    /// <returns>the tasks status</returns>
-    private static Status GetStatus(DO.Task task) => task.SchedualDate is null ? Status.Unscheduled : task.StartDate is null ? Status.Scheduled : task.CompleteDate is null ? Status.OnTrack : Status.Done;
-
-    /// <summary>
-    /// A function that is loaded on GetStatus, to get the status of a task from a list of tasks.
-    /// </summary>
-    /// <param name="tasks">Collection of tasks</param>
-    /// <param name="id">ID number of the task for which we will return a status</param>
-    /// <returns>the task status</returns>
-    private static Status GetStatus(IEnumerable<DO.Task> tasks, int id) => GetStatus(tasks.FirstOrDefault(t => t.Id == id)!);
-
-    /// <summary>
     /// A function that receives a data layer task entity, and calculates the object values of the logical task.
     /// </summary>
     /// <param name="task">DO task object</param>
@@ -48,7 +33,7 @@ internal class TaskImplementation : ITask
     {
         BO.Task result = task.Convert<DO.Task, BO.Task>();
 
-        result.Status = GetStatus(task);
+        result.Status = Tools.GetTaskStatus(task);
 
         result.Complexity = (EngineerExperience)task.ComplexityLevel;
 
@@ -61,15 +46,7 @@ internal class TaskImplementation : ITask
         //If the project is in planning, we will import the list of dependencies
         if (_dal.GetProjectStatus() == ProjectStatus.Planning)
         {
-            //ID numbers of all tasks that the current task depends on
-            var dependencies = _dal.Dependency.ReadAll(d => d.DependentTask == task.Id).Select(d => d.DependsOnTask);
-            //Retrieving the full objects of the tasks
-            var dependenciesTasks = _dal.Task.ReadAll().
-                Where(t => dependencies.Any(d => d == t.Id));
-            //Converting to a list of tasks, and calculating for each task in the list its status.
-            var tasksList = dependenciesTasks.ConvertList<DO.Task, TaskInList>();
-            tasksList.ForEach(d => d.Status = GetStatus(dependenciesTasks, d.Id));
-            result.Dependencies = tasksList;
+            result.Dependencies = _dal.GetListOfTasks(task);
         }
 
         //If an engineer is assigned to the task, we will import him
@@ -119,7 +96,7 @@ internal class TaskImplementation : ITask
     {
         var tasks = _dal.Task.ReadAll(t => !t.IsMilestone);
         var BOtasks = tasks.ConvertList<DO.Task, TaskInList>();
-        BOtasks.ForEach(d => d.Status = GetStatus(tasks, d.Id));
+        BOtasks.ForEach(d => d.Status = Tools.GetTaskStatus(tasks, d.Id));
         return BOtasks;
     }
     public void UpdateTask(BO.Task task)
@@ -133,6 +110,7 @@ internal class TaskImplementation : ITask
                 beforeUpdates.DeadlineDate != task.DeadlineDate ||
                 beforeUpdates.Duration != task.Duration)
                 throw new BlIllegalException("task", "update");
-        _dal.Task.Update(task.Convert<BO.Task, DO.Task>());
+        task.Status = Tools.GetTaskStatus(beforeUpdates with { CompleteDate =  task.CompleteDate , StartDate=task.StartDate});
+        _dal.Task.Update(task.Convert<BO.Task, DO.Task>() with { ComplexityLevel = (DO.EngineerExperience)task.Complexity});
     }
 }
