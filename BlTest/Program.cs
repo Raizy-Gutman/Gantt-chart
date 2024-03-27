@@ -273,7 +273,7 @@ Engineer menue:
                                 case "3":
                                     int dependency = IntInput("task Id");
                                     BO.Task task = s_bl.Task.GetTask(dependency);
-                                    updateTask.Dependencies.Add(new TaskInList()
+                                    updateTask.Dependencies?.Add(new TaskInList()
                                     {
                                         Id = task.Id,
                                         Alias = task.Alias,

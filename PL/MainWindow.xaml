@@ -1,0 +1,51 @@
+﻿<Window x:Class="PL.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <!--<Grid VerticalAlignment="Center">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions  HorizontalAlignment="Stretch" Height="auto" Grid.Column="0" VerticalAlignment="Stretch" Width="auto">
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+        --><!--to show the list of engineers--><!--
+        <Button Content="Engineers" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="ButtonEngineers_Click"/>
+        <Button Content="Initialization" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Buttoninitialization_Click"/>
+        <Button Content="Reset" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="ButtonReset_Click"/>
+
+
+    </Grid>-->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50*" />
+            <ColumnDefinition Width="50*" />
+            <ColumnDefinition Width="50*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100*" />
+            <RowDefinition Height="80*" />
+            <RowDefinition Height="30*" />
+            <RowDefinition Height="80*" />
+            <RowDefinition Height="30*" />
+            <RowDefinition Height="80*" />
+            <RowDefinition Height="100*" />
+        </Grid.RowDefinitions>
+            <Button Grid.Row="1" Content="Engineers" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"  Click="ButtonEngineers_Click"/>
+            <Button Grid.Row="3" Content="Initialization" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"  Click="Buttoninitialization_Click"/>
+            <Button Grid.Row="5" Content="Reset" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"  Click="ButtonReset_Click"/>
+        </Grid>
+
+        
+    </Grid>
+</Window>
