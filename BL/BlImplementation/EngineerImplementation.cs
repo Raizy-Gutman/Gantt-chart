@@ -1,6 +1,10 @@
 ﻿using BlApi;
 using BO;
 using System.Net.Mail;
+using System.Linq;
+using System.Collections.Generic;
+using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BlImplementation;
 internal class EngineerImplementation : IEngineer
@@ -63,9 +67,11 @@ internal class EngineerImplementation : IEngineer
         be.Task = t;
         return be;
     } 
-    public IEnumerable<EngineerInList> ReadAllEngineers(/*Func<Engineer, bool>? filter*/)
+    public IEnumerable<EngineerInList> ReadAllEngineers(Func<EngineerInList, bool>? filter = null)
     {
-        return  _dal.Engineer.ReadAll().ConvertList<DO.Engineer, EngineerInList>();
+        return (filter is not null) ?
+        _dal.Engineer.ReadAll().ConvertList<DO.Engineer, EngineerInList>().Where(filter) :
+        _dal.Engineer.ReadAll().ConvertList<DO.Engineer, EngineerInList>();
     }
     public void UpdateEngineer(Engineer engineer)
     {

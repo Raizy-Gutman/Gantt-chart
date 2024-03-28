@@ -222,13 +222,13 @@ public static class Initialization
 
     public static void Reset()
     {
-        string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input");
-        if (ans == "y")
-        {
+        //string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input");
+        //if (ans == "y")
+        //{
             s_dal?.Engineer.Reset();
             s_dal?.Task.Reset();
             s_dal?.Dependency.Reset();
-        }
+        //}
     }
 
 }

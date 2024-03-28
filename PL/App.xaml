@@ -5,5 +5,8 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <local:LevelsCollection x:Key="LevelsCollectionKey" />
+        <local:ConvertIdToContent x:Key="ConverIdToContentKey"/>
+        <local:ConvertIdToIsEnabled x:Key="ConvertIdToIsEnabledKey"/>
+        <ImageBrush x:Key="YourBackgroundBrush" ImageSource="C:\Users\user\source\repos\dotNet5784_1944_7210\PL\nice.jpg"/>
     </Application.Resources>
 </Application>

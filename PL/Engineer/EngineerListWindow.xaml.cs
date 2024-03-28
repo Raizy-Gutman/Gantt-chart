@@ -36,9 +36,24 @@ namespace PL.Engineer
         public static readonly DependencyProperty EngineerListProperty =
             DependencyProperty.Register("EngineerList", typeof(IEnumerable<BO.EngineerInList>), typeof(EngineerListWindow), new PropertyMetadata(null));
 
-        private void ComboBox_ChangeSort(object sender, SelectionChangedEventArgs e)
+        private void LevelSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            BL.EngineerList.Sort();
+            var engineerInLists = (Level == BO.EngineerExperience.None) ?
+            s_bl?.Engineer.ReadAllEngineers()! : s_bl?.Engineer.ReadAllEngineers()!;
+
+            var v =  engineerInLists.Select(a => s_bl?.Engineer.GetEngineer(a.Id)).Where(e => e?.Level==Level).Select(a=>a?.Id).ToList();
+            EngineerList=engineerInLists.Where(a => v.Contains ( a.Id));
+        }
+
+        private void ShowWindowAddEngineer_Click(object sender, RoutedEventArgs e)
+        {
+            new SingleEngineer.SingleEngineerWindow().ShowDialog();
+        }
+
+        private void ToUpdateEngineer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            BO. EngineerInList? engineerInList = (sender as ListView)?.SelectedItem as BO.EngineerInList;
+            new SingleEngineer.SingleEngineerWindow(engineerInList!.Id).ShowDialog();
         }
     }
 }
