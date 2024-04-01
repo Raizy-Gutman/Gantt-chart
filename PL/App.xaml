@@ -7,7 +7,7 @@
         <local:LevelsCollection x:Key="LevelsCollectionKey" />
         <local:ConvertIdToContent x:Key="ConverIdToContentKey"/>
         <local:ConvertIdToIsEnabled x:Key="ConvertIdToIsEnabledKey"/>
-        <ImageBrush x:Key="OurBackgroundBrush" ImageSource="C:\Users\user\source\repos\dotNet5784_1944_7210\PL\Photos\nice2.jpg"/>
+        <ImageBrush x:Key="OurBackgroundBrush" ImageSource="C:\Users\dy\source\repos\dotNet5784_1944_7210\PL\nice.jpg"/>
         <SolidColorBrush x:Key="TurquoiseDarkBrush" Color="#FF008080"/>
         <Style TargetType="Label">
             <Setter Property="Foreground" Value="{StaticResource TurquoiseDarkBrush}"/>

@@ -67,10 +67,10 @@ internal class EngineerImplementation : IEngineer
         be.Task = t;
         return be;
     } 
-    public IEnumerable<EngineerInList> ReadAllEngineers(Func<EngineerInList, bool>? filter = null)
+    public IEnumerable<EngineerInList> ReadAllEngineers(Func<DO.Engineer, bool>? filter = null)
     {
         return (filter is not null) ?
-        _dal.Engineer.ReadAll().ConvertList<DO.Engineer, EngineerInList>().Where(filter) :
+        _dal.Engineer.ReadAll(filter).ConvertList<DO.Engineer, EngineerInList>() :
         _dal.Engineer.ReadAll().ConvertList<DO.Engineer, EngineerInList>();
     }
     public void UpdateEngineer(Engineer engineer)

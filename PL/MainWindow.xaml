@@ -7,64 +7,32 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.Background>
-        <ImageBrush ImageSource="C:\Users\user\source\repos\dotNet5784_1944_7210\PL\Photos\nice.jpg"/>
+        <ImageBrush ImageSource="C:\Users\dy\source\repos\dotNet5784_1944_7210\PL\nice.jpg"/>
     </Window.Background>
 
-    <!--<Grid VerticalAlignment="Center">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="400"/>
+            <Setter Property="Height" Value="100"/>
+            <Setter Property="Margin" Value="0,25,0,25"/>
+            <Setter Property="FontSize" Value="40"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#A0000000"/>
+            <Setter Property="BorderThickness" Value="0"/>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
-        <Grid.RowDefinitions  HorizontalAlignment="Stretch" Height="auto" Grid.Column="0" VerticalAlignment="Stretch" Width="auto">
-            <RowDefinition Height="70"/>
-            <RowDefinition Height="70"/>
-            <RowDefinition Height="70"/>
-        </Grid.RowDefinitions>
-        --><!--to show the list of engineers--><!--
-        <Button Content="Engineers" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="ButtonEngineers_Click"/>
-        <Button Content="Initialization" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Buttoninitialization_Click"/>
-        <Button Content="Reset" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="ButtonReset_Click"/>
-
-
-    </Grid>-->
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50*" />
-            <ColumnDefinition Width="50*" />
-            <ColumnDefinition Width="50*" />
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="60*"/>
+            <ColumnDefinition Width="20*"/>
         </Grid.ColumnDefinitions>
-
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="100*" />
-                <RowDefinition Height="80*" />
-                <RowDefinition Height="30*" />
-                <RowDefinition Height="80*" />
-                <RowDefinition Height="30*" />
-                <RowDefinition Height="80*" />
-                <RowDefinition Height="100*" />
-            </Grid.RowDefinitions>
-            <Button Grid.Row="1" Content="Engineers" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"  Click="ButtonEngineers_Click"/>
-            <Button Grid.Row="3" Content="Initialization" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"  Click="Buttoninitialization_Click"/>
-            <Button Grid.Row="5" Content="Reset" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"  Click="ButtonReset_Click"/>
-        </Grid>
-        <!--<Calendar DisplayMode="Month" />
-        <Calendar DisplayMode="Year" />
-        <Calendar DisplayMode="Decade" />-->
-        <!--<Border Background="Blue" BorderBrush="Red" BorderThickness="2">
-            <StackPanel>
-                <Button Content="button 1" />
-                <Button Content="button 2" />
-                <Button Content="button 3" />
-            </StackPanel>
-        </Border>-->
-        <!--<DatePicker DisplayDateStart="01.01.2011"
-DisplayDateEnd="01.20.2011">
-            <DatePicker.BlackoutDates>
-                <CalendarDateRange Start="01.15.2011"
-End="01.16.2020" />
-            </DatePicker.BlackoutDates>
-        </DatePicker>-->
+        <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button  Content="Engineers"   Click="ButtonEngineers_Click" />
+            <Button  Content="Initialization"   Click="Buttoninitialization_Click"  />
+            <Button  Content="Reset"    Click="ButtonReset_Click" />
+        </StackPanel>
     </Grid>
 </Window>

@@ -20,13 +20,13 @@ public class BlXMLFileLoadCreateException : Exception
 public class BlInvalidException : Exception
 {
     public string InvalidPropertyName { get; private set; }
-    public BlInvalidException(string invalidPropertyName) : base($"Invalid property {invalidPropertyName}") { this.InvalidPropertyName = invalidPropertyName; }
+    public BlInvalidException(string invalidPropertyName) : base($"Invalid property: {invalidPropertyName}") { this.InvalidPropertyName = invalidPropertyName; }
 }
 
 public class BlNullException : Exception
 {
     public string NullPropertyName { get; private set; }
-    public BlNullException(string nullPropertyName) : base($"Null property {nullPropertyName}") { this.NullPropertyName = nullPropertyName; }
+    public BlNullException(string nullPropertyName) : base($"Null property: {nullPropertyName}") { this.NullPropertyName = nullPropertyName; }
 }
 
 public class BlIllegalException : Exception

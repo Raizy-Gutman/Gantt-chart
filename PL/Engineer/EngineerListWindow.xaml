@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="EngineerListWindow" Height="640" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+    <Window.Resources>
+        
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>
@@ -21,7 +24,7 @@
             </Grid.ColumnDefinitions>
             <!--to sort by-->
             <ComboBox Grid.Column="1" SelectedValue="{Binding Path=Level, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource LevelsCollectionKey}}" VerticalAlignment="Bottom" SelectionChanged="LevelSelector_SelectionChanged" Height="43"/>
-            <Label Grid.Column="0" Content="Label" HorizontalAlignment="Left" Margin="48,12,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.369,0.961"/>
+            <Label Grid.Column="0" Content="Select level:" HorizontalAlignment="Left" Margin="48,12,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.369,0.961" FontWeight="Bold" FontSize="16"/>
         </Grid>
         <ListView x:Name="doubleclick" Margin="5" Grid.Row="1" ItemsSource="{Binding EngineerList}" MouseDoubleClick="ToUpdateEngineer_MouseDoubleClick">
             <ListView.View>
@@ -30,6 +33,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="ShowWindowAddEngineer_Click"/>
+        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="ShowWindowAddEngineer_Click" FontWeight="Bold" FontSize="16"/>
     </Grid>
 </Window>
