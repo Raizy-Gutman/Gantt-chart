@@ -15,6 +15,12 @@ using System.Windows.Shapes;
 
 namespace PL.Engineer
 {
+    public class EngineerInList
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
     /// <summary>
     /// Interaction logic for EngineerListWindow.xaml
     /// </summary>
@@ -24,19 +30,20 @@ namespace PL.Engineer
 
         public BO.EngineerExperience Level { get; set; } = BO.EngineerExperience.None;
         
-        public ObservableCollection<BO.EngineerInList> EngineerList
+        public ObservableCollection<EngineerInList> EngineerList
         {
-            get { return (ObservableCollection<BO.EngineerInList>)GetValue(EngineerListProperty); }
+            get { return (ObservableCollection<EngineerInList>)GetValue(EngineerListProperty); }
             set { SetValue(EngineerListProperty, value); }
         }
        
         public static readonly DependencyProperty EngineerListProperty =
-            DependencyProperty.Register("EngineerList", typeof(ObservableCollection<BO.EngineerInList>), typeof(EngineerListWindow), new PropertyMetadata(null));       
+            DependencyProperty.Register("EngineerList", typeof(ObservableCollection<EngineerInList>), typeof(EngineerListWindow), new PropertyMetadata(null));       
 
         public EngineerListWindow()
         {
             InitializeComponent();
-            EngineerList = new ObservableCollection<BO.EngineerInList>(s_bl!.Engineer.ReadAllEngineers());
+            EngineerList = new(s_bl.Engineer.ReadAllEngineers().Select(e => new EngineerInList { Id = e.Id, Name = e.Name }));
+
         }
 
         private void LevelSelector_SelectionChanged(object sender, EventArgs e)
@@ -45,7 +52,8 @@ namespace PL.Engineer
                 s_bl.Engineer.ReadAllEngineers() :
                 s_bl.Engineer.ReadAllEngineers(e => (int)e.Level == (int)Level)!;
 
-            ObservableCollection<BO.EngineerInList> newEngineerList = new(engineerInLists);
+            ObservableCollection<EngineerInList> newEngineerList = new(
+                    engineerInLists.Select(e => new EngineerInList { Id = e.Id, Name = e.Name }));
             EngineerList = newEngineerList;
         }
 
@@ -58,8 +66,8 @@ namespace PL.Engineer
 
         private void ToUpdateEngineer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            BO.EngineerInList? engineerInList = (sender as ListView)!.SelectedItem as BO.EngineerInList;
-            var singleEngineerWindow = new SingleEngineer.SingleEngineerWindow(engineerInList!.Id);
+            EngineerInList engineerInList = ((sender as ListView)!.SelectedItem as EngineerInList)!;
+            var singleEngineerWindow = new SingleEngineer.SingleEngineerWindow(engineerInList.Id);
             singleEngineerWindow.Closed += LevelSelector_SelectionChanged!;
             singleEngineerWindow.ShowDialog();
         }
