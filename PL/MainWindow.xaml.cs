@@ -20,30 +20,33 @@ namespace PL
 
         private void Buttoninitialization_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult  result = MessageBox.Show("Are you sure you want to perform this action?", "Confirm", MessageBoxButton.YesNo);
+            MessageBoxResult  result = MessageBox.Show("Are you sure you want to initialize the database?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes )
             {
                 s_bl.InitializeDB();
-                //(); // פעולה שנרצה להפעיל במידה והמשתמש אישר
+                MessageBox.Show("Database initialization was successful.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show("The operation was cancelled.");
+                MessageBox.Show("The initialization was cancelled.");
             }
         }
 
         private void ButtonReset_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to Reset the database? \n All data will be deleted!", "Confirm", MessageBoxButton.YesNo);
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to reset the database? \n All data will be deleted!", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
             if (result == MessageBoxResult.Yes)
             {
                 s_bl.ResetDB();
+                MessageBox.Show("Database successfully reset.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
             }
             else
             {
-                MessageBox.Show("The operation was cancelled.");
+                MessageBox.Show("The reset has been canceled.", "Information");
+
             }
         }
     }

@@ -8,9 +8,7 @@
         Title="SingleEngineerWindow" Height="450" Width="800"
         DataContext="{Binding CurrentEngineer, RelativeSource={RelativeSource Self}, Mode=TwoWay}"
         Background="{StaticResource OurBackgroundBrush}" >
-    <Border Background="#FF1A1A1A" BorderThickness="15" BorderBrush="#99000000">
-
-        <Grid>
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30*" />
             <ColumnDefinition Width="20*" />
@@ -22,21 +20,21 @@
             <ColumnDefinition Width="60*" />
             <ColumnDefinition Width="30*" />
         </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="45*" />
-                <RowDefinition Height="30*" />
-                <RowDefinition Height="20*" />
-                <RowDefinition Height="30*" />
-                <RowDefinition Height="25*" />
-                <RowDefinition Height="30*" />
-                <RowDefinition Height="25*" />
-                <RowDefinition Height="30*" />
-                <RowDefinition Height="25*" />
-                <RowDefinition Height="30*" />
-                <RowDefinition Height="30*" />
-                <RowDefinition Height="25*" />
-                <RowDefinition Height="35*" />
-            </Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45*" />
+            <RowDefinition Height="30*" />
+            <RowDefinition Height="20*" />
+            <RowDefinition Height="30*" />
+            <RowDefinition Height="25*" />
+            <RowDefinition Height="30*" />
+            <RowDefinition Height="25*" />
+            <RowDefinition Height="30*" />
+            <RowDefinition Height="25*" />
+            <RowDefinition Height="30*" />
+            <RowDefinition Height="30*" />
+            <RowDefinition Height="25*" />
+            <RowDefinition Height="35*" />
+        </Grid.RowDefinitions>
 
         <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="1" Content="ENGINEER" HorizontalAlignment="Center" VerticalAlignment="Center"  FontSize="18" FontWeight="Bold"/>
 
@@ -46,11 +44,11 @@
         <Label Grid.Column="1" Grid.Row="9" Content="Level:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
 
         <Label Grid.Column="5" Grid.ColumnSpan="2" Grid.Row="3" Content="Cost:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-        <Label Grid.Column="5" Grid.ColumnSpan="2" Grid.Row="5" Content="Task:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-        <Label Grid.Column="5" Grid.ColumnSpan="2" Grid.Row="7" Content="Id:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-            <Label Grid.Column="5" Grid.ColumnSpan="2" Grid.Row="9" Content="Alias:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+        <Label Grid.Column="5" Grid.ColumnSpan="2" Grid.Row="5" Content="Task:" HorizontalAlignment="Stretch" VerticalAlignment="Center" Visibility="{Binding ElementName=Id, Path=Text, Converter={StaticResource ConvertIdToVisibilityKey}}"/>
+        <Label Grid.Column="5" Grid.ColumnSpan="2" Grid.Row="7" Content="Id:" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Visibility="{Binding ElementName=Id, Path=Text, Converter={StaticResource ConvertIdToVisibilityKey}}"/>
+        <Label Grid.Column="5" Grid.ColumnSpan="2" Grid.Row="9" Content="Alias:" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Visibility="{Binding ElementName=Id, Path=Text, Converter={StaticResource ConvertIdToVisibilityKey}}"/>
 
-        <TextBox Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3" IsEnabled="{Binding Id, Mode=OneTime, Converter={StaticResource ConvertIdToIsEnabledKey}}" Text="{Binding Id, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
+        <TextBox x:Name="Id" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3" IsEnabled="{Binding Id, Mode=OneTime, Converter={StaticResource ConvertIdToIsEnabledKey}}" Text="{Binding Id, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
         <TextBox Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="5" Text="{Binding Name, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
         <TextBox Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="7" Text="{Binding Email, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
         <ComboBox Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="9" ItemsSource="{Binding Source={StaticResource LevelsCollectionKey}}" 
@@ -58,11 +56,9 @@
             ValidatesOnExceptions=true}" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"/>
 
         <TextBox Grid.Column="7" Grid.Row="3" Text="{Binding Cost, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
-        <TextBox Grid.Column="7" Grid.Row="7" Text="{Binding Task.Id, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
-        <TextBox Grid.Column="7" Grid.Row="9" Text="{Binding Task.Alias, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
-        
-        <Button Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="11" Content="{Binding Id, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="BtnAddOrUpdateEngineer_Click"/>
-        </Grid>
+        <TextBox Grid.Column="7" Grid.Row="7" Text="{Binding Task.Id, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch" Visibility="{Binding ElementName=Id, Path=Text, Converter={StaticResource ConvertIdToVisibilityKey}}"/>
+        <TextBox Grid.Column="7" Grid.Row="9" Text="{Binding Task.Alias, Mode=OneWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch"  IsEnabled="False"  TextWrapping="Wrap" VerticalAlignment="Stretch" Visibility="{Binding ElementName=Id, Path=Text, Converter={StaticResource ConvertIdToVisibilityKey}}"/>
 
-    </Border>
+        <Button Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="11" Content="{Binding Id, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="BtnAddOrUpdateEngineer_Click"/>
+    </Grid>
 </Window>

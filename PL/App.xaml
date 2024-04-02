@@ -7,22 +7,25 @@
         <local:LevelsCollection x:Key="LevelsCollectionKey" />
         <local:ConvertIdToContent x:Key="ConverIdToContentKey"/>
         <local:ConvertIdToIsEnabled x:Key="ConvertIdToIsEnabledKey"/>
-        <ImageBrush x:Key="OurBackgroundBrush" ImageSource="C:\Users\user\source\repos\dotNet5784_1944_7210\PL\Photos\nice2.jpg"/>
-        <SolidColorBrush x:Key="TurquoiseDarkBrush" Color="#FF008080"/>
+        <local:ConvertIdToVisibility x:Key="ConvertIdToVisibilityKey"/>
+        <ImageBrush x:Key="OurBackgroundBrush" ImageSource="C:\Users\dy\source\repos\dotNet5784_1944_7210\PL\nice.jpg"/>
         <Style TargetType="Label">
-            <Setter Property="Foreground" Value="{StaticResource TurquoiseDarkBrush}"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Comic Sans MS"/>
         </Style>
         <Style TargetType="TextBox">
-            <Setter Property="BorderBrush"  Value="{StaticResource TurquoiseDarkBrush}"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush"  Value="Turquoise"/>
+            <Setter Property="FontSize" Value="16"/>
             <Setter Property="Background"  Value="#FF333333"/>
             <Setter Property="VerticalContentAlignment"  Value="Center"/>
             <Setter Property="Padding"  Value="3"/>
+            <Setter Property="FontFamily" Value="Comic Sans MS"/>
         </Style>
         <Style TargetType="ComboBox">
             <Setter Property="Background"  Value="#FF333333"/>
-            <Setter Property="BorderBrush"  Value="{StaticResource TurquoiseDarkBrush}"/>
+            <Setter Property="BorderBrush"  Value="Turquoise"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Padding" Value="3"/>
@@ -32,4 +35,3 @@
     
 </Application>
 
-<!--<ImageBrush x:Key="OurBackgroundBrush" ImageSource="C:\Users\user\source\repos\dotNet5784_1944_7210\PL\Photos\nice.jpg"/>-->

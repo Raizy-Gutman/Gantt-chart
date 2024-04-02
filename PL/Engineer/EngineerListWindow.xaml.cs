@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,46 +15,61 @@ using System.Windows.Shapes;
 
 namespace PL.Engineer
 {
+    public class EngineerInList
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
     /// <summary>
     /// Interaction logic for EngineerListWindow.xaml
     /// </summary>
     public partial class EngineerListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
         public BO.EngineerExperience Level { get; set; } = BO.EngineerExperience.None;
+        
+        public ObservableCollection<EngineerInList> EngineerList
+        {
+            get { return (ObservableCollection<EngineerInList>)GetValue(EngineerListProperty); }
+            set { SetValue(EngineerListProperty, value); }
+        }
+       
+        public static readonly DependencyProperty EngineerListProperty =
+            DependencyProperty.Register("EngineerList", typeof(ObservableCollection<EngineerInList>), typeof(EngineerListWindow), new PropertyMetadata(null));       
+
         public EngineerListWindow()
         {
             InitializeComponent();
-            EngineerList = s_bl?.Engineer.ReadAllEngineers()!;
+            EngineerList = new(s_bl.Engineer.ReadAllEngineers().Select(e => new EngineerInList { Id = e.Id, Name = e.Name }));
+
         }
 
-        public IEnumerable<BO.EngineerInList> EngineerList
+        private void LevelSelector_SelectionChanged(object sender, EventArgs e)
         {
-            get { return (IEnumerable<BO.EngineerInList>)GetValue(EngineerListProperty); }
-            set { SetValue(EngineerListProperty, value); }
-        }
+            var engineerInLists = (Level == BO.EngineerExperience.None) ? 
+                s_bl.Engineer.ReadAllEngineers() :
+                s_bl.Engineer.ReadAllEngineers(e => (int)e.Level == (int)Level)!;
 
-        public static readonly DependencyProperty EngineerListProperty =
-            DependencyProperty.Register("EngineerList", typeof(IEnumerable<BO.EngineerInList>), typeof(EngineerListWindow), new PropertyMetadata(null));
-
-        private void LevelSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var engineerInLists = (Level == BO.EngineerExperience.None) ?
-            s_bl?.Engineer.ReadAllEngineers()! : s_bl?.Engineer.ReadAllEngineers()!;
-
-            var v =  engineerInLists.Select(a => s_bl?.Engineer.GetEngineer(a.Id)).Where(e => e?.Level==Level).Select(a=>a?.Id).ToList();
-            EngineerList=engineerInLists.Where(a => v.Contains ( a.Id));
+            ObservableCollection<EngineerInList> newEngineerList = new(
+                    engineerInLists.Select(e => new EngineerInList { Id = e.Id, Name = e.Name }));
+            EngineerList = newEngineerList;
         }
 
         private void ShowWindowAddEngineer_Click(object sender, RoutedEventArgs e)
         {
-            new SingleEngineer.SingleEngineerWindow().ShowDialog();
+            var singleEngineerWindow = new SingleEngineer.SingleEngineerWindow();
+            singleEngineerWindow.Closed += LevelSelector_SelectionChanged!;
+            singleEngineerWindow.ShowDialog();
         }
 
         private void ToUpdateEngineer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            BO. EngineerInList? engineerInList = (sender as ListView)?.SelectedItem as BO.EngineerInList;
-            new SingleEngineer.SingleEngineerWindow(engineerInList!.Id).ShowDialog();
+            EngineerInList engineerInList = ((sender as ListView)!.SelectedItem as EngineerInList)!;
+            var singleEngineerWindow = new SingleEngineer.SingleEngineerWindow(engineerInList.Id);
+            singleEngineerWindow.Closed += LevelSelector_SelectionChanged!;
+            singleEngineerWindow.ShowDialog();
         }
     }
 }
