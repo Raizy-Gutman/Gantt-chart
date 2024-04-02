@@ -8,7 +8,7 @@
         <local:ConvertIdToContent x:Key="ConverIdToContentKey"/>
         <local:ConvertIdToIsEnabled x:Key="ConvertIdToIsEnabledKey"/>
         <local:ConvertIdToVisibility x:Key="ConvertIdToVisibilityKey"/>
-        <ImageBrush x:Key="OurBackgroundBrush" ImageSource="C:\Users\dy\source\repos\dotNet5784_1944_7210\PL\nice.jpg"/>
+        <ImageBrush x:Key="OurBackgroundBrush" ImageSource="C:\Users\user\source\repos\dotNet5784_1944_7210\PL\nice.jpg"/>
         <Style TargetType="Label">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="16"/>
