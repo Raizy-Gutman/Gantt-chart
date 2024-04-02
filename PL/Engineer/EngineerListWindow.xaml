@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:PL.Engineer"
         mc:Ignorable="d"
         Title="EngineerListWindow" Height="640" Width="800"
-        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        Background="{StaticResource OurBackgroundBrush}" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>
@@ -21,9 +22,9 @@
             </Grid.ColumnDefinitions>
             <!--to sort by-->
             <ComboBox Grid.Column="1" SelectedValue="{Binding Path=Level, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource LevelsCollectionKey}}" VerticalAlignment="Bottom" SelectionChanged="LevelSelector_SelectionChanged" Height="43"/>
-            <Label Grid.Column="0" Content="Label" HorizontalAlignment="Left" Margin="48,12,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.369,0.961"/>
+            <Label Grid.Column="0" Content="Label" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Azure"/>
         </Grid>
-        <ListView x:Name="doubleclick" Margin="5" Grid.Row="1" ItemsSource="{Binding EngineerList}" MouseDoubleClick="ToUpdateEngineer_MouseDoubleClick">
+        <ListView x:Name="doubleclick" Margin="5" Grid.Row="1" ItemsSource="{Binding EngineerList}" MouseDoubleClick="ToUpdateEngineer_MouseDoubleClick" Background="#FF1A1A1A" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
