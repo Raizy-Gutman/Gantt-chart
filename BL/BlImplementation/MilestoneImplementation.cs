@@ -248,7 +248,9 @@ internal class MilestoneImplementation : IMilestone
         }
         return nextMilestons.Max(m => m.nextStartDate);
     }
+    
     private static Status GetStatus(double percentage) => percentage == 0.0 ? Status.Scheduled : percentage == 100.0 ? Status.Done : Status.OnTrack;
+    
     private static Milestone SetValues(DO.Task task)
     {
 
@@ -261,7 +263,6 @@ internal class MilestoneImplementation : IMilestone
     }
     #endregion
 
-    
     public bool ScheduleExists { get => _dal.GetProjectStatus() == ProjectStatus.Execution; }
 
     /// <summary>
@@ -294,12 +295,14 @@ internal class MilestoneImplementation : IMilestone
         _dal.EndDate = end;
         _dal.SetProjectStatus(ProjectStatus.Execution);
     }
+    
     public Milestone GetMilestone(int id)
     {
         DO.Task? task = _dal.Task.Read(id);
         if (task == null || !task.IsMilestone) throw new BlDoesNotExistException("Milestone");
         return SetValues(task);
     }
+    
     public Milestone UpdateMilestone(int id, string alias, string description, string? comments)
     {
         DO.Task? toUpdate = _dal.Task.Read(id);

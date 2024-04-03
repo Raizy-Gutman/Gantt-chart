@@ -20,7 +20,4 @@ public record Dependency
     {
         return $"\nId: {Id}\nDependent Task:{DependentTask}\nDepends On Task: {DependsOnTask}";
     }
-
-
-
 }

@@ -57,6 +57,7 @@ internal class TaskImplementation : ITask
         return result;
     }
     #endregion
+    
     public void CreateTask(BO.Task task)
     {
         //Make sure the project is not yet running and it is allowed to add tasks
@@ -71,6 +72,7 @@ internal class TaskImplementation : ITask
             throw new BlAlreadyExistsException(e);
         }
     }
+    
     public void DeleteTask(int id)
     {
         //Make sure that the deletion of the task is legal (the project is not running, and there are no other tasks that depend on it).
@@ -87,11 +89,13 @@ internal class TaskImplementation : ITask
 
         
     }
+    
     public BO.Task GetTask(int id)
     {
         DO.Task task = _dal.Task.Read(id) ?? throw new BlDoesNotExistException($"Task {id}");
         return SetValues(task);
     }
+    
     public IEnumerable<TaskInList> ReadAllTasks()
     {
         var tasks = _dal.Task.ReadAll(t => !t.IsMilestone);
@@ -99,6 +103,7 @@ internal class TaskImplementation : ITask
         BOtasks.ForEach(d => d.Status = Tools.GetTaskStatus(tasks, d.Id));
         return BOtasks;
     }
+    
     public void UpdateTask(BO.Task task)
     {
         TestTask(task);

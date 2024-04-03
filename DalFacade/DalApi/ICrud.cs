@@ -9,6 +9,5 @@ public interface ICrud<T> where T : class
     void Update(T item);
     void Delete(int id);
     void Reset();
-
 }
 

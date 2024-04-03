@@ -45,6 +45,7 @@ public static class Initialization
                 i--;
             }
         }
+        s_dal!.Engineer.Create(new(325907210, "Admin", "admin@gmail.com", EngineerExperience.Intermediate, 1000));
     }
 
     private static void CraeteTask()
@@ -225,9 +226,9 @@ public static class Initialization
         //string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input");
         //if (ans == "y")
         //{
-            s_dal?.Engineer.Reset();
-            s_dal?.Task.Reset();
-            s_dal?.Dependency.Reset();
+        s_dal?.Engineer.Reset();
+        s_dal?.Task.Reset();
+        s_dal?.Dependency.Reset();
         //}
     }
 

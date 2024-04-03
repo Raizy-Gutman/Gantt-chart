@@ -5,13 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         Title="MainWindow" Height="450" Width="800">
     <Window.Background>
-        <ImageBrush ImageSource="C:\Users\user\source\repos\dotNet5784_1944_7210\PL\nice.jpg"/>
+        <ImageBrush ImageSource="C:\Users\dy\source\repos\dotNet5784_1944_7210\PL\nice.jpg"/>
     </Window.Background>
 
+
     <Window.Resources>
-        <Style TargetType="Button">
+
+        <Style x:Key="MainButtons" TargetType="Button">
             <Setter Property="Width" Value="400"/>
             <Setter Property="Height" Value="80"/>
             <Setter Property="Margin" Value="0,10,0,10"/>
@@ -43,10 +46,23 @@
             <ColumnDefinition Width="20*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Content="Admin" Click="ButtonEngineers_Click" />
-            <Button Content="Engineers"/>
-            <Button Content="Initialization" Click="Buttoninitialization_Click"  />
-            <Button Content="Reset" Click="ButtonReset_Click" />
+            <StackPanel Orientation="Horizontal">
+                <Label Content="{Binding CurrentDate, Mode=TwoWay}" Foreground="Turquoise" />
+                <Button Content="+" Click="AddDay"/>
+                <Button Content="↺" Click="ResetDate"/>
+            </StackPanel >
+            <Button Style="{StaticResource MainButtons}" Content="Manager"  Click="ButtonManager_Click"/>
+            <Button Style="{StaticResource MainButtons}" Content="Engineer" Click="ButtonEngineer_Click"/>
+
         </StackPanel>
+        <Grid Visibility="{Binding InputMode}" Grid.ColumnSpan="3" >
+            <Grid Background="Black" Opacity="0.8">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+                    <Label Content="Enter your ID:" />
+                    <TextBox Text="{Binding CurrentID, Mode=TwoWay}"/>
+                    <Button Margin="5" Content="OK" Background="{x:Null}" Click="SendIdButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>
