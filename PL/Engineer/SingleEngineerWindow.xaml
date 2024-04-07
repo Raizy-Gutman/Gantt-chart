@@ -1,14 +1,18 @@
-﻿<Window x:Class="PL.SingleEngineer.SingleEngineerWindow"
+﻿<Window x:Class="PL.Engineer.SingleEngineerWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PL.SingleEngineer"
+        xmlns:local="clr-namespace:PL.Engineer"
+        xmlns:BO="clr-namespace:BO;assembly=BL"
         mc:Ignorable="d"
         Title="SingleEngineerWindow" Height="450" Width="800"
-        DataContext="{Binding CurrentEngineer, RelativeSource={RelativeSource Self}, Mode=TwoWay}"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+
         Background="{StaticResource OurBackgroundBrush}" >
-    <Grid>
+    <!--DataContext="{Binding CurrentEngineer, RelativeSource={RelativeSource Self}, Mode=TwoWay}"-->
+
+    <Grid DataContext="{Binding CurrentEngineer}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30*" />
             <ColumnDefinition Width="20*" />
@@ -59,6 +63,9 @@
         <TextBox Grid.Column="7" Grid.Row="7" Text="{Binding Task.Id, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch" Visibility="{Binding ElementName=Id, Path=Text, Converter={StaticResource ConvertIdToVisibilityKey}}"/>
         <TextBox Grid.Column="7" Grid.Row="9" Text="{Binding Task.Alias, Mode=OneWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch"  IsEnabled="False"  TextWrapping="Wrap" VerticalAlignment="Stretch" Visibility="{Binding ElementName=Id, Path=Text, Converter={StaticResource ConvertIdToVisibilityKey}}"/>
 
-        <Button Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="11" Content="{Binding Id, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="BtnAddOrUpdateEngineer_Click"/>
+        <Button Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="11" 
+                Content="{Binding Id, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}" 
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <!--Click="BtnAddOrUpdateEngineer_Click"-->
     </Grid>
 </Window>

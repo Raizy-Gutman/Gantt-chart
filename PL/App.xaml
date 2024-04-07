@@ -5,6 +5,7 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <local:LevelsCollection x:Key="LevelsCollectionKey" />
+        <local:StatusCollection x:Key="StatusCollectionKey" />
         <local:ConvertIdToContent x:Key="ConverIdToContentKey"/>
         <local:ConvertIdToIsEnabled x:Key="ConvertIdToIsEnabledKey"/>
         <local:ConvertIdToVisibility x:Key="ConvertIdToVisibilityKey"/>

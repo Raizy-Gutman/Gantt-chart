@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace PL.SingleEngineer
+namespace PL.Engineer
 {
     /// <summary>
     /// Interaction logic for SingleEngineerWindow.xaml
@@ -12,6 +12,7 @@ namespace PL.SingleEngineer
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
         // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+         
         public BO.Engineer CurrentEngineer
         {
             get { return (BO.Engineer)GetValue(CurrentEngineerProperty); }
@@ -23,7 +24,7 @@ namespace PL.SingleEngineer
 
         public SingleEngineerWindow(int Id = 0)
         {
-            InitializeComponent();
+              InitializeComponent();
             if (Id == 0)
             {
                 CurrentEngineer = new BO.Engineer

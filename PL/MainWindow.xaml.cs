@@ -1,4 +1,4 @@
-﻿using PL.SingleEngineer;
+﻿using PL.Engineer;
 using System;
 using System.Linq;
 using System.Windows;
@@ -77,7 +77,7 @@ namespace PL
                 if (SenderMode == "engineer") new Engineer.EngineerView(id).Show();
                 else
                 {
-                    if (id == 325907210) new PL.Manager().Show();
+                    if (id == 325907210 || id == 326381944) new PL.Manager().Show();
                     else MessageBox.Show("Wrong manager Id number!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
