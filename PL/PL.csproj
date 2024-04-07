@@ -13,7 +13,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="BackgroundSource.jpg" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\BL\BL.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="BackgroundSource.jpg" />
 	</ItemGroup>
 
 </Project>

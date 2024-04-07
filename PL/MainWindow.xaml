@@ -6,12 +6,8 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        Background="{StaticResource OurBackgroundBrush}" 
         Title="MainWindow" Height="450" Width="800">
-    <Window.Background>
-        <ImageBrush ImageSource="C:\Users\dy\source\repos\dotNet5784_1944_7210\PL\nice.jpg"/>
-    </Window.Background>
-
-
     <Window.Resources>
 
         <Style x:Key="MainButtons" TargetType="Button">
