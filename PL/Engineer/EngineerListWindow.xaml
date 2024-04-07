@@ -77,7 +77,7 @@
         <Border  Grid.Row="1">
             <ListView Margin="5" ItemsSource="{Binding EngineerList}" MouseDoubleClick="ToUpdateEngineer_MouseDoubleClick" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled" RenderTransformOrigin="0,0"/>
         </Border>
-        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="ShowWindowAddEngineer_Click"/>
+        <Button Content="Add" Grid.Row="1" HorizontalAlignment="Center" Height="50" Width="100" Click="ShowWindowAddEngineer_Click" Grid.RowSpan="2" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>
 

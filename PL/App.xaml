@@ -5,10 +5,18 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <local:LevelsCollection x:Key="LevelsCollectionKey" />
+        <local:StatusCollection x:Key="StatusCollectionKey" />
         <local:ConvertIdToContent x:Key="ConverIdToContentKey"/>
         <local:ConvertIdToIsEnabled x:Key="ConvertIdToIsEnabledKey"/>
         <local:ConvertIdToVisibility x:Key="ConvertIdToVisibilityKey"/>
-        <ImageBrush x:Key="OurBackgroundBrush" ImageSource="C:\Users\dy\source\repos\dotNet5784_1944_7210\PL\nice.jpg"/>
+        <local:ConvertBoolToVisibility x:Key="ConvertBoolToVisibilityKey"/>
+        <ImageBrush x:Key="OurBackgroundBrush"
+                    ImageSource="C:\Users\user\source\repos\dotNet5784_1944_7210\PL\nice.jpg"
+                    Opacity="0.5"
+                    />
+        <Style TargetType="Button" >
+            <Setter Property="Margin"  Value="20,15"/>
+        </Style>
         <Style TargetType="Label">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="16"/>

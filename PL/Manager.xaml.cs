@@ -79,6 +79,10 @@ namespace PL
         }
 
         private void EngineersListButton_Click(object sender, RoutedEventArgs e) => new Engineer.EngineerListWindow().Show();
-        
+
+        private void TasksListButton_Click(object sender, RoutedEventArgs e)
+        {
+            new Task.TaskListWindow().Show();
+        }
     }
 }
