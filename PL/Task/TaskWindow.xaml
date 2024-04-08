@@ -51,9 +51,6 @@
         <Label Grid.Column="1" Grid.Row="5" Content="Alias:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
         <Label Grid.Column="1" Grid.Row="7" Content="Description:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
         <Label Grid.Column="1" Grid.Row="9" Content="Dependencies:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-        <Label Grid.Column="1" Grid.Row="12" Content="Milestone:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-        <Label Grid.Column="1" Grid.Row="14" Content="Id:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-        <Label Grid.Column="1" Grid.Row="16" Content="Alias:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
 
         <Label Grid.Column="4" Grid.Row="3" Content="Status:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
         <Label Grid.Column="4" Grid.Row="5" Content="CreatedAtDate:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
@@ -62,12 +59,11 @@
         <Label Grid.Column="4" Grid.Row="12" Content="Duration:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
         <Label Grid.Column="4" Grid.Row="14" Content="ForecastDate:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
         <Label Grid.Column="4" Grid.Row="16" Content="DeadlineDate:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-        <!--Visibility="{Binding ElementName=Id, Path=Text, Converter={StaticResource ConvertIdToVisibilityKey}}"-->
 
         <Label Grid.Column="7" Grid.Row="3" Content="CompleteDate:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
         <Label Grid.Column="7" Grid.Row="5" Content="Deliverables:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
         <Label Grid.Column="7" Grid.Row="7" Content="Remarks:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-        <Label Grid.Column="7" Grid.Row="9" Content="Engineer:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+        <Label Grid.Column="7" Grid.Row="9" Content="Engineer:" HorizontalAlignment="Stretch" VerticalAlignment="Center" Visibility="{Binding ProjectRunning,Mode=OneWay,RelativeSource={RelativeSource AncestorType={x:Type local:TaskWindow}}, Converter={StaticResource ConvertBoolToVisibilityKey}}"/>
         <Label Grid.Column="7" Grid.Row="12" Content="Id:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
         <Label Grid.Column="7" Grid.Row="14" Content="Name:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
         <Label Grid.Column="7" Grid.Row="16" Content="Complexity:" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
@@ -79,24 +75,27 @@
                     ItemsSource="{Binding DependenedTaskList, RelativeSource={RelativeSource AncestorType={x:Type local:TaskWindow}}}"
                     HorizontalAlignment="Stretch" Grid.RowSpan="3" VerticalAlignment="Center"/>
         <Button Grid.Column="2" Margin="3" Grid.Row="12" Content="Add depended task" Click="AddDependedTask_Click"/>
-        <TextBox Grid.Column="2" Grid.Row="14" Text="{Binding Milestone.Id, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
-        <TextBox Grid.Column="2" Grid.Row="16" Text="{Binding Milestone.Alias, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
 
-        <ComboBox Grid.Column="5" Grid.Row="3" ItemsSource="{Binding Source={StaticResource StatusCollectionKey}}" 
-        SelectedValue="{Binding Status, Mode=TwoWay, NotifyOnValidationError=true, 
-        ValidatesOnExceptions=true}" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"/>
-        <DatePicker Grid.Column="5" Grid.Row="5" Text="{Binding CreatedAtDate, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-        <DatePicker Grid.Column="5" Grid.Row="7" Text="{Binding StartDate, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-        <DatePicker Grid.Column="5" Grid.Row="9" Text="{Binding SchedualDate, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-        <Label Grid.Column="5" Grid.Row="12" Content="?????" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-        <DatePicker Grid.Column="5" Grid.Row="14" Text="{Binding ForecastDate, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-        <DatePicker Grid.Column="5" Grid.Row="16" Text="{Binding DeadlineDate, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="5" Grid.Row="3"  
+        Text="{Binding Status, Mode=OneTime}" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"/>
+        <Label Grid.Column="5" Grid.Row="5" Content="{Binding CreatedAtDate, Mode=OneTime}"  HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+        <Border Grid.Column="5" Grid.Row="7" Visibility="{Binding ProjectRunning ,RelativeSource={RelativeSource AncestorType={x:Type local:TaskWindow}}, Converter={StaticResource ConvertBoolToVisibilityKey}}">
+            <DatePicker  Text="{Binding StartDate, Mode=TwoWay}" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+        </Border>
+        <Label Grid.Column="5" Grid.Row="9" Content="{Binding SchedualDate, Mode=OneWay}"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Visibility="{Binding ProjectRunning ,RelativeSource={RelativeSource AncestorType={x:Type local:TaskWindow}}, Converter={StaticResource ConvertBoolToVisibilityKey}}"/>
+        <TextBox Grid.Column="5" Grid.Row="12" Text="{Binding TaskDuration,RelativeSource={RelativeSource AncestorType={x:Type local:TaskWindow}}, Mode=TwoWay}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+        <Button Grid.Column="6" Grid.Row="12" Content="+" Margin="0,23,0,18" Grid.RowSpan="2" Click="AddDurationButton_Click"/>
+        <Button  Grid.Column="5" Grid.Row="12" Content="-" Margin="152,2,138,22" Grid.ColumnSpan="3" Click="SubDurationButton_Click"/>
 
-        <DatePicker Grid.Column="8" Grid.Row="3" Text="{Binding CompleteDate, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-        <TextBox Grid.Column="8" Grid.Row="5" Text="{Binding Deliverables, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
-        <TextBox Grid.Column="8" Grid.Row="7" Text="{Binding Remarks, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
-        <TextBox Grid.Column="8" Grid.Row="12" Text="{Binding Engineer.Id, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
-        <TextBox Grid.Column="8" Grid.Row="14" Text="{Binding Engineer.Name, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
+        <Label Grid.Column="5" Grid.Row="14" Content="{Binding ForecastDate, Mode=TwoWay}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Visibility="{Binding ProjectRunning ,RelativeSource={RelativeSource AncestorType={x:Type local:TaskWindow}}, Converter={StaticResource ConvertBoolToVisibilityKey}}"/>
+        <Label Grid.Column="5" Grid.Row="16" Content="{Binding DeadlineDate, Mode=TwoWay}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Visibility="{Binding ProjectRunning ,RelativeSource={RelativeSource AncestorType={x:Type local:TaskWindow}}, Converter={StaticResource ConvertBoolToVisibilityKey}}"/>
+        <Border Grid.Column="8" Grid.Row="3" Visibility="{Binding ProjectRunning ,RelativeSource={RelativeSource AncestorType={x:Type local:TaskWindow}}, Converter={StaticResource ConvertBoolToVisibilityKey}}">
+            <DatePicker Text="{Binding CompleteDate, Mode=TwoWay}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Visibility="{Binding ProjectRunning ,RelativeSource={RelativeSource AncestorType={x:Type local:TaskWindow}}, Converter={StaticResource ConvertBoolToVisibilityKey}}"/>
+        </Border>
+        <TextBox Grid.Column="8" Grid.Row="5" Text="{Binding Deliverables, Mode=TwoWay}" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
+        <TextBox Grid.Column="8" Grid.Row="7" Text="{Binding Remarks, Mode=TwoWay}" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
+        <TextBox Grid.Column="8" Grid.Row="12" Text="{Binding Engineer.Id, Mode=TwoWay}" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
+        <TextBox Grid.Column="8" Grid.Row="14" Text="{Binding Engineer.Name, Mode=TwoWay}" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
         <ComboBox Grid.Column="8" Grid.Row="16" ItemsSource="{Binding Source={StaticResource LevelsCollectionKey}}" 
         SelectedValue="{Binding Complexity, Mode=TwoWay, NotifyOnValidationError=true, 
         ValidatesOnExceptions=true}" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"/>
@@ -104,21 +103,3 @@
         <Button Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="17" Content="{Binding Id, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}"  Click="BtnAddOrUpdateTask_Click" Margin="61,22,58,0" Grid.RowSpan="2"/>
     </Grid>
 </Window>
-<!--public int Id { get; init; }
-public string Description { get; set; }
-public string Alias { get; set; }
-public Status? Status { get; set; }
-public List
-<TaskInList>? Dependencies { get; set; }
-public MilestoneInTask? Milestone {  get; set; }
-public DateTime CreatedAtDate { get; set; }
-public DateTime? StartDate { get; set; }
-public DateTime? SchedualDate { get; set; }
-public TimeSpan? Duration { get; set; }
-public DateTime? ForecastDate { get ; set; }
-public DateTime? DeadlineDate { get; set; }
-public DateTime? CompleteDate { get; set; }
-public string? Deliverables { get; set; }
-public string? Remarks { get; set; }
-public EngineerInTask? Engineer { get; set; }
-public EngineerExperience Complexity { get; set; }-->

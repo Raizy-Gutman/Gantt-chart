@@ -65,7 +65,6 @@
 
         <Button Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="11" 
                 Content="{Binding Id, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}" 
-                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-        <!--Click="BtnAddOrUpdateEngineer_Click"-->
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="BtnAddOrUpdateEngineer_Click" />
     </Grid>
 </Window>

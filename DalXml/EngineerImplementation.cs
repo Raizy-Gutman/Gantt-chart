@@ -19,8 +19,10 @@ internal class EngineerImplementation : IEngineer
 
     public void Reset()
     {
-        List<Engineer> engineerList = new();
-        XMLTools.SaveListToXMLSerializer(engineerList!, engineerRoot);
+        var engineersList = XMLTools.LoadListFromXMLSerializer<Engineer>(engineerRoot);
+        engineersList.Clear();
+        engineersList.Add(new Engineer(325907210, "admin", "admin@gmail.com", EngineerExperience.Expert, 1500));
+        XMLTools.SaveListToXMLSerializer(engineersList, engineerRoot);
     }
 
     public void Delete(int id)

@@ -25,6 +25,15 @@ namespace PL.Task
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
+        public bool ProjectRunning
+        {
+            get { return (bool)GetValue(ProjectRunningProperty); }
+            set { SetValue(ProjectRunningProperty, value); }
+        }
+
+        public static readonly DependencyProperty ProjectRunningProperty =
+            DependencyProperty.Register("ProjectRunning", typeof(bool), typeof(TaskWindow), new PropertyMetadata(null));
+
         public BO.Task CurrentTask
         {
             get { return (BO.Task)GetValue(CurrentTaskProperty); }
@@ -33,8 +42,29 @@ namespace PL.Task
 
         public static readonly DependencyProperty CurrentTaskProperty =
             DependencyProperty.Register("CurrentTask", typeof(BO.Task), typeof(TaskWindow), new PropertyMetadata(null));
+
+        public ObservableCollection<TaskInList> DependenedTaskList
+        {
+            get { return (ObservableCollection<TaskInList>)GetValue(DependenedTaskListProperty); }
+            set { SetValue(DependenedTaskListProperty, value); }
+        }
+
+        public static readonly DependencyProperty DependenedTaskListProperty =
+            DependencyProperty.Register(nameof(DependenedTaskList),
+                typeof(ObservableCollection<TaskInList>), typeof(TaskWindow), new PropertyMetadata(null));
+
+        public int TaskDuration
+        {
+            get { return (int)GetValue(TaskDurationProperty); }
+            set { SetValue(TaskDurationProperty, value); }
+        }
+
+        public static readonly DependencyProperty TaskDurationProperty =
+            DependencyProperty.Register("TaskDuration", typeof(int), typeof(TaskWindow), new PropertyMetadata(null));
+
         public TaskWindow(int Id = 0)
         {
+            ProjectRunning = s_bl.Status() != ProjectStatus.Execution;
             InitializeComponent();
             if (Id == 0)
             {
@@ -43,6 +73,8 @@ namespace PL.Task
                     Milestone = new BO.MilestoneInTask() { Alias="Milestone alias is empty" },
                     Engineer = new BO.EngineerInTask()
                 };
+                TaskDuration = 1;
+               
 
             }
             else
@@ -52,21 +84,22 @@ namespace PL.Task
                     CurrentTask = s_bl.Task.GetTask(Id);
                     if (CurrentTask.Milestone == null) CurrentTask.Milestone = new BO.MilestoneInTask() {Alias="milston alias is empty" };
                     if (CurrentTask.Engineer == null) CurrentTask.Engineer = new BO.EngineerInTask();
+                    DependenedTaskList = CurrentTask.Dependencies is not null ? new ObservableCollection<TaskInList>(CurrentTask.Dependencies) : new();
+                    TaskDuration = CurrentTask.Duration!.Value.Days;
                 }
+
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     Close();
                 }
             }
-            //זה לא פתרון טוב:
-            DependenedTaskList  = CurrentTask.Dependencies is not null ? new ObservableCollection<TaskInList>( CurrentTask.Dependencies):new();//?????????????
-
         }
 
         private void BtnAddOrUpdateTask_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
+            CurrentTask.Duration = new TimeSpan(TaskDuration, 0, 0, 0);
             try
             {
                 if ((string)button!.Content == "Add")
@@ -81,6 +114,7 @@ namespace PL.Task
                     // Updating the existing task
                     if (CurrentTask.Milestone!.Id == 0) CurrentTask.Milestone = null;
                     if (CurrentTask.Engineer!.Id == 0) CurrentTask.Engineer = null;
+                    CurrentTask.Dependencies = DependenedTaskList.ToList();
                     s_bl.Task.UpdateTask(CurrentTask);
                     MessageBox.Show("The task has been updated successfully!");
                 }
@@ -96,7 +130,7 @@ namespace PL.Task
 
         private void AddDependedTask_Click(object sender, RoutedEventArgs e)
         {
-            TaskListWindow taskListWindow = new TaskListWindow() { IsForSelection=true };
+            TaskListWindow taskListWindow = new() { IsForSelection=true };
 
             taskListWindow.ShowDialog();
 
@@ -108,15 +142,21 @@ namespace PL.Task
             DependenedTaskList.Add(taskListWindow.SelectedTask);
         }
 
-        public ObservableCollection<TaskInList> DependenedTaskList
+        private void AddDurationButton_Click(object sender, RoutedEventArgs e)
         {
-            get { return (ObservableCollection<TaskInList>)GetValue(DependenedTaskListProperty); }
-            set { SetValue(DependenedTaskListProperty, value); }
+            CurrentTask.Duration!.Value.Add(TimeSpan.FromDays(1));
+            TaskDuration++;
         }
 
-        public static readonly DependencyProperty DependenedTaskListProperty =
-            DependencyProperty.Register(nameof (DependenedTaskList),
-                typeof(ObservableCollection<TaskInList>), typeof(TaskWindow), new PropertyMetadata(null));
+        private void SubDurationButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(TaskDuration == 1) { MessageBox.Show("Task duration must be at list 1 day long!!", "Error", MessageBoxButton.OK, MessageBoxImage.Error); }
+            else
+            {
+                TaskDuration--;
+                CurrentTask.Duration!.Value.Add(TimeSpan.FromDays(-1));
 
+            }
+        }
     }
 }

@@ -1,10 +1,9 @@
 ﻿using BO;
-using PL.Engineer;
+using PL.Task;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,51 +15,36 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace PL.Task
+namespace PL.Milestone
 {
     /// <summary>
-    /// Interaction logic for TaskListWindow.xaml
+    /// Interaction logic for MilestoneList.xaml
     /// </summary>
-    public partial class TaskListWindow : Window
-    {
- 
-        public static readonly DependencyProperty IsForSelectionProperty = DependencyProperty.Register(
-              "IsForSelection",
-              typeof(bool),
-              typeof(TaskListWindow ),
-              new PropertyMetadata(null)
-            );
-
-
-        public bool IsForSelection
-        {
-            get { return (bool)GetValue(IsForSelectionProperty); }
-            set { SetValue(IsForSelectionProperty, value); }
-        }
-
-
-        public TaskInList  SelectedTask { get; set; }
-
+    public partial class MilestoneList : Window
+    {       
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-        public BO.EngineerExperience Complexity { get; set; } = BO.EngineerExperience.None;
-
-        public ObservableCollection<TaskInList> TaskList
+        public MilestoneList()
         {
-            get { return (ObservableCollection<TaskInList>)GetValue(TaskListProperty); }
+            InitializeComponent();
+        }
+
+        public MilestoneInList SelectedMilestone { get; set; }
+
+
+        public BO.Status status { get; set; } = BO.Status.Unscheduled;
+
+        public ObservableCollection<MilestoneInList> MilestonesList
+        {
+            get { return (ObservableCollection<MilestoneInList>)GetValue(TaskListProperty); }
             set { SetValue(TaskListProperty, value); }
         }
 
         public static readonly DependencyProperty TaskListProperty =
-            DependencyProperty.Register("TaskList", typeof(ObservableCollection<TaskInList>), typeof(TaskListWindow), new PropertyMetadata(null));
-        
-        public TaskListWindow()
-        {
-            InitializeComponent();
-            TaskList = new(s_bl.Task.ReadAllTasks().Select(e => new TaskInList { Id = e.Id, Description = e.Description, Alias = e.Alias, Status = e.Status }));
-        }
+            DependencyProperty.Register("TaskList", typeof(ObservableCollection<MilestoneInList>), typeof(MilestoneList), new PropertyMetadata(null));
 
-        private void ComplexitySelector_SelectionChanged(object sender, EventArgs e)
+
+        private void StatusSelector_SelectionChanged(object sender, EventArgs e)
         {
             var taskInLists = (Complexity == BO.EngineerExperience.None) ?
                 s_bl.Task.ReadAllTasks() :
@@ -68,13 +52,13 @@ namespace PL.Task
 
             ObservableCollection<TaskInList> newTaskList = new(
                     taskInLists.Select(e => new TaskInList { Id = e.Id, Description = e.Description, Alias = e.Alias, Status = e.Status }));
-            TaskList = newTaskList;
+            MilestonesList = newTaskList;
         }
 
         private void ShowWindowAddTask_Click(object sender, RoutedEventArgs e)
         {
             var taskWindow = new Task.TaskWindow();
-            taskWindow.Closed +=ComplexitySelector_SelectionChanged!;
+            taskWindow.Closed += ComplexitySelector_SelectionChanged!;
             taskWindow.ShowDialog();
         }
 
@@ -90,7 +74,7 @@ namespace PL.Task
             }
             else
             {
-                SelectedTask= ((sender as ListView)!.SelectedItem as TaskInList)!;
+                SelectedMilestone = ((sender as ListView)!.SelectedItem as TaskInList)!;
                 this.Close();
             }
         }

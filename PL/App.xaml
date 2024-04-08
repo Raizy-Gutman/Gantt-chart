@@ -9,7 +9,8 @@
         <local:ConvertIdToContent x:Key="ConverIdToContentKey"/>
         <local:ConvertIdToIsEnabled x:Key="ConvertIdToIsEnabledKey"/>
         <local:ConvertIdToVisibility x:Key="ConvertIdToVisibilityKey"/>
-        <ImageBrush x:Key="OurBackgroundBrush" ImageSource="BackgroundSource.jpg"/>
+        <local:ConvertBoolToVisibility x:Key="ConvertBoolToVisibilityKey"/>
+        <ImageBrush x:Key="OurBackgroundBrush" ImageSource="BackgroundSource.png" Opacity="0.5" />
         <Style TargetType="Label">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="16"/>

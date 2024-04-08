@@ -22,8 +22,11 @@ internal class DependencyImplementation : IDependency
 
     public void Reset()
     {
-        List<Dependency> dependencyElement = new();
-        XMLTools.SaveListToXMLSerializer(dependencyElement!, dependencyRoot);
+        XElement dependencyElement = XMLTools.LoadListFromXMLElement(dependencyRoot);
+        dependencyElement.Elements().Remove();
+        XMLTools.SaveListToXMLElement(dependencyElement, dependencyRoot);
+        XMLTools.Set("data-config", "NextDependencyId", 1);
+
     }
 
     public void Delete(int id)

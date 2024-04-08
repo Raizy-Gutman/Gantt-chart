@@ -336,7 +336,6 @@ Engineer menue:
                     }
                     return;
                 }
-
                 string choice = StringInput("\nMilestone Menu:\n 1.Get Milestone Details\n 2.Update Milestone\n 3.Back to Main Menu");
 
                 switch (choice)
@@ -378,7 +377,6 @@ Engineer menue:
             string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input");
             if (ans == "Y")
                 Initialization.Do();
-
             while (true)
             {
                 Console.WriteLine("Main Menu:");

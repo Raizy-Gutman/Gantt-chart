@@ -107,8 +107,6 @@
         </Border>
         <Button Content="Add" Grid.Row="3" HorizontalAlignment="Center" Height="50" Width="100" 
                 Click="ShowWindowAddTask_Click"
-                Visibility="{Binding IsForSelection, 
-            RelativeSource={RelativeSource AncestorType={x:Type local:TaskListWindow}},
-            Converter={StaticResource ConvertBoolToVisibilityKey} }" />
+                Visibility="{Binding IsForSelection, RelativeSource={RelativeSource AncestorType={x:Type local:TaskListWindow}}, Converter={StaticResource ConvertBoolToVisibilityKey} }" />
     </Grid>
 </Window>

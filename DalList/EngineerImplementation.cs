@@ -19,6 +19,8 @@ internal class EngineerImplementation : IEngineer
     public void Reset()
     {
         DataSource.Engineers.Clear();
+        DataSource.Engineers.Add(new Engineer(325907210, "admin", "admin@gmail.com", EngineerExperience.Expert, 1500));
+;
     }
 
     public void Delete(int id)

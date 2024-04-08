@@ -1,4 +1,6 @@
-﻿namespace BlApi;
+﻿using DalApi;
+
+namespace BlApi;
 
 public interface IBl
 {
@@ -12,8 +14,14 @@ public interface IBl
     public ITask Task { get; }
     
     public IMilestone Milestone { get; }
-    
-    #region Project Date
+
+    #region Project Dates
+    public DateTime? Start();
+
+    public DateTime? End();
+
+    public BO.ProjectStatus? Status();
+
     public DateOnly CurrentDate { get; }
 
     public void AddDay();

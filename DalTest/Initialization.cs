@@ -3,6 +3,7 @@ using DalApi;
 using DO;
 using System.ComponentModel;
 using System.Data.Common;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -13,7 +14,6 @@ public static class Initialization
     public static void Do()
     {
         s_dal = Factory.Get; //stage 4
-
         CraeteEngineers();
         CraeteTask();
         CraeteDependency();
@@ -45,7 +45,6 @@ public static class Initialization
                 i--;
             }
         }
-        s_dal!.Engineer.Create(new(325907210, "Admin", "admin@gmail.com", EngineerExperience.Intermediate, 1000));
     }
 
     private static void CraeteTask()
@@ -61,9 +60,9 @@ public static class Initialization
     "Develop Backend",
     "Integrate Frontend and Backend",
     "Implement API Endpoints",
+    "Implement Error Handling",
     "Perform Unit Testing",
     "Conduct System Testing",
-    "Implement Error Handling",
     "Optimize Performance",
     "Create Documentation",
     "Deploy to Testing Environment",
@@ -90,9 +89,9 @@ public static class Initialization
     "Write code for the server-side/backend of the application.",
     "Combine frontend and backend components to create a functional application.",
     "Create API endpoints for communication between frontend and backend.",
+    "Handle errors gracefully to enhance user experience.",
     "Test individual components and functions for correctness.",
     "Test the entire system to ensure all components work together seamlessly.",
-    "Handle errors gracefully to enhance user experience.",
     "Optimize code and database queries for better performance.",
     "Document code, APIs, and system architecture for future reference.",
     "Deploy the application to a testing environment for user acceptance testing.",
@@ -119,9 +118,9 @@ public static class Initialization
     "Backend Codebase",
     "Integrated Application",
     "API Endpoints",
+    "Error Handling Mechanism",
     "Unit Test Reports",
     "System Test Reports",
-    "Error Handling Mechanism",
     "Optimized Application",
     "Documentation",
     "Testing Environment Deployment",
@@ -137,44 +136,12 @@ public static class Initialization
     "User Feedback Reports",
     "Enhanced Application"
 };
-        string[] Comments = {
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "Depends on: Create Wireframes, Design UI/UX",
-    "Depends on: Develop Database Schema, Set Up Version Control",
-    "Depends on: Develop Frontend, Develop Backend",
-    "Depends on: Develop Backend",
-    "Depends on: Develop Frontend, Develop Backend",
-    "Depends on: Integrate Frontend and Backend, Implement API Endpoints",
-    "Depends on: Perform Unit Testing, Conduct System Testing",
-    "Depends on: Perform Unit Testing, Conduct System Testing",
-    "Depends on: Implement API Endpoints, Optimize Performance",
-    "Depends on: Deploy to Testing Environment",
-    "Depends on: User Acceptance Testing (UAT)",
-    "Depends on: Perform Unit Testing, Conduct System Testing",
-    "Depends on: Address UAT Feedback, Perform Security Audit",
-    "Depends on: Prepare for Production Deployment",
-    "Depends on: Deploy to Production",
-    "Depends on: Deploy to Production",
-    "Depends on: Deploy to Production",
-    "Depends on: Deploy to Production",
-    "Depends on: Deploy to Production",
-    "Depends on: Create Marketing Materials",
-    "Depends on: Deploy to Production",
-    "Depends on: Deploy to Production",
-    "Depends on: Deploy to Production"
-};
-
         for (int i = 0; i < Descriptions.Length; i++)
         {
             DateTime createdAtDate = DateTime.Now.AddDays(s_rand.Next(0, 14));
             TimeSpan duration = new(s_rand.Next(1, 4), 0, 0, 0);
             EngineerExperience complexityLevel = (EngineerExperience)s_rand.Next(0, 5);
-            DO.Task newTask = new(0, Descriptions[i], Aliases[i], false, createdAtDate, null, null, duration, null, null, Deliverables[i], Comments[i], null, complexityLevel);
+            DO.Task newTask = new(0, Descriptions[i], Aliases[i], false, createdAtDate, null, null, duration, null, null, Deliverables[i], "", null, complexityLevel);
             s_dal!.Task.Create(newTask);
         }
     }
@@ -183,53 +150,49 @@ public static class Initialization
     {
         int[][] dependencyArray = new int[][] {
     Array.Empty<int>(),
-    Array.Empty<int>(),
-    Array.Empty<int>(),
-    Array.Empty<int>(),
-    Array.Empty<int>(),
-    Array.Empty<int>(),
-    new int[] { 1, 5 },
-    new int[] { 2, 3 },
-    new int[] { 6, 7 },
-    new int[] { 7 },
-    new int[] { 6, 7 },
-    new int[] { 8, 9 },
-    new int[] { 10, 11 },
-    new int[] { 10, 11 },
-    new int[] { 9, 10 },
-    new int[] { 10, 11 },
-    new int[] { 14 },
-    new int[] { 15 },
-    new int[] { 4, 16 },
-    new int[] { 15, 18 },
-    new int[] { 19 },
+    new int[]{1},
+    new int[]{1},
+    new int[]{2,3},
+    new int[]{4},
+    new int[]{4},
+    new int[] {6},
+    new int[] {6},
+    new int[] {7,8},
+    new int[] {5 },
+    new int[] {5 },
+    new int[] {10,11},
+    new int[] {9,12 },
+    new int[] {13 },
+    new int[] {13 },
+    new int[] {14,15 },
+    new int[] { 14,15 },
+    new int[] {17},
+    new int[] {16},
+    new int[] {18,19 },
     new int[] { 20 },
-    new int[] { 19 },
-    new int[] { 19 },
-    new int[] { 19 },
+    new int[] {21},
+    new int[] { 21 },
     new int[] { 22 },
-    new int[] { 19 },
-    new int[] { 23 }
+    new int[] { 24 },
+    new int[] { 23 },
+    new int[] { 25,26 },
 };
 
         for (int i = 0; i < dependencyArray.Length; i++)
         {
             foreach (int j in dependencyArray[i])
             {
-                s_dal!.Dependency.Create(new(0, i + 1, j + 1));
+                s_dal!.Dependency.Create(new(0, i + 1, j));
             }
         }
     }
 
     public static void Reset()
     {
-        //string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input");
-        //if (ans == "y")
-        //{
-        s_dal?.Engineer.Reset();
-        s_dal?.Task.Reset();
-        s_dal?.Dependency.Reset();
-        //}
-    }
+        s_dal = Factory.Get;
 
+        s_dal!.Engineer.Reset();
+        s_dal!.Task.Reset();
+        s_dal!.Dependency.Reset();
+    }
 }

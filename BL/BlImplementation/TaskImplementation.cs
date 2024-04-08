@@ -50,9 +50,9 @@ internal class TaskImplementation : ITask
         }
 
         //If an engineer is assigned to the task, we will import him
-        if (task.EngineerId != null)
+        if (task.EngineerId != null  && task.EngineerId != 0)
         { 
-            result.Engineer =  _dal.Engineer.Read(task.EngineerId.Value)!.Convert<DO.Engineer, EngineerInTask>(); 
+            result.Engineer =  _dal.Engineer.Read(task.EngineerId!.Value)!.Convert<DO.Engineer, EngineerInTask>(); 
         }
         return result;
     }
@@ -106,10 +106,6 @@ internal class TaskImplementation : ITask
         var BOtasks = tasks.ConvertList<DO.Task, TaskInList>();
         BOtasks.ForEach(d => d.Status = Tools.GetTaskStatus(tasks, d.Id));
         return BOtasks;
-
-        //return (filter is not null) ?
-        //_dal.Task.ReadAll(filter).ConvertList<DO.Task, TaskInList>() :
-        //BOtasks.ReadAll().ConvertList<DO.Task, TaskInList>();
     }
     
     public void UpdateTask(BO.Task task)
@@ -123,6 +119,15 @@ internal class TaskImplementation : ITask
                 beforeUpdates.DeadlineDate != task.DeadlineDate ||
                 beforeUpdates.Duration != task.Duration)
                 throw new BlIllegalException("task", "update");
+
+        if (task.Dependencies != null)
+        {
+            foreach (var dep in task.Dependencies)
+            {
+                if(_dal.Dependency.Read(d=> d.DependsOnTask == dep.Id && d.DependentTask == task.Id) ==  null)
+                    _dal.Dependency.Create(new(0, task.Id, dep.Id));
+            }
+        }
         task.Status = Tools.GetTaskStatus(beforeUpdates with { CompleteDate =  task.CompleteDate , StartDate=task.StartDate});
         _dal.Task.Update(task.Convert<BO.Task, DO.Task>() with { ComplexityLevel = (DO.EngineerExperience)task.Complexity});
     }

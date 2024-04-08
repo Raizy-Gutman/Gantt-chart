@@ -59,7 +59,7 @@ namespace PL.Engineer
 
         private void ShowWindowAddEngineer_Click(object sender, RoutedEventArgs e)
         {
-            var singleEngineerWindow = new Engineer.SingleEngineerWindow();//מה היא התכוונה לעשות כאן? כי לדעתי עבד לה רק כשזה היה כתוב לא נכון...
+            var singleEngineerWindow = new Engineer.SingleEngineerWindow();
             singleEngineerWindow.Closed += LevelSelector_SelectionChanged!;
             singleEngineerWindow.ShowDialog();
         }
@@ -67,7 +67,7 @@ namespace PL.Engineer
         private void ToUpdateEngineer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             EngineerInList engineerInList = ((sender as ListView)!.SelectedItem as EngineerInList)!;
-            var singleEngineerWindow = new Engineer.SingleEngineerWindow(engineerInList.Id);//זה: SingleEngineer.SingleEngineerWindow לא נכון, לא???????????
+            var singleEngineerWindow = new Engineer.SingleEngineerWindow(engineerInList.Id);
             singleEngineerWindow.Closed += LevelSelector_SelectionChanged!;
             singleEngineerWindow.ShowDialog();
         }
