@@ -74,7 +74,18 @@ namespace PL
             else if (engineersId.Count>0 &&  !engineersId.Contains(id)) MessageBox.Show("Wrong Id number", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             else
             {
-                if (SenderMode == "engineer") new Engineer.EngineerView(id).Show();
+                if (SenderMode == "engineer")
+                {
+                    try
+                    {
+                        s_bl.Engineer.GetEngineer(id);
+                        new Engineer.EngineerView(id).Show();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Wrong engineer Id number!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
                 else
                 {
                     if (id == 325907210 || id == 326381944) new PL.Manager().Show();

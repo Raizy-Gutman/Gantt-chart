@@ -44,39 +44,39 @@ namespace PL.Milestone
             DependencyProperty.Register("TaskList", typeof(ObservableCollection<MilestoneInList>), typeof(MilestoneList), new PropertyMetadata(null));
 
 
-        private void StatusSelector_SelectionChanged(object sender, EventArgs e)
-        {
-            var taskInLists = (Complexity == BO.EngineerExperience.None) ?
-                s_bl.Task.ReadAllTasks() :
-                s_bl.Task.ReadAllTasks(e => (int)e.ComplexityLevel == (int)Complexity && !e.IsMilestone)!;
+        //private void StatusSelector_SelectionChanged(object sender, EventArgs e)
+        //{
+        //    var taskInLists = (Complexity == BO.EngineerExperience.None) ?
+        //        s_bl.Task.ReadAllTasks() :
+        //        s_bl.Task.ReadAllTasks(e => (int)e.ComplexityLevel == (int)Complexity && !e.IsMilestone)!;
 
-            ObservableCollection<TaskInList> newTaskList = new(
-                    taskInLists.Select(e => new TaskInList { Id = e.Id, Description = e.Description, Alias = e.Alias, Status = e.Status }));
-            MilestonesList = newTaskList;
-        }
+        //    ObservableCollection<TaskInList> newTaskList = new(
+        //            taskInLists.Select(e => new TaskInList { Id = e.Id, Description = e.Description, Alias = e.Alias, Status = e.Status }));
+        //    MilestonesList = newTaskList;
+        //}
 
-        private void ShowWindowAddTask_Click(object sender, RoutedEventArgs e)
-        {
-            var taskWindow = new Task.TaskWindow();
-            taskWindow.Closed += ComplexitySelector_SelectionChanged!;
-            taskWindow.ShowDialog();
-        }
+        //private void ShowWindowAddTask_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var taskWindow = new Task.TaskWindow();
+        //    taskWindow.Closed += StatusSelector_SelectionChanged!;
+        //    taskWindow.ShowDialog();
+        //}
 
 
-        private void ToUpdateTask_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (!IsForSelection)
-            {
-                TaskInList taskInList = ((sender as ListView)!.SelectedItem as TaskInList)!;
-                var TaskWindow = new Task.TaskWindow(taskInList.Id);
-                TaskWindow.Closed += ComplexitySelector_SelectionChanged!;
-                TaskWindow.ShowDialog();
-            }
-            else
-            {
-                SelectedMilestone = ((sender as ListView)!.SelectedItem as TaskInList)!;
-                this.Close();
-            }
-        }
+        //private void ToUpdateTask_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        //{
+        //    if (!IsForSelection)
+        //    {
+        //        TaskInList taskInList = ((sender as ListView)!.SelectedItem as TaskInList)!;
+        //        var TaskWindow = new Task.TaskWindow(taskInList.Id);
+        //        TaskWindow.Closed += StatusSelector_SelectionChanged!;
+        //        TaskWindow.ShowDialog();
+        //    }
+        //    else
+        //    {
+        //        SelectedMilestone = ((sender as ListView)!.SelectedItem as TaskInList)!;
+        //        this.Close();
+        //    }
+        //}
     }
 }
