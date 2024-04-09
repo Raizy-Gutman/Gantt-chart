@@ -10,6 +10,9 @@
         <local:ConvertIdToIsEnabled x:Key="ConvertIdToIsEnabledKey"/>
         <local:ConvertIdToVisibility x:Key="ConvertIdToVisibilityKey"/>
         <local:ConvertBoolToVisibility x:Key="ConvertBoolToVisibilityKey"/>
+        <local:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
+        <local:DateToWidthConverter x:Key="DateToWidthConverterKey"/>
+        <local:DateToMarginConverter x:Key="DateToMarginConverterKey"/>
         <ImageBrush x:Key="OurBackgroundBrush" ImageSource="BackgroundSource.png"/>
         <Style TargetType="Label">
             <Setter Property="Foreground" Value="White"/>

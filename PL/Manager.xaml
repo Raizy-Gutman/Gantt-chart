@@ -55,7 +55,7 @@
             <Button Content="Tasks" Click="TasksListButton_Click"/>
             <Button Content="Milestones"  Click="MilestonesButton_Click"/>
             <Button Content="Reset" Click="ButtonReset_Click"  />
-            <Button Content="Gant chart"/>
+            <Button Content="Gant chart" Click="ButtonGantt_Click"/>
             <Button Content="Start project" Click="ButtonGetDates_Click" Visibility="{Binding ScheduleMode}" />
             <Button Content="Initialization" Click="ButtonInitialization_Click" Visibility="{Binding InalizationMode}"/>
         </WrapPanel>

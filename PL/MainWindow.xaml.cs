@@ -80,6 +80,10 @@ namespace PL
             {
                 if (SenderMode == "engineer")
                 {
+                    if(s_bl.Status() != BO.ProjectStatus.Execution)
+                    {
+                        MessageBox.Show("Do not approach the task or assign a task to the engineer before the project begins!", "Error", MessageBoxButton.OK, MessageBoxImage.Error); return;
+                    }
                     try
                     {
                         s_bl.Engineer.GetEngineer(id);

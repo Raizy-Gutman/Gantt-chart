@@ -152,5 +152,15 @@ namespace PL
                 ScheduleMode = Visibility.Hidden;
             }
         }
+
+        private void ButtonGantt_Click(object sender, RoutedEventArgs e)
+        {
+            if (s_bl.Status() < BO.ProjectStatus.Execution)
+                MessageBox.Show("You can see the Gantt chart only after creating the project schedule!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            else
+                new Gantt().Show();
+        }
+
+
     }
 }

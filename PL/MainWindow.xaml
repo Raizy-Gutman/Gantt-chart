@@ -62,7 +62,7 @@
 
         <WrapPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top" Width="200" >
             <Border BorderBrush="Turquoise" BorderThickness="2" CornerRadius="6" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,20,10,10" Padding="2" >
-                <Label Content="{Binding CurrentDate, Mode=TwoWay}" Foreground="White" Width="180" Height="30" HorizontalContentAlignment="Center"/>
+                <Label Content="{Binding CurrentDate, Mode=TwoWay,  StringFormat={}{0:dd/MM/yyyy}}" Foreground="White" Width="180" Height="30" HorizontalContentAlignment="Center"/>
             </Border>
             <Button Style="{StaticResource clockButtons}" Content="+" Click="AddDay"/>
             <Button Style="{StaticResource clockButtons}"  Content="↺" Click="ResetDate"/>

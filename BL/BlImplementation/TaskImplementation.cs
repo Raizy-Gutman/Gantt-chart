@@ -111,6 +111,19 @@ internal class TaskImplementation : ITask
         return BOtasks;
     }
 
+    public IEnumerable<TaskInList> ReadAllTasks(Func<BO.Task, bool>? filter = null)
+    {
+        var tasks = _dal.Task.ReadAll(t => !t.IsMilestone).ToList();
+        if (filter is not null)
+        {
+            var filterTasks = tasks.Select(t=> GetTask(t.Id)).Where(filter);
+            return filterTasks.ConvertList<BO.Task, TaskInList>();
+        }
+        var BOtasks = tasks.ConvertList<DO.Task, TaskInList>();
+        BOtasks.ForEach(d => d.Status = Tools.GetTaskStatus(tasks, d.Id));
+        return BOtasks;
+    }
+
     public void UpdateTask(BO.Task task)
     {
         TestTask(task);
