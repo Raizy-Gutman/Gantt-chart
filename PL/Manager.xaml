@@ -39,8 +39,7 @@
             <Setter Property="Background" Value="White"/>
             <Setter Property="Width" Value="150"/>
             <Setter Property="Margin" Value="20,10,20,10"/>
-
-        </Style>
+       </Style>
     </Window.Resources>
 
     <Grid>
@@ -54,11 +53,11 @@
         <WrapPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" ItemWidth="NaN">
             <Button Content="Engineers"  Click="EngineersListButton_Click"/>
             <Button Content="Tasks" Click="TasksListButton_Click"/>
-            <Button Content="Milestones"  Click="TasksListButton_Click"/>
+            <Button Content="Milestones"  Click="MilestonesButton_Click"/>
             <Button Content="Reset" Click="ButtonReset_Click"  />
             <Button Content="Gant chart"/>
-            <Button Content="Start project" Click="ButtonGetDates_Click" />
-            <Button Content="Initialization" Click="Buttoninitialization_Click" Visibility="{Binding InalizationMode}"/>
+            <Button Content="Start project" Click="ButtonGetDates_Click" Visibility="{Binding ScheduleMode}" />
+            <Button Content="Initialization" Click="ButtonInitialization_Click" Visibility="{Binding InalizationMode}"/>
         </WrapPanel>
         <Grid Visibility="{Binding InputMode}" Grid.RowSpan="3" >
             <Grid Background="Black">
@@ -67,11 +66,12 @@
                         <StackPanel.Background>
                             <SolidColorBrush Color="#FF3DE1E5" Opacity="0.78"/>
                         </StackPanel.Background>
+                        <Label Content="Let's create our schedule!" Foreground="Black" FontSize="14.5" HorizontalAlignment="Center"/>
+                        <Label Content="Choose the start date:" Foreground="Black" FontSize="12" HorizontalAlignment="Center"/>
                         <DatePicker SelectedDate="{Binding StartDate, Mode=TwoWay}"/>
+                        <Label Content="Choose the end date:" Foreground="Black" FontSize="12" HorizontalAlignment="Center"/>
                         <DatePicker SelectedDate="{Binding EndDate, Mode=TwoWay}"/>
                         <Button  Content="Start!" Width="70" Height="20" HorizontalAlignment="Center" Background="Black" Foreground="White" FontSize="10" Click="CreateSchedualButton_Click"/>
-
-
                     </StackPanel>
                 </Border>
             </Grid>

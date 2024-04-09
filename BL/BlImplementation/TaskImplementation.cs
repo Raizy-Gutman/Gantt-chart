@@ -44,20 +44,23 @@ internal class TaskImplementation : ITask
         }
 
         //If the project is in planning, we will import the list of dependencies
-        if (_dal.GetProjectStatus() == ProjectStatus.Planning)
+        if (_dal.GetProjectStatus() == ProjectStatus.Planning) result.Dependencies = _dal.GetListOfTasks(task);
+        else
         {
-            result.Dependencies = _dal.GetListOfTasks(task);
+            var dep = _dal.Dependency.Read(d => d.DependentTask == task.Id);
+            var milstone = _dal.Task.Read(t => t.Id == dep!.DependsOnTask)!;
+            result.Milestone = new() { Id = milstone.Id, Alias = milstone.Alias };
         }
 
         //If an engineer is assigned to the task, we will import him
-        if (task.EngineerId != null  && task.EngineerId != 0)
-        { 
-            result.Engineer =  _dal.Engineer.Read(task.EngineerId!.Value)!.Convert<DO.Engineer, EngineerInTask>(); 
+        if (task.EngineerId != null && task.EngineerId != 0)
+        {
+            result.Engineer = _dal.Engineer.Read(task.EngineerId!.Value)!.Convert<DO.Engineer, EngineerInTask>();
         }
         return result;
     }
     #endregion
-    
+
     public void CreateTask(BO.Task task)
     {
         //Make sure the project is not yet running and it is allowed to add tasks
@@ -72,7 +75,7 @@ internal class TaskImplementation : ITask
             throw new BlAlreadyExistsException(e);
         }
     }
-    
+
     public void DeleteTask(int id)
     {
         //Make sure that the deletion of the task is legal (the project is not running, and there are no other tasks that depend on it).
@@ -87,19 +90,19 @@ internal class TaskImplementation : ITask
             _dal.Dependency.Delete(d.Id);
 
 
-        
+
     }
-    
+
     public BO.Task GetTask(int id)
     {
         DO.Task task = _dal.Task.Read(id) ?? throw new BlDoesNotExistException($"Task {id}");
         return SetValues(task);
     }
-    
+
     public IEnumerable<TaskInList> ReadAllTasks(Func<DO.Task, bool>? filter = null)
     {
         var tasks = _dal.Task.ReadAll(t => !t.IsMilestone);
-        if(filter is not null)
+        if (filter is not null)
         {
             tasks = _dal.Task.ReadAll(filter);
         }
@@ -107,7 +110,7 @@ internal class TaskImplementation : ITask
         BOtasks.ForEach(d => d.Status = Tools.GetTaskStatus(tasks, d.Id));
         return BOtasks;
     }
-    
+
     public void UpdateTask(BO.Task task)
     {
         TestTask(task);
@@ -124,11 +127,12 @@ internal class TaskImplementation : ITask
         {
             foreach (var dep in task.Dependencies)
             {
-                if(_dal.Dependency.Read(d=> d.DependsOnTask == dep.Id && d.DependentTask == task.Id) ==  null)
+                if (_dal.Dependency.Read(d => d.DependsOnTask == dep.Id && d.DependentTask == task.Id) == null)
                     _dal.Dependency.Create(new(0, task.Id, dep.Id));
             }
         }
-        task.Status = Tools.GetTaskStatus(beforeUpdates with { CompleteDate =  task.CompleteDate , StartDate=task.StartDate});
-        _dal.Task.Update(task.Convert<BO.Task, DO.Task>() with { ComplexityLevel = (DO.EngineerExperience)task.Complexity});
+
+        task.Status = Tools.GetTaskStatus(beforeUpdates with { CompleteDate = task.CompleteDate, StartDate = task.StartDate });
+        _dal.Task.Update(task.Convert<BO.Task, DO.Task>() with { ComplexityLevel = (DO.EngineerExperience)task.Complexity, EngineerId = task.Engineer?.Id });
     }
 }

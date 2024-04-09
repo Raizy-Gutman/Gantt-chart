@@ -1,4 +1,5 @@
 ﻿using BO;
+using DO;
 using PL.Task;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,19 @@ namespace PL.Engineer
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
+        #region Dependency Properties
+
+        public BO.Engineer Engineer { get; set; }
+
+        public Visibility ShowTask
+        {
+            get { return (Visibility)GetValue(ShowTaskProperty); }
+            set { SetValue(ShowTaskProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShowTaskProperty =
+            DependencyProperty.Register("ShowTask", typeof(Visibility), typeof(EngineerView), new PropertyMetadata(null));
+
         public BO.Task CurrentTask
         {
             get { return (BO.Task)GetValue(CurrentTaskProperty); }
@@ -32,16 +46,19 @@ namespace PL.Engineer
 
         public static readonly DependencyProperty CurrentTaskProperty =
             DependencyProperty.Register("CurrentTask", typeof(BO.Task), typeof(EngineerView), new PropertyMetadata(null));
+
+        #endregion
+
         public EngineerView(int Id)
         {
             InitializeComponent();
-            if (s_bl.Engineer.GetEngineer(Id).Task is not null) 
+            Engineer = s_bl.Engineer.GetEngineer(Id);
+            if (Engineer.Task is not null)
             {
                 try
                 {
-                    CurrentTask = s_bl.Task.GetTask(s_bl.Engineer.GetEngineer(Id).Task.Id);
-                    if (CurrentTask.Milestone == null) CurrentTask.Milestone = new BO.MilestoneInTask() { Alias="milston alias is empty" };
-                    if (CurrentTask.Engineer == null) CurrentTask.Engineer = new BO.EngineerInTask();
+                    CurrentTask = s_bl.Task.GetTask(Engineer.Task!.Id);
+                    ShowTask = Visibility.Visible;
                 }
                 catch (Exception ex)
                 {
@@ -51,9 +68,44 @@ namespace PL.Engineer
             }
             else
             {
-                MessageBox.Show("There is no task assigned for you, please select a task", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("You don't have a task yet! Please select a task from the list to continue.", "No Task", MessageBoxButton.OK, MessageBoxImage.Error);
+                NewTaskButton_Click(new object(),new RoutedEventArgs());
             }
-            
+
         }
+
+        private void NewTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            var tasks = s_bl.Task
+                .ReadAllTasks()
+                .Select(t => s_bl.Task.GetTask(t.Id))
+                .Where(t => t.Complexity <= Engineer.Level && t.Engineer == null && s_bl.Milestone.GetMilestone(t.Milestone!.Id).Status == Status.Done)
+                .Select(t => t.Id);
+
+            var listTasks = s_bl.Task.ReadAllTasks(t => tasks.Contains(t.Id)).ToList();
+
+            TaskListWindow taskListWindow = new(true, Engineer.Id,
+               ((task, id) =>
+               {
+                   var e = s_bl.Engineer.GetEngineer(id);
+                   e.Task = new() { Id = task.Id, Alias = task.Alias };
+                   s_bl.Engineer.UpdateEngineer(e);
+               }), listTasks);
+
+            taskListWindow.ShowDialog();
+
+            Engineer = s_bl.Engineer.GetEngineer(Engineer.Id);
+
+            CurrentTask = s_bl.Task.GetTask(Engineer.Task!.Id);
+        }
+
+        private void FinishButton_Click(object sender, RoutedEventArgs e)
+        {
+            CurrentTask.CompleteDate = s_bl.CurrentDate.ToDateTime(new TimeOnly());
+            s_bl.Task.UpdateTask(CurrentTask);
+            CurrentTask = s_bl.Task.GetTask(CurrentTask.Id);
+        }
+
+        private void UpdateButton_Click(object sender, RoutedEventArgs e) => s_bl.Task.UpdateTask(CurrentTask);
     }
 }

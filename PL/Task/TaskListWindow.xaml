@@ -68,45 +68,26 @@
         </Grid.RowDefinitions>
 
         <!-- Internal, Upper Grid -->
-        <Grid Background="#99000000" Grid.Row="0">
+        <Grid Background="#99000000" Grid.Row="0" Visibility="{Binding SelectionMode, Converter={StaticResource ConvertBoolToVisibilityKey}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border >
-                <Label Content="Select complexity level:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" FontSize="17" Foreground="White" FontFamily="Comic Sans MS" Margin="0,0,3,0" />
-            </Border>
-            <Border Grid.Column="1" >
-                <ComboBox Style="{StaticResource ComboBoxStyle}" Grid.Column="1" 
+            <Label Content="Select complexity level:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" FontSize="17" Foreground="White" FontFamily="Comic Sans MS" Margin="0,0,3,0" />
+            <ComboBox Style="{StaticResource ComboBoxStyle}" Grid.Column="1" 
                           SelectedValue="{Binding Path=Complexity, Mode=TwoWay}" 
-                          ItemsSource="{Binding Source={StaticResource LevelsCollectionKey}}"
-                    />
-                <!--SelectionChanged="ComplexitySelector_SelectionChanged"-->
-
-            </Border>
+                          ItemsSource="{Binding Source={StaticResource LevelsCollectionKey}}"/>
+                    
         </Grid>
 
-        <!--לשנות לסינון אחר
-        <Grid Background="#99000000" Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
 
-            <Border >
-                <Label Content="Select complexity level:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" FontSize="17" Foreground="White" FontFamily="Comic Sans MS" Margin="0,0,3,0" />
-            </Border>
-            <Border Grid.Column="1" >
-                <ComboBox Style="{StaticResource ComboBoxStyle}" Grid.Column="1" SelectedValue="{Binding Path=Complexity, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource LevelsCollectionKey}}" SelectionChanged="ComplexitySelector_SelectionChanged"/>
-            </Border>
-        </Grid>-->
 
         <Border  Grid.Row="2">
             <ListView Margin="5" ItemsSource="{Binding TaskList}" MouseDoubleClick="ToUpdateTask_MouseDoubleClick" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled" RenderTransformOrigin="0,0"/>
         </Border>
         <Button Content="Add" Grid.Row="3" HorizontalAlignment="Center" Height="50" Width="100" 
                 Click="ShowWindowAddTask_Click"
-                Visibility="{Binding IsForSelection, RelativeSource={RelativeSource AncestorType={x:Type local:TaskListWindow}}, Converter={StaticResource ConvertBoolToVisibilityKey} }" />
+                Visibility="{Binding SelectionMode, Converter={StaticResource ConvertBoolToVisibilityKey} }" />
     </Grid>
 </Window>

@@ -12,15 +12,9 @@ namespace PL
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-        public MainWindow()
-        {
-            InitializeComponent();
-            CurrentDate = s_bl.CurrentDate;
-            InputMode = Visibility.Hidden;
-            CurrentID = "";
-        }
-
         private string SenderMode = "manager";
+       
+        #region Dependency Properties
 
         public Visibility InputMode
         {
@@ -50,9 +44,19 @@ namespace PL
         public static readonly DependencyProperty CurrentIDProperty =
             DependencyProperty.Register("CurrentID", typeof(string), typeof(MainWindow), new PropertyMetadata(null));
 
+        #endregion
+
+        public MainWindow()
+        {
+            InitializeComponent();
+            CurrentDate = s_bl.CurrentDate;
+            InputMode = Visibility.Hidden;
+            CurrentID = "";
+        }
+
         public void AddDay(object sender, RoutedEventArgs e) { s_bl.AddDay(); CurrentDate = s_bl.CurrentDate; }
 
-        public void ResetDate(object sender, RoutedEventArgs e){ s_bl.ResetDate(); CurrentDate = s_bl.CurrentDate; }
+        public void ResetDate(object sender, RoutedEventArgs e) { s_bl.ResetDate(); CurrentDate = s_bl.CurrentDate; }
 
         private void ButtonEngineer_Click(object sender, RoutedEventArgs e)
         {
@@ -71,7 +75,7 @@ namespace PL
             InputMode = Visibility.Hidden;
             var engineersId = s_bl.Engineer.ReadAllEngineers().Select(x => x.Id).ToList();
             if (!int.TryParse(CurrentID, out int id)) MessageBox.Show("An ID must contains only 9 digits!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            else if (engineersId.Count>0 &&  !engineersId.Contains(id)) MessageBox.Show("Wrong Id number", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            else if (engineersId.Count > 0 && !engineersId.Contains(id)) MessageBox.Show("Wrong Id number", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             else
             {
                 if (SenderMode == "engineer")
@@ -88,7 +92,7 @@ namespace PL
                 }
                 else
                 {
-                    if (id == 325907210 || id == 326381944) new PL.Manager().Show();
+                    if (id == 325907210) new PL.Manager().Show();
                     else MessageBox.Show("Wrong manager Id number!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 

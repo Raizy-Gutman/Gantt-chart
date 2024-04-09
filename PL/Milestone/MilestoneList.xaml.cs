@@ -21,62 +21,57 @@ namespace PL.Milestone
     /// Interaction logic for MilestoneList.xaml
     /// </summary>
     public partial class MilestoneList : Window
-    {       
+    {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+        public MilestoneInList SelectedMilestone { get; set; }
+
+        public BO.Status Status { get; set; } = BO.Status.Unscheduled;
+
+        #region Dependency Properties
+
+        public ObservableCollection<MilestoneInList> Milestones
+        {
+            get { return (ObservableCollection<MilestoneInList>)GetValue(MilestonesProperty); }
+            set { SetValue(MilestonesProperty, value); }
+        }
+
+        public static readonly DependencyProperty MilestonesProperty =
+            DependencyProperty.Register("Milestones", typeof(ObservableCollection<MilestoneInList>), typeof(MilestoneList), new PropertyMetadata(null));
+
+        public string SearchValue
+        {
+            get { return (string)GetValue(SearchValueProperty); }
+            set { SetValue(SearchValueProperty, value); }
+        }
+
+        public static readonly DependencyProperty SearchValueProperty =
+            DependencyProperty.Register("SearchValue", typeof(string), typeof(MilestoneList), new PropertyMetadata(null));
+
+        #endregion
 
         public MilestoneList()
         {
             InitializeComponent();
+            Milestones = new(s_bl.Milestone.GetAllMilestones());
+            SearchValue = "";
         }
 
-        public MilestoneInList SelectedMilestone { get; set; }
-
-
-        public BO.Status status { get; set; } = BO.Status.Unscheduled;
-
-        public ObservableCollection<MilestoneInList> MilestonesList
+        private void StatusSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            get { return (ObservableCollection<MilestoneInList>)GetValue(TaskListProperty); }
-            set { SetValue(TaskListProperty, value); }
+            Milestones = new(s_bl.Milestone.GetAllMilestones(m => m.Status == Status));
         }
 
-        public static readonly DependencyProperty TaskListProperty =
-            DependencyProperty.Register("TaskList", typeof(ObservableCollection<MilestoneInList>), typeof(MilestoneList), new PropertyMetadata(null));
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            Milestones = new(s_bl.Milestone.GetAllMilestones(m => (m.Alias.Contains(SearchValue)) || m.Description.Contains(SearchValue)));
+            SearchValue = "";
+        }
 
-
-        //private void StatusSelector_SelectionChanged(object sender, EventArgs e)
-        //{
-        //    var taskInLists = (Complexity == BO.EngineerExperience.None) ?
-        //        s_bl.Task.ReadAllTasks() :
-        //        s_bl.Task.ReadAllTasks(e => (int)e.ComplexityLevel == (int)Complexity && !e.IsMilestone)!;
-
-        //    ObservableCollection<TaskInList> newTaskList = new(
-        //            taskInLists.Select(e => new TaskInList { Id = e.Id, Description = e.Description, Alias = e.Alias, Status = e.Status }));
-        //    MilestonesList = newTaskList;
-        //}
-
-        //private void ShowWindowAddTask_Click(object sender, RoutedEventArgs e)
-        //{
-        //    var taskWindow = new Task.TaskWindow();
-        //    taskWindow.Closed += StatusSelector_SelectionChanged!;
-        //    taskWindow.ShowDialog();
-        //}
-
-
-        //private void ToUpdateTask_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        //{
-        //    if (!IsForSelection)
-        //    {
-        //        TaskInList taskInList = ((sender as ListView)!.SelectedItem as TaskInList)!;
-        //        var TaskWindow = new Task.TaskWindow(taskInList.Id);
-        //        TaskWindow.Closed += StatusSelector_SelectionChanged!;
-        //        TaskWindow.ShowDialog();
-        //    }
-        //    else
-        //    {
-        //        SelectedMilestone = ((sender as ListView)!.SelectedItem as TaskInList)!;
-        //        this.Close();
-        //    }
-        //}
+        private void MilstoneDetails(object sender, RoutedEventArgs e)
+        {
+            new PL.Milestone.Milestone(SelectedMilestone.Id).ShowDialog();
+            Milestones = new(s_bl.Milestone.GetAllMilestones());
+        }
     }
 }

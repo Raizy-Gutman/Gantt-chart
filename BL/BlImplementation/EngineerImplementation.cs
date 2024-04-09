@@ -96,7 +96,7 @@ internal class EngineerImplementation : IEngineer
             if (engineer.Task != null)
             {
                 DO.Task newTask = _dal.Task.Read(engineer.Task.Id) ?? throw new BlIllegalException("task", "allotment");
-                DO.Task updateTask = newTask with { EngineerId = engineer.Id };
+                DO.Task updateTask = newTask with { EngineerId = engineer.Id, StartDate= DateTime.Now };
                 _dal.Task.Update(updateTask);
             }
         }

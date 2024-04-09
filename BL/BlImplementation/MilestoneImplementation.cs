@@ -75,7 +75,7 @@ internal class MilestoneImplementation : IMilestone
         var distinctGroups = dependentGroups.Select(d => d.tasks).Distinct(new CollectionComparer<int>());
 
         //Creating a first milestone
-        int firstMilestonId = _dal.Task.Create(new(0, "", "Start", true, null, null, null, null, null, null, "", "", 0, 0));
+        int firstMilestonId = _dal.Task.Create(new(0, "", "Start", true, DateTime.Now, null, null, null, null, null, "", "", 0, 0));
 
         //Create a dependency between each task that does not depend on any task, to the first milestone.
         tasks
@@ -86,7 +86,7 @@ internal class MilestoneImplementation : IMilestone
         //Create a new milestone for each list of previous tasks
         var milestones = distinctGroups.Select(previousTasks => new
         {
-            MilestoneTaskId = _dal.Task.Create(new(0, "", $"M{getNextId()}", true, null, null, null, null, null, null, "", "", 0, 0)),
+            MilestoneTaskId = _dal.Task.Create(new(0, "", $"M{getNextId()}", true, DateTime.Now, null, null, null, null, null, "", "", 0, 0)),
             PreviousTasks = previousTasks.ToList()
         }).ToList();
 
@@ -94,7 +94,7 @@ internal class MilestoneImplementation : IMilestone
         //Its previous task list is all tasks that no task is dependent on
         var lastMileston = new
         {
-            MilestoneTaskId = _dal.Task.Create(new(0, "", "End", true, null, null, null, null, null, null, "", "", 0, 0)),
+            MilestoneTaskId = _dal.Task.Create(new(0, "", "End", true, DateTime.Now, null, null, null, null, null, "", "", 0, 0)),
             PreviousTasks = tasks.Where(t => !dependenciesList.Any(d => d.DependsOnTask == t)).ToList()
         };
         milestones.Add(lastMileston);
@@ -294,7 +294,7 @@ internal class MilestoneImplementation : IMilestone
         milestone.Dependencies = _dal.GetListOfTasks(task);
         int doneTasks = milestone.Dependencies.Where(t => t.Status == Status.Done).Count();
         int oneTrackTasks = milestone.Dependencies.Where(t => t.Status == Status.OnTrack).Count();
-        milestone.CompletionPercentage = (doneTasks + (oneTrackTasks * 0 / 5)) != 0 ? (doneTasks + (oneTrackTasks * 0 / 5)) / milestone.Dependencies.Count * 100.0 : 0.0;
+        milestone.CompletionPercentage = (doneTasks + (oneTrackTasks * 0 / 5)) != 0 ? (doneTasks + (oneTrackTasks * 0 / 5)) / milestone.Dependencies.Count * 100.0 : milestone.Dependencies.Count == 0 ? 100.0 : 0.0;
         milestone.Status = GetStatus((double)milestone.CompletionPercentage);
         return milestone;
     }
@@ -356,7 +356,7 @@ internal class MilestoneImplementation : IMilestone
     public IEnumerable<MilestoneInList> GetAllMilestones(Func<Milestone, bool>? filter = null)
     {
         var milstones = _dal.Task.ReadAll(t => t.IsMilestone == true).Select(t => SetValues(t));
-        if(filter != null)
+        if (filter != null)
             milstones = milstones.Where(filter);
         return milstones.ConvertList<Milestone, MilestoneInList>();
     }

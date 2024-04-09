@@ -19,9 +19,36 @@ namespace PL.Milestone
     /// </summary>
     public partial class Milestone : Window
     {
-        public Milestone()
+        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+        public BO.Milestone CurrentMilestone
+        {
+            get { return (BO.Milestone)GetValue(CurrentMilestoneProperty); }
+            set { SetValue(CurrentMilestoneProperty, value); }
+        }
+
+        public static readonly DependencyProperty CurrentMilestoneProperty =
+            DependencyProperty.Register("CurrentMilestone", typeof(BO.Milestone), typeof(Milestone), new PropertyMetadata(null));
+
+        public Milestone(int id)
         {
             InitializeComponent();
+            CurrentMilestone = s_bl.Milestone.GetMilestone(id);
+        }
+
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Close();
+                CurrentMilestone = s_bl.Milestone.UpdateMilestone(CurrentMilestone.Id, CurrentMilestone.Alias, CurrentMilestone.Description, "");
+                MessageBox.Show("Milestone successfully updated!", "OK", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

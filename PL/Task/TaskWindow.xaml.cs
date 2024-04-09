@@ -70,11 +70,11 @@ namespace PL.Task
             {
                 CurrentTask = new BO.Task
                 {
-                    Milestone = new BO.MilestoneInTask() { Alias="Milestone alias is empty" },
+                    Milestone = new BO.MilestoneInTask() { Alias = "Milestone alias is empty" },
                     Engineer = new BO.EngineerInTask()
                 };
                 TaskDuration = 1;
-               
+
 
             }
             else
@@ -82,7 +82,7 @@ namespace PL.Task
                 try
                 {
                     CurrentTask = s_bl.Task.GetTask(Id);
-                    if (CurrentTask.Milestone == null) CurrentTask.Milestone = new BO.MilestoneInTask() {Alias="milston alias is empty" };
+                    if (CurrentTask.Milestone == null) CurrentTask.Milestone = new BO.MilestoneInTask() { Alias = "milston alias is empty" };
                     if (CurrentTask.Engineer == null) CurrentTask.Engineer = new BO.EngineerInTask();
                     DependenedTaskList = CurrentTask.Dependencies is not null ? new ObservableCollection<TaskInList>(CurrentTask.Dependencies) : new();
                     TaskDuration = CurrentTask.Duration!.Value.Days;
@@ -130,16 +130,22 @@ namespace PL.Task
 
         private void AddDependedTask_Click(object sender, RoutedEventArgs e)
         {
-            TaskListWindow taskListWindow = new() { IsForSelection=true };
+            TaskListWindow taskListWindow = new(true, CurrentTask.Id,
+                ((task, id) =>
+                {
+                    var t = s_bl.Task.GetTask(id);
+                    if (t.Id != task.Id)
+                    {
+                        t.Dependencies ??= new List<TaskInList>();
+                        t.Dependencies.Add(task);
+                        s_bl.Task.UpdateTask(t);
+                    }
+                }));
 
             taskListWindow.ShowDialog();
 
-            if (CurrentTask.Dependencies==null)
-                CurrentTask.Dependencies =new List<TaskInList>();
-
-            CurrentTask.Dependencies.Add(taskListWindow.SelectedTask);
-
-            DependenedTaskList.Add(taskListWindow.SelectedTask);
+            CurrentTask = s_bl.Task.GetTask(CurrentTask.Id);
+            DependenedTaskList = new (CurrentTask.Dependencies!);
         }
 
         private void AddDurationButton_Click(object sender, RoutedEventArgs e)
@@ -150,7 +156,7 @@ namespace PL.Task
 
         private void SubDurationButton_Click(object sender, RoutedEventArgs e)
         {
-            if(TaskDuration == 1) { MessageBox.Show("Task duration must be at list 1 day long!!", "Error", MessageBoxButton.OK, MessageBoxImage.Error); }
+            if (TaskDuration == 1) { MessageBox.Show("Task duration must be at list 1 day long!!", "Error", MessageBoxButton.OK, MessageBoxImage.Error); }
             else
             {
                 TaskDuration--;

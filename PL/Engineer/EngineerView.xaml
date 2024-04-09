@@ -6,8 +6,78 @@
         xmlns:local="clr-namespace:PL.Engineer"
         mc:Ignorable="d"
         Title="EngineerView" Height="450" Width="800"
+        Background="{StaticResource OurBackgroundBrush}"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+    <Window.Resources>
+        <Style TargetType="StackPanel">
+            <Setter Property="Orientation" Value="Horizontal"/>
+        </Style>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="60*"/>
+            <RowDefinition Height="20*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Content="{Binding CurrentTask.Alias}" HorizontalContentAlignment="Center"/>
+        <WrapPanel Grid.Row="1" DataContext="{Binding CurrentTask}" Orientation="Vertical">
+            <StackPanel>
+                <Label Content="Description:"/>
+                <TextBox Text="{Binding Description}"/>
+            </StackPanel>
+
+            <StackPanel>
+                <Label Content="Deliverables:"/>
+                <TextBox Text="{Binding Deliverables}"/>
+            </StackPanel>
+
+            <StackPanel>
+                <Label Content="Remarks:"/>
+                <TextBox Text="{Binding Remarks}"/>
+            </StackPanel>
+
+            <StackPanel>
+                <Label Content="Complexity:"/>
+                <TextBlock Text="{Binding Complexity}"/>
+            </StackPanel>
+
+            <StackPanel>
+                <Label Content="Status:"/>
+                <TextBlock Text="{Binding Status}"/>
+            </StackPanel>
+
+            <StackPanel>
+                <Label Content="Created Date:"/>
+                <TextBlock Text="{Binding CreatedAtDate, StringFormat={}{0:dd/MM/yyyy}}"/>
+            </StackPanel>
+
+            <StackPanel>
+                <Label Content="Start Date:"/>
+                <TextBlock Text="{Binding StartDate, StringFormat={}{0:dd/MM/yyyy}}"/>
+            </StackPanel>
+
+            <StackPanel>
+                <Label Content="Duration Date:"/>
+                <TextBlock Text="{Binding Duration, StringFormat='{}{0:dd}'}"/>
+            </StackPanel>
+
+            <StackPanel>
+                <Label Content="Forecast Date:"/>
+                <TextBlock Text="{Binding ForecastDate, StringFormat={}{0:dd/MM/yyyy}}"/>
+            </StackPanel>
+
+            <StackPanel>
+                <Label Content="Deadline Date:"/>
+                <TextBlock Text="{Binding DeadlineDate, StringFormat={}{0:dd/MM/yyyy}}"/>
+            </StackPanel>
+        </WrapPanel>
+
+        <StackPanel Grid.Row="2">
+            <Button  Content="Update current task" Click="UpdateButton_Click"/>
+            <Button  Content="Finish current task" Click="FinishButton_Click"/>
+            <Button  Content="Select new task" Click="NewTaskButton_Click"/>
+        </StackPanel>
+
     </Grid>
 </Window>
