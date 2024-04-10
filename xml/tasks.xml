@@ -11,19 +11,6 @@
     <ComplexityLevel>Beginner</ComplexityLevel>
   </Task>
   <Task>
-    <Id>1</Id>
-    <Description>Define Project Scope</Description>
-    <Alias>Gather requirements and define the scope of the project.</Alias>
-    <IsMilestone>false</IsMilestone>
-    <CreatedAtDate>2024-04-02T20:21:06.5273129+03:00</CreatedAtDate>
-    <SchedualDate>2024-04-09T20:20:21.5603644+03:00</SchedualDate>
-    <Duration>P2D</Duration>
-    <DeadlineDate>2024-04-16T00:00:00</DeadlineDate>
-    <Deliverables>Project Scope Document</Deliverables>
-    <EngineerId xsi:nil="true" />
-    <ComplexityLevel>AdvancedBeginner</ComplexityLevel>
-  </Task>
-  <Task>
     <Id>29</Id>
     <Alias>M1</Alias>
     <IsMilestone>true</IsMilestone>
@@ -560,5 +547,19 @@
     <DeadlineDate>2024-05-20T00:00:00</DeadlineDate>
     <EngineerId>0</EngineerId>
     <ComplexityLevel>Beginner</ComplexityLevel>
+  </Task>
+  <Task>
+    <Id>1</Id>
+    <Description>Define Project Scope</Description>
+    <Alias>Gather requirements and define the scope of the project.</Alias>
+    <IsMilestone>false</IsMilestone>
+    <CreatedAtDate>2024-04-02T20:21:06.5273129+03:00</CreatedAtDate>
+    <StartDate>2024-04-10T09:47:13.9889369+03:00</StartDate>
+    <SchedualDate>2024-04-09T20:20:21.5603644+03:00</SchedualDate>
+    <Duration>P2D</Duration>
+    <DeadlineDate>2024-04-16T00:00:00</DeadlineDate>
+    <Deliverables>Project Scope Document</Deliverables>
+    <EngineerId>325907210</EngineerId>
+    <ComplexityLevel>AdvancedBeginner</ComplexityLevel>
   </Task>
 </ArrayOfTask>
